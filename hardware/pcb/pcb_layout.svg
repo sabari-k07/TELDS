@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" width="100%" height="100%">
+  <defs>
+    <style>
+      .pcb-substrate { fill: #0d2818; stroke: #1b4931; stroke-width: 3; rx: 12; }
+      .copper-trace { stroke: #eab308; stroke-width: 2.5; fill: none; }
+      .power-trace { stroke: #ef4444; stroke-width: 4; fill: none; }
+      .ground-pour { fill: #133924; opacity: 0.6; }
+      .slot { fill: #070b14; stroke: #ffffff; stroke-dasharray: 4,4; stroke-width: 1.5; rx: 4; }
+      .pad-gold { fill: #facc15; stroke: #ca8a04; stroke-width: 1; }
+      .hole { fill: #070b14; }
+      .silkscreen-white { fill: #ffffff; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+      .silkscreen-yellow { fill: #fef08a; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: bold; font-size: 13px; }
+      .component-body { fill: #1e293b; stroke: #94a3b8; stroke-width: 1.5; rx: 4; }
+      .dim-line { stroke: #38bdf8; stroke-width: 1; stroke-dasharray: 2,2; }
+      .dim-text { fill: #38bdf8; font-family: monospace; font-size: 10px; }
+    </style>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1000" height="800" fill="#070b14"/>
+
+  <!-- PCB Board Outline (100mm x 80mm scaled) -->
+  <g transform="translate(100, 80)">
+    <!-- Substrate -->
+    <rect width="800" height="640" class="pcb-substrate"/>
+    <!-- Ground Pour Layer -->
+    <rect x="15" y="15" width="770" height="610" class="ground-pour" rx="8"/>
+
+    <!-- Mounting Holes at Corners -->
+    <circle cx="35" cy="35" r="16" class="pad-gold"/>
+    <circle cx="35" cy="35" r="10" class="hole"/>
+    <circle cx="765" cy="35" r="16" class="pad-gold"/>
+    <circle cx="765" cy="35" r="10" class="hole"/>
+    <circle cx="35" cy="605" r="16" class="pad-gold"/>
+    <circle cx="35" cy="605" r="10" class="hole"/>
+    <circle cx="765" cy="605" r="16" class="pad-gold"/>
+    <circle cx="765" cy="605" r="10" class="hole"/>
+
+    <!-- ZONE 1: HIGH VOLTAGE AREA (TOP LEFT) -->
+    <!-- Mains Terminal Block J1 -->
+    <rect x="40" y="80" width="60" height="90" class="component-body"/>
+    <circle cx="70" cy="105" r="8" class="pad-gold"/>
+    <circle cx="70" cy="145" r="8" class="pad-gold"/>
+    <text x="45" y="70" class="silkscreen-white">J1 (230V AC)</text>
+
+    <!-- Fuse & MOV -->
+    <rect x="120" y="80" width="30" height="15" rx="2" fill="#ef4444"/>
+    <text x="120" y="70" class="silkscreen-white">FUSE 500mA</text>
+    <circle cx="135" cy="120" r="10" fill="#3b82f6"/>
+    <text x="125" y="145" class="silkscreen-white">MOV</text>
+
+    <!-- HLK-PM01 AC-DC Converter Module -->
+    <rect x="170" y="80" width="130" height="85" class="component-body"/>
+    <text x="195" y="115" class="silkscreen-yellow">HLK-PM01</text>
+    <text x="190" y="135" class="silkscreen-white">AC-DC 5V 600mA</text>
+
+    <!-- ISOLATION AIR-GAP ROUTING SLOT -->
+    <rect x="320" y="60" width="14" height="140" class="slot"/>
+    <text x="345" y="130" fill="#f43f5e" font-family="monospace" font-size="10" transform="rotate(90, 345, 130)">ISOLATION SLOT (2mm x 25mm)</text>
+
+    <!-- ZONE 2: ANALOG CONDITIONING (TOP RIGHT) -->
+    <!-- CT1 3.5mm Stereo Audio Jack / Screw Terminal -->
+    <rect x="420" y="60" width="70" height="60" class="component-body"/>
+    <text x="430" y="50" class="silkscreen-white">CT1 JACK</text>
+    <circle cx="455" cy="90" r="10" class="pad-gold"/>
+    <!-- CT1 Burden R & Bias R -->
+    <rect x="510" y="70" width="18" height="35" class="component-body"/>
+    <text x="500" y="120" class="silkscreen-white">R_B1 (33Ω)</text>
+    <rect x="545" y="70" width="18" height="35" class="component-body"/>
+    <text x="540" y="120" class="silkscreen-white">BIAS1</text>
+
+    <!-- CT2 3.5mm Stereo Audio Jack -->
+    <rect x="620" y="60" width="70" height="60" class="component-body"/>
+    <text x="630" y="50" class="silkscreen-white">CT2 JACK</text>
+    <circle cx="655" cy="90" r="10" class="pad-gold"/>
+    <!-- CT2 Burden R & Bias R -->
+    <rect x="710" y="70" width="18" height="35" class="component-body"/>
+    <text x="700" y="120" class="silkscreen-white">R_B2 (33Ω)</text>
+    <rect x="745" y="70" width="18" height="35" class="component-body"/>
+    <text x="740" y="120" class="silkscreen-white">BIAS2</text>
+
+    <!-- ZMPT101B Module Footprint -->
+    <rect x="520" y="160" width="140" height="70" class="component-body"/>
+    <text x="540" y="195" class="silkscreen-yellow">ZMPT101B</text>
+    <text x="535" y="215" class="silkscreen-white">AC Voltage Sensor</text>
+
+    <!-- ZONE 3: DIGITAL CORE (CENTER & BOTTOM) -->
+    <!-- ESP32-WROOM-32 Module -->
+    <rect x="250" y="270" width="280" height="300" class="component-body" stroke="#00f0ff" stroke-width="2"/>
+    <!-- Antenna Keepout Zone -->
+    <rect x="260" y="280" width="260" height="60" fill="#070b14" stroke="#eab308" stroke-dasharray="3,3"/>
+    <text x="320" y="315" fill="#eab308" font-family="monospace" font-size="12">PCB ANTENNA KEEPOUT</text>
+    
+    <text x="330" y="380" class="silkscreen-yellow" font-size="16">ESP32-WROOM-32D</text>
+    <text x="345" y="405" class="silkscreen-white">Dual-Core 240MHz</text>
+    <text x="355" y="425" class="silkscreen-white">WiFi + BLE Node</text>
+
+    <!-- ESP32 Pin Headers (Left & Right) -->
+    <g transform="translate(260, 440)">
+      <circle cx="10" cy="10" r="5" class="pad-gold"/>
+      <circle cx="30" cy="10" r="5" class="pad-gold"/>
+      <circle cx="50" cy="10" r="5" class="pad-gold"/>
+      <circle cx="70" cy="10" r="5" class="pad-gold"/>
+      <circle cx="90" cy="10" r="5" class="pad-gold"/>
+      <circle cx="110" cy="10" r="5" class="pad-gold"/>
+      <circle cx="130" cy="10" r="5" class="pad-gold"/>
+      <circle cx="150" cy="10" r="5" class="pad-gold"/>
+      <circle cx="170" cy="10" r="5" class="pad-gold"/>
+      <circle cx="190" cy="10" r="5" class="pad-gold"/>
+      <circle cx="210" cy="10" r="5" class="pad-gold"/>
+      <circle cx="230" cy="10" r="5" class="pad-gold"/>
+    </g>
+
+    <!-- AMS1117-3.3 Regulator -->
+    <rect x="130" y="270" width="60" height="40" class="component-body"/>
+    <text x="135" y="295" class="silkscreen-white">AMS1117</text>
+    <text x="145" y="325" class="silkscreen-white">3.3V LDO</text>
+
+    <!-- OLED Header J4 -->
+    <rect x="620" y="280" width="130" height="35" class="component-body"/>
+    <circle cx="640" cy="297" r="6" class="pad-gold"/>
+    <circle cx="670" cy="297" r="6" class="pad-gold"/>
+    <circle cx="700" cy="297" r="6" class="pad-gold"/>
+    <circle cx="730" cy="297" r="6" class="pad-gold"/>
+    <text x="630" y="270" class="silkscreen-white">J4 (VCC GND SCL SDA)</text>
+    <text x="635" y="335" class="silkscreen-yellow">SSD1306 OLED PORT</text>
+
+    <!-- Status LEDs & Buzzer -->
+    <circle cx="620" cy="400" r="10" fill="#10b981"/>
+    <text x="640" y="405" class="silkscreen-white">LED1 (NORMAL)</text>
+
+    <circle cx="620" cy="450" r="10" fill="#f43f5e"/>
+    <text x="640" y="455" class="silkscreen-white">LED2 (ANOMALY)</text>
+
+    <circle cx="620" cy="515" r="18" fill="#f59e0b"/>
+    <text x="650" y="520" class="silkscreen-white">BUZZER (CRITICAL)</text>
+
+    <!-- USB-C UART Programming Port -->
+    <rect x="70" y="470" width="50" height="40" class="component-body"/>
+    <text x="50" y="455" class="silkscreen-white">USB-C PROG</text>
+
+    <!-- Silkscreen Branding & Certification -->
+    <text x="60" y="585" class="silkscreen-yellow" font-size="14">TELDS EDGE SENSOR NODE v1.0</text>
+    <text x="60" y="605" class="silkscreen-white">Designed for Distribution Substation Monitoring</text>
+    <text x="550" y="605" class="silkscreen-white">RoHS • Dual CT 100A • WiFi 2.4GHz</text>
+
+    <!-- Traces Representation -->
+    <path d="M 70 175 L 70 200 L 140 200 L 140 270" class="power-trace"/>
+    <path d="M 455 120 L 455 220 L 320 220 L 320 270" class="copper-trace"/>
+    <path d="M 655 120 L 655 240 L 350 240 L 350 270" class="copper-trace"/>
+  </g>
+
+  <!-- Dimensions Indicator -->
+  <line x1="100" y1="50" x2="900" y2="50" class="dim-line"/>
+  <text x="470" y="45" class="dim-text">100.0 mm</text>
+  <line x1="60" y1="80" x2="60" y2="720" class="dim-line"/>
+  <text x="20" y="400" class="dim-text" transform="rotate(-90, 20, 400)">80.0 mm</text>
+</svg>

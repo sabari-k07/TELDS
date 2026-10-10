@@ -1,0 +1,22 @@
+# Final Project Plan
+
+## 1. Full-Stack Web Application
+- Transformer and consumer monitoring dashboard
+- Live simulated sensor readings
+- Energy-loss percentage and threshold detection
+- Alerts, graphs, reports, and history
+
+## 2. Virtual Hardware Prototype
+- Simulated ESP32 microcontroller
+- Two current-measurement points (Transformer Input CT1 vs Consumer Aggregate CT2)
+- Threshold-based anomaly detection on edge
+- Simulated wireless alerts sent to backend (HTTP/REST / WebSocket)
+
+## 3. Hardware Design Documents
+- Circuit schematic (detailed pinouts, conditioning circuitry, sensors, ESP32)
+- PCB layout (Gerber specifications, 2-layer PCB design, trace widths, silkscreen)
+- 3D enclosure model (OpenSCAD parametric script + dimensional CAD drawings + cutouts for OLED & cable glands)
+- Bill of materials (BOM) with part numbers, footprints, quantities, and cost estimates
+
+## 4. Complete Project Documentation
+- PRD, system architecture, database schema, API documentation, test cases, user guide, installation instructions, and final project report.

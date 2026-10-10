@@ -1,0 +1,4 @@
+feeder_code,feeder_name,substation,transformer_code,transformer_name,capacity_kva,location
+FDR-11KV-01,North Industrial Feeder,Central 66/11kV Substation,TX-IND-101,Distribution Transformer 101,500.0,Sector 4 Industrial Area
+FDR-11KV-02,Metro Commercial Feeder,Central 66/11kV Substation,TX-COM-204,Commercial Transformer 204,315.0,City Center Mall Complex
+FDR-11KV-03,East Suburban Feeder,Suburban 33/11kV Substation,TX-RES-308,Residential DT 308,250.0,Green Park Colony

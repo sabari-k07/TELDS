@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #0b1329; }
+      .grid { stroke: #142145; stroke-width: 1; stroke-dasharray: 4,4; }
+      .box { fill: #0f1d3f; stroke: #00f0ff; stroke-width: 2; rx: 8; }
+      .subbox { fill: #13244d; stroke: #64748b; stroke-width: 1.5; rx: 6; }
+      .title { fill: #ffffff; font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 16px; font-weight: bold; }
+      .subtitle { fill: #94a3b8; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+      .label { fill: #e2e8f0; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+      .pin { fill: #38bdf8; font-family: 'JetBrains Mono', monospace; font-size: 10px; }
+      .wire-cyan { stroke: #00f0ff; stroke-width: 2; fill: none; }
+      .wire-emerald { stroke: #10b981; stroke-width: 2; fill: none; }
+      .wire-rose { stroke: #f43f5e; stroke-width: 2; fill: none; }
+      .wire-amber { stroke: #f59e0b; stroke-width: 2; fill: none; }
+      .wire-pwr { stroke: #ef4444; stroke-width: 2; fill: none; }
+      .wire-gnd { stroke: #64748b; stroke-width: 2; fill: none; }
+      .dot { fill: #00f0ff; }
+      .dot-amber { fill: #f59e0b; }
+      .dot-emerald { fill: #10b981; }
+      .resistor { fill: none; stroke: #f59e0b; stroke-width: 2; }
+      .cap { fill: none; stroke: #38bdf8; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1100" height="700" class="bg"/>
+  
+  <!-- Title Block -->
+  <rect x="30" y="25" width="1040" height="55" rx="8" fill="#0f172a" stroke="#1e293b" stroke-width="1.5"/>
+  <text x="50" y="52" class="title">TELDS Hardware Schematic — ESP32 Dual-Point CT Telemetry Edge Node</text>
+  <text x="50" y="68" class="subtitle">Doc ID: SCH-TELDS-V1.0 • Split-Core CT1 &amp; CT2 Conditioning • ZMPT101B Voltage • SSD1306 OLED</text>
+  <text x="960" y="58" fill="#10b981" font-family="sans-serif" font-size="12px" font-weight="bold">REV 1.0 (PROD)</text>
+
+  <!-- SECTION 1: POWER SUPPLY (TOP LEFT) -->
+  <rect x="30" y="100" width="280" height="180" class="subbox"/>
+  <text x="45" y="125" class="title" font-size="13">1. Regulated Power Supply</text>
+  
+  <!-- HLK-PM01 AC/DC -->
+  <rect x="50" y="145" width="90" height="60" rx="4" fill="#1e293b" stroke="#38bdf8"/>
+  <text x="60" y="170" class="label" font-size="10">HLK-PM01</text>
+  <text x="60" y="185" class="pin">230V -> 5V</text>
+
+  <!-- AMS1117 3.3V -->
+  <rect x="180" y="145" width="90" height="60" rx="4" fill="#1e293b" stroke="#38bdf8"/>
+  <text x="190" y="170" class="label" font-size="10">AMS1117</text>
+  <text x="190" y="185" class="pin">5V -> 3.3V</text>
+  
+  <path d="M 140 175 L 180 175" class="wire-pwr"/>
+  <path d="M 270 175 L 340 175" class="wire-pwr"/>
+  <text x="280" y="165" class="pin">+3.3V</text>
+
+  <!-- Ground Bar -->
+  <path d="M 50 240 L 270 240" class="wire-gnd"/>
+  <text x="140" y="258" class="pin">SYSTEM GND</text>
+
+  <!-- SECTION 2: DUAL CURRENT SENSORS (LEFT MIDDLE & BOTTOM) -->
+  <!-- CT1 BLOCK -->
+  <rect x="30" y="300" width="360" height="175" class="subbox"/>
+  <text x="45" y="325" class="title" font-size="13">2. CT1: Transformer Input Sensor</text>
+  
+  <!-- Jack & Burden -->
+  <circle cx="70" cy="370" r="18" fill="#1e293b" stroke="#00f0ff" stroke-width="2"/>
+  <text x="58" y="375" class="pin" font-size="9">CT1</text>
+  <text x="42" y="405" class="subtitle">SCT-013-000</text>
+  <text x="42" y="418" class="subtitle">(100A / 50mA)</text>
+
+  <rect x="120" y="355" width="40" height="30" rx="3" fill="#1e293b" stroke="#f59e0b"/>
+  <text x="127" y="374" class="pin">33Ω</text>
+  <text x="115" y="400" class="subtitle">Burden R</text>
+
+  <!-- Bias Divider -->
+  <rect x="200" y="335" width="45" height="25" rx="3" fill="#1e293b" stroke="#f59e0b"/>
+  <text x="208" y="351" class="pin">10kΩ</text>
+  <rect x="200" y="385" width="45" height="25" rx="3" fill="#1e293b" stroke="#f59e0b"/>
+  <text x="208" y="401" class="pin">10kΩ</text>
+  <circle cx="270" cy="370" r="12" fill="#1e293b" stroke="#38bdf8"/>
+  <text x="260" y="374" class="pin" font-size="8">10µF</text>
+
+  <path d="M 88 370 L 120 370" class="wire-cyan"/>
+  <path d="M 160 370 L 200 370" class="wire-cyan"/>
+  <path d="M 245 370 L 390 370" class="wire-cyan"/>
+  <text x="290" y="360" class="pin">CT1_ADC (GPIO 34)</text>
+
+  <!-- CT2 BLOCK -->
+  <rect x="30" y="495" width="360" height="175" class="subbox"/>
+  <text x="45" y="520" class="title" font-size="13">3. CT2: Consumer Output Sensor</text>
+
+  <circle cx="70" cy="565" r="18" fill="#1e293b" stroke="#10b981" stroke-width="2"/>
+  <text x="58" y="570" class="pin" font-size="9">CT2</text>
+  <text x="42" y="600" class="subtitle">SCT-013-000</text>
+  <text x="42" y="613" class="subtitle">(Aggregate)</text>
+
+  <rect x="120" y="550" width="40" height="30" rx="3" fill="#1e293b" stroke="#f59e0b"/>
+  <text x="127" y="569" class="pin">33Ω</text>
+  <text x="115" y="595" class="subtitle">Burden R</text>
+
+  <!-- Bias Divider -->
+  <rect x="200" y="530" width="45" height="25" rx="3" fill="#1e293b" stroke="#f59e0b"/>
+  <text x="208" y="546" class="pin">10kΩ</text>
+  <rect x="200" y="580" width="45" height="25" rx="3" fill="#1e293b" stroke="#f59e0b"/>
+  <text x="208" y="596" class="pin">10kΩ</text>
+  <circle cx="270" cy="565" r="12" fill="#1e293b" stroke="#38bdf8"/>
+  <text x="260" y="569" class="pin" font-size="8">10µF</text>
+
+  <path d="M 88 565 L 120 565" class="wire-emerald"/>
+  <path d="M 160 565 L 200 565" class="wire-emerald"/>
+  <path d="M 245 565 L 390 565" class="wire-emerald"/>
+  <text x="290" y="555" class="pin">CT2_ADC (GPIO 35)</text>
+
+  <!-- SECTION 3: ESP32 MICROCONTROLLER (CENTER) -->
+  <rect x="420" y="100" width="330" height="570" class="box"/>
+  <text x="510" y="135" class="title" fill="#00f0ff">ESP32 DevKit v1</text>
+  <text x="525" y="152" class="subtitle">Xtensa 32-bit Dual Core</text>
+
+  <!-- Left Pins -->
+  <text x="435" y="190" class="pin">3V3 (VDD)</text>
+  <text x="435" y="230" class="pin">GND</text>
+  <text x="435" y="270" class="pin">GPIO 32 (ADC1_4) [V_RMS]</text>
+  <text x="435" y="370" class="pin">GPIO 34 (ADC1_6) [CT1_IN]</text>
+  <text x="435" y="565" class="pin">GPIO 35 (ADC1_7) [CT2_OUT]</text>
+  
+  <!-- Right Pins -->
+  <text x="640" y="200" class="pin">GPIO 21 [SDA]</text>
+  <text x="640" y="240" class="pin">GPIO 22 [SCL]</text>
+  <text x="640" y="320" class="pin">GPIO 2 [LED_OK]</text>
+  <text x="640" y="370" class="pin">GPIO 4 [LED_ERR]</text>
+  <text x="640" y="430" class="pin">GPIO 15 [BUZZER]</text>
+
+  <!-- Wires connecting CT1 and CT2 to ESP32 -->
+  <path d="M 390 370 L 420 370" class="wire-cyan"/>
+  <circle cx="420" cy="370" r="4" class="dot"/>
+  <path d="M 390 565 L 420 565" class="wire-emerald"/>
+  <circle cx="420" cy="565" r="4" class="dot-emerald"/>
+
+  <!-- SECTION 4: VOLTAGE SENSOR ZMPT101B (TOP CENTER) -->
+  <rect x="420" y="25" width="200" height="60" class="subbox" transform="translate(10, 0)"/>
+  <!-- Voltage wire -->
+  <path d="M 400 270 L 420 270" class="wire-amber"/>
+  <text x="350" y="265" class="pin">ZMPT101B</text>
+
+  <!-- SECTION 5: PERIPHERALS & UI (RIGHT) -->
+  <!-- OLED 128x64 -->
+  <rect x="800" y="100" width="270" height="160" class="subbox"/>
+  <text x="820" y="125" class="title" font-size="13">4. SSD1306 OLED (0.96" I2C)</text>
+  <rect x="840" y="145" width="180" height="90" rx="4" fill="#070b14" stroke="#00f0ff" stroke-width="1.5"/>
+  <text x="860" y="170" fill="#00f0ff" font-family="monospace" font-size="11">TELDS Edge Node</text>
+  <text x="860" y="190" fill="#ffffff" font-family="monospace" font-size="10">CT1: 45.0A  CT2: 32.0A</text>
+  <text x="860" y="210" fill="#f43f5e" font-family="monospace" font-size="11" font-weight="bold">Loss: 28.9% [ALERT]</text>
+
+  <!-- Wires from ESP32 to OLED -->
+  <path d="M 750 200 L 800 200" class="wire-cyan"/>
+  <path d="M 750 240 L 800 240" class="wire-cyan"/>
+  <text x="760" y="190" class="pin">SDA</text>
+  <text x="760" y="230" class="pin">SCL</text>
+
+  <!-- INDICATOR LEDS & BUZZER -->
+  <rect x="800" y="280" width="270" height="230" class="subbox"/>
+  <text x="820" y="305" class="title" font-size="13">5. Alert Indicators</text>
+
+  <!-- Green LED -->
+  <circle cx="860" cy="340" r="12" fill="#10b981" stroke="#ffffff" stroke-width="1"/>
+  <text x="890" y="345" class="label">Green LED: Grid Normal (&lt; 10%)</text>
+  <path d="M 750 320 L 810 320 L 810 340 L 845 340" class="wire-emerald"/>
+
+  <!-- Red LED -->
+  <circle cx="860" cy="395" r="12" fill="#f43f5e" stroke="#ffffff" stroke-width="1"/>
+  <text x="890" y="400" class="label">Red LED: Loss Anomaly Alert</text>
+  <path d="M 750 370 L 810 370 L 810 395 L 845 395" class="wire-rose"/>
+
+  <!-- Buzzer -->
+  <circle cx="860" cy="455" r="15" fill="#f59e0b" stroke="#ffffff" stroke-width="1"/>
+  <text x="890" y="460" class="label">Active Buzzer (Critical &gt; 18%)</text>
+  <path d="M 750 430 L 810 430 L 810 455 L 845 455" class="wire-amber"/>
+
+  <!-- SECTION 6: WIRELESS TELEMETRY (BOTTOM RIGHT) -->
+  <rect x="800" y="530" width="270" height="140" class="subbox"/>
+  <text x="820" y="555" class="title" font-size="13">6. Wireless Telemetry Link</text>
+  <text x="820" y="580" class="subtitle">WiFi 802.11 b/g/n / GSM Fallback</text>
+  <text x="820" y="605" class="label">Protocol: HTTP REST JSON</text>
+  <text x="820" y="625" class="pin">Target: /api/v1/telemetry/reading</text>
+  <text x="820" y="645" class="label" fill="#10b981">Dual CT Packets Streamed Every 2s</text>
+
+  <!-- Footer Legend -->
+  <rect x="30" y="675" width="1040" height="20" fill="none"/>
+  <text x="40" y="688" class="subtitle">Legend: Cyan = CT1 Input Circuit • Emerald = CT2 Output Circuit • Amber = AC Voltage &amp; Audible • Rose = Critical Alarm • Red = Power Rail</text>
+</svg>

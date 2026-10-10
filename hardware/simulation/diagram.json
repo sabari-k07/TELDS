@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "author": "TELDS Engineering Team",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 100, "left": 100, "attrs": {} },
+    { "type": "wokwi-ssd1306", "id": "oled", "top": -40, "left": 160, "attrs": { "i2cAddress": "0x3c" } },
+    { "type": "wokwi-potentiometer", "id": "ct1", "top": 150, "left": -60, "attrs": { "label": "CT1: Tx Input" } },
+    { "type": "wokwi-potentiometer", "id": "ct2", "top": 240, "left": -60, "attrs": { "label": "CT2: Consumer Meter" } },
+    { "type": "wokwi-led", "id": "led_green", "top": 80, "left": 280, "attrs": { "color": "green", "label": "NORMAL" } },
+    { "type": "wokwi-led", "id": "led_red", "top": 140, "left": 280, "attrs": { "color": "red", "label": "ALERT" } }
+  ],
+  "connections": [
+    [ "esp:GND.1", "oled:GND", "black", [ "v0" ] ],
+    [ "esp:3V3", "oled:VCC", "red", [ "v0" ] ],
+    [ "esp:22", "oled:SCL", "yellow", [ "v0" ] ],
+    [ "esp:21", "oled:SDA", "blue", [ "v0" ] ],
+    [ "esp:34", "ct1:SIG", "green", [ "v0" ] ],
+    [ "esp:35", "ct2:SIG", "orange", [ "v0" ] ],
+    [ "esp:2", "led_green:A", "green", [ "v0" ] ],
+    [ "esp:4", "led_red:A", "red", [ "v0" ] ],
+    [ "esp:GND.2", "led_green:C", "black", [ "v0" ] ],
+    [ "esp:GND.2", "led_red:C", "black", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}

@@ -1,0 +1,44 @@
+[wokwi]
+version = 1
+firmware = "firmware.bin"
+elf = "firmware.elf"
+
+[[parts]]
+type = "board-esp32-devkit-c-v4"
+id = "esp"
+top = 0
+left = 0
+
+[[parts]]
+type = "wokwi-ssd1306"
+id = "oled"
+top = -120
+left = 120
+
+[[parts]]
+type = "wokwi-potentiometer"
+id = "ct1_pot"
+top = 180
+left = -80
+attrs = { label = "CT1 (Tx Input Current 0-100A)" }
+
+[[parts]]
+type = "wokwi-potentiometer"
+id = "ct2_pot"
+top = 180
+left = 80
+attrs = { label = "CT2 (Consumer Current 0-100A)" }
+
+[[parts]]
+type = "wokwi-led"
+id = "led_normal"
+top = 80
+left = 180
+attrs = { color = "green", label = "Normal" }
+
+[[parts]]
+type = "wokwi-led"
+id = "led_anomaly"
+top = 130
+left = 180
+attrs = { color = "red", label = "Anomaly Alert" }

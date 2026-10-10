@@ -1,0 +1,30 @@
+# TELDS Edge Node PCB — Gerber RS-274X Manufacturing Specification
+# Generation Date: 2026-10-10
+# Coordinate Format: 2:4 Absolute, Millimeters
+
+[BOARD]
+Dimensions: 100.00 mm x 80.00 mm
+Layer Count: 2 Copper Layers
+Board Thickness: 1.6 mm ± 0.1 mm
+Material: FR-4 High-Tg (TG150)
+Copper Weight: 1 oz (35um outer)
+Solder Mask Color: Dark Blue Matte
+Silkscreen: White Lead-Free
+
+[GERBER_LAYERS]
+telds_v1_GTL = Top Copper Layer (Signals, Component Pads, Power Rails)
+telds_v1_GBL = Bottom Copper Layer (Unbroken Star Ground Return Plane)
+telds_v1_GTS = Top Solder Mask
+telds_v1_GBS = Bottom Solder Mask
+telds_v1_GTO = Top Silkscreen (Component Designators, Polarity, Warning Labels)
+telds_v1_GBO = Bottom Silkscreen (FCC/CE compliance logo, Hardware Rev)
+telds_v1_GKO = Board Mechanical Outline & 2mm High-Voltage Creepage Isolation Slots
+telds_v1_DRL = Excellon NC Drill File (Plated & Non-Plated Through Holes)
+
+[DRILL_TOOL_TABLE]
+T01: 0.30mm (12 mil) - Signal Vias
+T02: 0.60mm (24 mil) - Power Vias
+T03: 1.00mm (39 mil) - IC Pin Headers & OLED Connector
+T04: 1.20mm (47 mil) - CT Audio Jack Ground Pins
+T05: 1.50mm (59 mil) - 230V Mains Terminal Block Pins
+T06: 3.20mm (126 mil) - M3 Mounting Holes (Non-Plated)
