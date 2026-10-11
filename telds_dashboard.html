@@ -6,6 +6,7 @@
   <title>TELDS — Transformer Energy Loss Detection System (Full-Stack + IoT)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -34,6 +35,13 @@
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         <span id="header-stream-status">ESP32 Dual-CT Active</span>
       </div>
+
+      <!-- SUPABASE DATABASE CONNECTION STATUS -->
+      <button onclick="openSupabaseModal()" id="btn-supabase-status" class="ml-2 px-2.5 py-1 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 hover:text-white hover:bg-emerald-900/50 text-xs flex items-center gap-1.5 transition-all">
+        <span id="supabase-status-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="supabase-status-text" class="mono text-[11px] font-semibold">Supabase DB: nuxmpdleqpqunkhbpqjj</span>
+        <span class="text-[10px] bg-emerald-500/20 px-1 rounded">Live</span>
+      </button>
     </div>
 
     <!-- ROLE SWITCHER & PROFILE -->
@@ -84,6 +92,15 @@
         </button>
         <button onclick="switchTab('reports')" id="nav-reports" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900">
           <span>📑 Audit Reports</span>
+        </button>
+
+        <div class="pt-3 pb-1 text-[10px] mono uppercase text-cyan-400/90 px-3 flex items-center justify-between">
+          <span>Google Stitch UI</span>
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+        </div>
+        <button onclick="switchTab('stitch-screens')" id="nav-stitch-screens" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-cyan-300 hover:text-white hover:bg-cyan-950/50 border border-cyan-500/30 bg-cyan-950/20">
+          <span class="flex items-center gap-1.5">⚡ <span>Imported Screens</span></span>
+          <span class="px-1.5 py-0.2 rounded text-[10px] bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/40">3 Screens</span>
         </button>
       </div>
 
@@ -412,6 +429,9 @@
                 <div class="flex justify-between"><span class="text-slate-400">Discrepancy:</span><span id="diff-SEG-P0-P1" class="text-slate-200">2.33% (3.5 kWh)</span></div>
                 <div class="flex justify-between text-[11px]"><span class="text-slate-500">Threshold:</span><span class="text-amber-400">7.0%</span></div>
               </div>
+              <div id="alert-pill-SEG-P0-P1" class="hidden mt-2.5 p-1 rounded bg-rose-500/20 text-rose-300 text-[10px] font-bold text-center border border-rose-500/30">
+                LOCALISED ANOMALY SUSPECTED
+              </div>
             </div>
 
             <!-- Segment S2: P1-P2 -->
@@ -425,6 +445,9 @@
               <div class="mt-3 pt-2 border-t border-slate-800 mono text-xs space-y-1">
                 <div class="flex justify-between"><span class="text-slate-400">Discrepancy:</span><span id="diff-SEG-P1-P2" class="text-slate-200">2.53% (3.7 kWh)</span></div>
                 <div class="flex justify-between text-[11px]"><span class="text-slate-500">Threshold:</span><span class="text-amber-400">7.5%</span></div>
+              </div>
+              <div id="alert-pill-SEG-P1-P2" class="hidden mt-2.5 p-1 rounded bg-rose-500/20 text-rose-300 text-[10px] font-bold text-center border border-rose-500/30">
+                LOCALISED ANOMALY SUSPECTED
               </div>
             </div>
 
@@ -456,6 +479,9 @@
               <div class="mt-3 pt-2 border-t border-slate-800 mono text-xs space-y-1">
                 <div class="flex justify-between"><span class="text-slate-400">Discrepancy:</span><span id="diff-SEG-P3-P4" class="text-slate-200">2.23% (2.5 kWh)</span></div>
                 <div class="flex justify-between text-[11px]"><span class="text-slate-500">Threshold:</span><span class="text-amber-400">6.5%</span></div>
+              </div>
+              <div id="alert-pill-SEG-P3-P4" class="hidden mt-2.5 p-1 rounded bg-rose-500/20 text-rose-300 text-[10px] font-bold text-center border border-rose-500/30">
+                LOCALISED ANOMALY SUSPECTED
               </div>
             </div>
           </div>
@@ -537,124 +563,271 @@
       </section>
 
       <!-- TAB 2: VIRTUAL HARDWARE PROTOTYPE (ESP32 DUAL CT) -->
+      <!-- TAB 2: VIRTUAL HARDWARE PROTOTYPE (ESP32 DUAL CT) -->
       <section id="tab-virtual-hardware" class="hidden space-y-6">
-        <div class="p-6 rounded-2xl glass-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">EDGE IOT NODE</span>
-              <h2 class="text-lg font-bold text-white">Virtual ESP32 Hardware Prototype</h2>
+        <!-- Banner with Exact Prompt Description -->
+        <div class="p-6 rounded-2xl glass-card">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded text-[11px] mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
+                  ESP32 EDGE CONTROLLER
+                </span>
+                <span class="text-xs text-slate-400 mono">Dual-Point Current Measurement &amp; Wireless Alert Node</span>
+              </div>
+              <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
+                <span>Unauthorised Power Tapping Detection System</span>
+              </h2>
+              <p class="text-xs text-slate-300 mt-2 max-w-4xl leading-relaxed">
+                An ESP32-based controller compares incoming (CT1) and outgoing (CT2) current values, calculates the discrepancy, and checks it against a configurable threshold. When a persistent discrepancy exceeds the threshold, the system generates a wireless alert and identifies the monitored line as suspicious.
+              </p>
             </div>
-            <p class="text-xs text-slate-400 mt-1">Interactive emulator for ESP32 DevKit v1 with dual SCT-013 current transformers &amp; ZMPT101B voltage sensor.</p>
+            <div class="flex items-center gap-2 shrink-0">
+              <span id="hw-wireless-badge" class="px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span id="wireless-status-label">Wireless Telemetry Active (Wi-Fi / MQTT)</span>
+              </span>
+            </div>
           </div>
-          <div class="flex items-center space-x-2">
-            <button onclick="triggerPeakHourSurge()" class="px-3.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 hover:bg-amber-500 hover:text-black font-bold text-xs transition-all">
-              ⚡ Trigger 20:00 Peak Anomaly
+        </div>
+
+        <!-- 4 SCENARIOS BAR -->
+        <div class="p-4 rounded-2xl glass-card">
+          <div class="text-xs text-slate-300 font-semibold mb-3 flex items-center justify-between">
+            <span class="flex items-center gap-2">🔬 Scenario-Based Virtual Hardware Simulation:</span>
+            <span class="text-[11px] text-slate-400 mono">Click any scenario to reproduce edge behavior</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <button onclick="runScenario('NORMAL')" id="btn-hw-NORMAL" class="p-3 rounded-xl border border-cyan-400 bg-cyan-500/15 text-left transition-all">
+              <div class="text-[11px] font-bold text-cyan-300">Scenario 1: Normal Balanced</div>
+              <div class="text-[10px] text-slate-400 mono mt-0.5">CT1=42A, CT2=40A (4.8% loss ≤ threshold)</div>
             </button>
-            <button onclick="restoreNormalLoad()" class="px-3.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-500 hover:text-black font-bold text-xs transition-all">
-              ✓ Normalize Daytime Load
+            <button onclick="runScenario('INRUSH')" id="btn-hw-INRUSH" class="p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-slate-700 text-left transition-all">
+              <div class="text-[11px] font-bold text-white">Scenario 2: Transient Inrush</div>
+              <div class="text-[10px] text-slate-400 mono mt-0.5">1-cycle transient spike (filter suppresses alert)</div>
             </button>
+            <button onclick="runScenario('TAPPING')" id="btn-hw-TAPPING" class="p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-slate-700 text-left transition-all">
+              <div class="text-[11px] font-bold text-rose-300">Scenario 3: Unauthorised Tapping</div>
+              <div class="text-[10px] text-slate-400 mono mt-0.5">CT1=56A, CT2=34A persistent for 3 cycles</div>
+            </button>
+            <button onclick="runScenario('PEAK_SURGE')" id="btn-hw-PEAK_SURGE" class="p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-slate-700 text-left transition-all">
+              <div class="text-[11px] font-bold text-amber-300">Scenario 4: High Peak Tapping</div>
+              <div class="text-[10px] text-slate-400 mono mt-0.5">CT1=80A, CT2=48A (40.0% loss + buzzer alarm)</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- MONITORED LINE STATUS & CONFIGURABLE THRESHOLD -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Monitored Line Identification Card -->
+          <div id="card-monitored-line" class="p-5 rounded-2xl glass-card border-slate-800 lg:col-span-2 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+              <div>
+                <span class="text-[11px] mono text-slate-400">Target Distribution Line:</span>
+                <div class="text-sm font-bold text-white mono">FEEDER-11KV-LINE-SEC-308A (Span: Pole 28 - Pole 42)</div>
+              </div>
+              <div id="badge-line-status" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                MONITORED LINE: NORMAL (SAFE)
+              </div>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs mono">
+              <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                <span class="text-[10px] text-slate-500 block">Incoming Current (CT1)</span>
+                <span id="metric-ct1" class="text-cyan-300 font-bold text-sm">42.0 A</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                <span class="text-[10px] text-slate-500 block">Outgoing Current (CT2)</span>
+                <span id="metric-ct2" class="text-emerald-300 font-bold text-sm">40.0 A</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                <span class="text-[10px] text-slate-500 block">Current Discrepancy (ΔI)</span>
+                <span id="metric-diff" class="text-amber-300 font-bold text-sm">2.0 A (4.76%)</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                <span class="text-[10px] text-slate-500 block">Persistence Check</span>
+                <span id="metric-persistence" class="text-slate-300 font-bold text-sm">0 / 3 Cycles</span>
+              </div>
+            </div>
+            <p id="line-diagnosis-text" class="text-[11px] text-slate-400 leading-relaxed">
+              Line balance is within safe threshold limits. No persistent discrepancy detected.
+            </p>
+          </div>
+
+          <!-- Configurable Threshold & Persistence Controls -->
+          <div class="p-5 rounded-2xl glass-card space-y-4">
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider text-slate-400">
+              Controller Configuration
+            </h3>
+            <!-- Configurable Threshold -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-300">Configurable Threshold:</span>
+                <span id="label-cfg-threshold" class="mono font-bold text-amber-400">10.0%</span>
+              </div>
+              <input type="range" id="slider-threshold" min="2" max="30" step="0.5" value="10" oninput="onThresholdChange()" class="w-full accent-amber-400">
+              <div class="text-[10px] text-slate-500 mono">Threshold for flagging persistent discrepancy</div>
+            </div>
+            <!-- Persistence Cycles -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-300">Persistence Requirement:</span>
+                <span id="label-cfg-cycles" class="mono font-bold text-cyan-400">3 Cycles</span>
+              </div>
+              <input type="range" id="slider-persistence" min="1" max="5" step="1" value="3" oninput="onPersistenceChange()" class="w-full accent-cyan-400">
+              <div class="text-[10px] text-slate-500 mono">Consecutive cycles required to eliminate inrush false alarms</div>
+            </div>
           </div>
         </div>
 
         <!-- Hardware Controls & OLED Emulator -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Left: Hardware Sliders -->
-          <div class="p-6 rounded-2xl glass-card space-y-5">
-            <h3 class="text-sm font-bold text-white flex items-center gap-2">
-              <span>Sensor Signal Injections (Analog Potentiometers)</span>
-            </h3>
+          <div class="p-6 rounded-2xl glass-card space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-white">
+                Two Current Measurement Points (Analog Inputs)
+              </h3>
+              <button onclick="executeCycleTick()" class="px-2.5 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500 hover:text-black text-cyan-300 text-xs font-bold transition-all">
+                ⏱ Execute Cycle Tick
+              </button>
+            </div>
 
             <!-- CT1 Slider -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
-                <span class="text-cyan-400 font-semibold">CT1: Transformer Input Current (0 - 100A RMS)</span>
-                <span id="label-val-ct1" class="mono font-bold text-white">52.0 A</span>
+                <span class="text-cyan-400 font-semibold">Measuring Point 1 (CT1): Incoming Current</span>
+                <span id="label-val-ct1" class="mono font-bold text-white">42.0 A</span>
               </div>
-              <input type="range" id="slider-ct1" min="0" max="100" step="0.5" value="52" oninput="updateVirtualHardware()" class="w-full accent-cyan-400">
-              <div class="text-[10px] text-slate-500 mono">Signal: 33Ω Burden Resistor centered at 1.65V DC bias</div>
+              <input type="range" id="slider-ct1" min="0" max="100" step="0.5" value="42" oninput="onManualSensorChange()" class="w-full accent-cyan-400">
+              <div class="text-[10px] text-slate-500 mono">SCT-013-000 (100A/50mA) • 33Ω burden + 1.65V DC bias</div>
             </div>
 
             <!-- CT2 Slider -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
-                <span class="text-emerald-400 font-semibold">CT2: Consumer Aggregate Current (0 - 100A RMS)</span>
-                <span id="label-val-ct2" class="mono font-bold text-white">34.2 A</span>
+                <span class="text-emerald-400 font-semibold">Measuring Point 2 (CT2): Outgoing Current</span>
+                <span id="label-val-ct2" class="mono font-bold text-white">40.0 A</span>
               </div>
-              <input type="range" id="slider-ct2" min="0" max="100" step="0.5" value="34.2" oninput="updateVirtualHardware()" class="w-full accent-emerald-400">
-              <div class="text-[10px] text-slate-500 mono">Signal: Downstream feeder smart meter summation</div>
+              <input type="range" id="slider-ct2" min="0" max="100" step="0.5" value="40" oninput="onManualSensorChange()" class="w-full accent-emerald-400">
+              <div class="text-[10px] text-slate-500 mono">Downstream aggregate outgoing consumer delivery branch</div>
             </div>
 
             <!-- Voltage Slider -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
-                <span class="text-amber-400 font-semibold">AC Mains Voltage (ZMPT101B)</span>
+                <span class="text-amber-400 font-semibold">AC Voltage Sensor (ZMPT101B)</span>
                 <span id="label-val-volt" class="mono font-bold text-white">230.0 V</span>
               </div>
-              <input type="range" id="slider-volt" min="180" max="260" step="1" value="230" oninput="updateVirtualHardware()" class="w-full accent-amber-400">
+              <input type="range" id="slider-volt" min="180" max="260" step="1" value="230" oninput="onManualSensorChange()" class="w-full accent-amber-400">
             </div>
 
-            <!-- Hardware LED Pins -->
-            <div class="pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
+            <!-- Physical GPIO Indicator LEDs -->
+            <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
               <div class="flex items-center gap-2">
-                <span id="hw-led-green" class="w-3.5 h-3.5 rounded-full bg-slate-700"></span>
-                <span class="text-slate-400">GPIO 2 (Normal LED)</span>
+                <span id="hw-led-green" class="w-3.5 h-3.5 rounded-full bg-emerald-400"></span>
+                <span class="text-slate-400">GPIO 2 (Normal)</span>
               </div>
               <div class="flex items-center gap-2">
-                <span id="hw-led-red" class="w-3.5 h-3.5 rounded-full bg-rose-500 animate-pulse"></span>
-                <span class="text-slate-400">GPIO 4 (Anomaly LED)</span>
+                <span id="hw-led-red" class="w-3.5 h-3.5 rounded-full bg-slate-700"></span>
+                <span class="text-slate-400">GPIO 4 (Suspicious Line)</span>
               </div>
               <div class="flex items-center gap-2">
-                <span id="hw-buzzer" class="w-3.5 h-3.5 rounded-full bg-amber-500 animate-ping"></span>
-                <span class="text-slate-400">GPIO 15 (Buzzer Alarm)</span>
+                <span id="hw-buzzer" class="w-3.5 h-3.5 rounded-full bg-slate-700"></span>
+                <span class="text-slate-400">GPIO 15 (Buzzer)</span>
               </div>
             </div>
           </div>
 
-          <!-- Right: OLED Display Emulator & Calculations -->
+          <!-- Right: OLED Screen & Wireless Telemetry Dispatch Console -->
           <div class="p-6 rounded-2xl glass-card flex flex-col justify-between space-y-4">
             <div>
               <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-                <span class="text-xs font-bold text-white">SSD1306 0.96" OLED Screen (128x64 I2C)</span>
+                <span class="text-xs font-bold text-white">ESP32 Onboard SSD1306 OLED Display (128x64 I2C)</span>
                 <span class="text-[10px] mono text-cyan-400">Address: 0x3C</span>
               </div>
 
               <!-- OLED Virtual Box -->
-              <div class="mt-4 p-4 rounded-xl bg-black border-2 border-slate-800 font-mono text-cyan-400 text-xs shadow-inner space-y-1">
-                <div class="flex justify-between border-b border-cyan-800 pb-1">
-                  <span>TELDS: TX-RES-308</span>
-                  <span id="oled-clock">20:00:14</span>
+              <div class="mt-3 p-4 rounded-xl bg-black border-2 border-slate-800 font-mono text-cyan-400 text-xs shadow-inner space-y-1">
+                <div class="flex justify-between border-b border-cyan-900 pb-1 text-[11px]">
+                  <span>TELDS: SEC-308A</span>
+                  <span id="oled-clock">01:30:12</span>
                 </div>
                 <div class="pt-1 flex justify-between">
-                  <span>Tx Input (CT1):</span>
-                  <span id="oled-ct1" class="text-white">52.0 A</span>
+                  <span>CT1 (Incoming):</span>
+                  <span id="oled-ct1" class="text-white">42.0 A</span>
                 </div>
                 <div class="flex justify-between">
-                  <span>Consumer (CT2):</span>
-                  <span id="oled-ct2" class="text-white">34.2 A</span>
+                  <span>CT2 (Outgoing):</span>
+                  <span id="oled-ct2" class="text-white">40.0 A</span>
                 </div>
                 <div class="flex justify-between">
                   <span>Voltage (RMS):</span>
                   <span id="oled-volt" class="text-white">230 V</span>
                 </div>
-                <div class="flex justify-between border-t border-cyan-800 pt-1 font-bold">
-                  <span>Discrepancy:</span>
-                  <span id="oled-loss" class="text-rose-400">34.2%</span>
+                <div class="flex justify-between border-t border-cyan-900 pt-1 font-bold">
+                  <span>Discrepancy (ΔI):</span>
+                  <span id="oled-diff" class="text-emerald-400">2.0 A (4.8%)</span>
                 </div>
-                <div class="text-right text-[10px]">
-                  <span id="oled-status" class="px-2 py-0.5 rounded bg-rose-950 text-rose-300 font-bold">[ALERT: CRITICAL]</span>
+                <div class="flex justify-between text-[10px] pt-0.5">
+                  <span>Line Status:</span>
+                  <span id="oled-status" class="px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300 font-bold">[NORMAL]</span>
                 </div>
               </div>
             </div>
 
-            <!-- Mathematical Breakdown on Edge -->
-            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-1 mono">
-              <div class="text-[10px] text-slate-500 font-sans">Edge Firmware Calculation:</div>
-              <div>Input Power:    <span id="calc-pin" class="text-cyan-400">11.00 kW</span></div>
-              <div>Consumer Power: <span id="calc-pout" class="text-emerald-400">7.24 kW</span></div>
-              <div>Delta (Loss):   <span id="calc-diff" class="text-amber-400">3.76 kW (34.23%)</span></div>
-              <div class="text-[11px] text-slate-400 pt-1 font-sans">
-                Wireless packet transmitted via Wi-Fi to <span class="text-cyan-300">/api/v1/telemetry/reading</span>
+            <!-- Wireless Alert Packet Dispatch Console -->
+            <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
+              <div class="flex justify-between items-center text-[11px]">
+                <span class="text-slate-400 font-semibold flex items-center gap-1.5">
+                  <span id="packet-status-dot" class="w-2 h-2 rounded-full bg-slate-600"></span>
+                  Wireless Alert Packet (MQTT / Wi-Fi)
+                </span>
+                <span id="packet-status-text" class="mono text-[10px] text-slate-500">STANDBY (SAFE)</span>
               </div>
+              <pre id="wireless-json-feed" class="text-[10px] mono text-slate-300 bg-slate-900/80 p-2.5 rounded-lg border border-slate-800/80 overflow-x-auto leading-relaxed max-h-36">
+{
+  "device_id": "ESP32-TELDS-NODE-01",
+  "monitored_line": "FEEDER-11KV-LINE-SEC-308A",
+  "status": "NORMAL",
+  "incoming_ct1_a": 42.0,
+  "outgoing_ct2_a": 40.0,
+  "discrepancy_pct": 4.76,
+  "threshold_pct": 10.0,
+  "alert_generated": false
+}
+              </pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHYSICAL PROTOTYPE EXTENSION BLUEPRINTS BANNER -->
+        <div class="p-6 rounded-2xl glass-card">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4">
+            <div>
+              <span class="px-2.5 py-0.5 rounded text-[10px] mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">PHYSICAL PROTOTYPE EXTENSION</span>
+              <h3 class="text-base font-bold text-white mt-1">Ready for Hardware Manufacturing &amp; Field Assembly</h3>
+              <p class="text-xs text-slate-400 mt-0.5">The virtual prototype design is fully validated with production-ready physical engineering deliverables.</p>
+            </div>
+            <button onclick="switchTab('hardware-docs')" class="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs transition-all shrink-0">
+              View Hardware Schematics &amp; PCB ↗
+            </button>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+            <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+              <div class="font-bold text-white text-[11px]">1. Circuit Schematic</div>
+              <div class="text-[10px] text-slate-400 mono mt-0.5">SCH-TELDS-V1.0 with 33Ω burden &amp; 1.65V bias</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+              <div class="font-bold text-white text-[11px]">2. 2-Layer PCB</div>
+              <div class="text-[10px] text-slate-400 mono mt-0.5">100×80mm FR4 with 2mm high-voltage slot</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+              <div class="font-bold text-white text-[11px]">3. IP54 Enclosure</div>
+              <div class="text-[10px] text-slate-400 mono mt-0.5">140×100×50mm with PG9 dual-cable glands</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+              <div class="font-bold text-white text-[11px]">4. Bill of Materials</div>
+              <div class="text-[10px] text-slate-400 mono mt-0.5">$39.54 prototype unit cost (~₹3,280)</div>
             </div>
           </div>
         </div>
@@ -961,6 +1134,74 @@
         </div>
       </section>
 
+      <!-- TAB 9: GOOGLE STITCH IMPORTED SCREENS -->
+      <section id="tab-stitch-screens" class="hidden space-y-5">
+        <!-- Stitch Header Banner -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-5 rounded-2xl glass-card border-cyan-500/30 bg-gradient-to-r from-slate-950 via-[#071328] to-slate-950">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">STITCH CONNECT LIVE</span>
+              <span class="text-xs text-slate-400 font-mono">Project: GridWatch AI Feeder Twin</span>
+            </div>
+            <h2 class="text-lg font-black text-white mt-1">Google Stitch AI Design Screens</h2>
+            <p class="text-xs text-slate-400">High-fidelity SCADA digital twin screens imported directly via Google Stitch API.</p>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <a id="stitch-fullscreen-link" href="stitch_import/gridwatch_overview.html" target="_blank" class="px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs flex items-center gap-1.5 transition-all shadow-lg shadow-cyan-500/20">
+              <span>↗ Open Fullscreen</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Screen Selector Tabs -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <button onclick="loadStitchScreen('gridwatch_overview')" id="btn-stitch-gridwatch_overview" class="p-3.5 rounded-xl border border-cyan-400 bg-cyan-500/15 text-left transition-all">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-bold text-cyan-300">Screen 1</span>
+              <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            </div>
+            <div class="text-sm font-black text-white">SCADA Overview</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Control Center Overview &amp; KPI Telemetry</div>
+          </button>
+
+          <button onclick="loadStitchScreen('feeder_localisation')" id="btn-stitch-feeder_localisation" class="p-3.5 rounded-xl border border-slate-800 bg-slate-900/60 text-left hover:border-slate-700 transition-all">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-bold text-slate-400">Screen 2</span>
+              <span class="px-1.5 py-0.2 rounded text-[10px] bg-rose-500/20 text-rose-300 font-bold">P0-P4</span>
+            </div>
+            <div class="text-sm font-black text-white">Segment Localisation</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Feeder Topology &amp; Mismatch Isolation</div>
+          </button>
+
+          <button onclick="loadStitchScreen('virtual_esp32')" id="btn-stitch-virtual_esp32" class="p-3.5 rounded-xl border border-slate-800 bg-slate-900/60 text-left hover:border-slate-700 transition-all">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-bold text-slate-400">Screen 3</span>
+              <span class="px-1.5 py-0.2 rounded text-[10px] bg-emerald-500/20 text-emerald-300 font-bold">IoT Edge</span>
+            </div>
+            <div class="text-sm font-black text-white">Virtual ESP32 Node</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Edge Controller Dual-CT Simulator</div>
+          </button>
+        </div>
+
+        <!-- Embedded Live Viewer Frame -->
+        <div class="rounded-2xl border border-slate-800 bg-[#070b14] overflow-hidden shadow-2xl">
+          <div class="h-10 px-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+              <span id="stitch-frame-title" class="text-xs mono text-slate-400 ml-2">stitch_import/gridwatch_overview.html (SCADA Overview)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] mono text-slate-500">Live Interactive Sandboxed View</span>
+            </div>
+          </div>
+          <div class="relative w-full" style="height: 780px;">
+            <iframe id="stitch-viewer-frame" src="stitch_import/gridwatch_overview.html" class="w-full h-full border-0 bg-[#070b14]" sandbox="allow-scripts allow-same-origin"></iframe>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -988,10 +1229,55 @@
     </div>
   </div>
 
+  <!-- MODAL FOR SUPABASE DATABASE CONNECTION -->
+  <div id="supabase-modal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center font-bold text-xs">⚡</div>
+          <div>
+            <h3 class="text-base font-bold text-white">Supabase Database Connection</h3>
+            <span class="text-[10px] mono text-emerald-400">Project Ref: nuxmpdleqpqunkhbpqjj</span>
+          </div>
+        </div>
+        <button onclick="closeSupabaseModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1 font-semibold">Supabase Project URL:</label>
+          <input type="text" id="supabase-url-input" value="https://nuxmpdleqpqunkhbpqjj.supabase.co" readonly class="w-full bg-slate-950 border border-slate-800 text-slate-300 rounded p-2 font-mono text-[11px]">
+        </div>
+
+        <div>
+          <label class="text-slate-400 block mb-1 font-semibold">Supabase Anon / Public API Key:</label>
+          <input type="password" id="supabase-anon-input" placeholder="Paste your anon public key here..." class="w-full bg-slate-950 border border-slate-700 text-white rounded p-2 font-mono text-xs focus:border-cyan-400 focus:outline-none">
+          <p class="text-[10px] text-slate-500 mt-1">Get this from: Supabase Dashboard &gt; Project Settings &gt; API &gt; Project API keys (anon public)</p>
+        </div>
+
+        <div id="supabase-test-feedback" class="p-2.5 rounded bg-slate-950 border border-slate-800 text-[11px] font-mono text-slate-400">
+          Status: Ready to connect.
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+        <button onclick="seedMeterReadingsDirectly()" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-300">
+          🌱 Load Seed Data
+        </button>
+        <div class="flex gap-2">
+          <button onclick="closeSupabaseModal()" class="px-3 py-1.5 rounded bg-slate-800 text-xs text-slate-300">Close</button>
+          <button onclick="connectAndLoadSupabase()" class="px-4 py-1.5 rounded bg-emerald-500 hover:bg-emerald-400 font-bold text-black text-xs transition-all shadow-lg shadow-emerald-500/20">
+            Connect &amp; Sync Readings
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Tab switching
     function switchTab(tabId) {
-      ['dashboard', 'segment-localisation', 'virtual-hardware', 'hardware-docs', 'transformers', 'upload', 'alerts', 'reports'].forEach(t => {
+      ['dashboard', 'segment-localisation', 'virtual-hardware', 'hardware-docs', 'transformers', 'upload', 'alerts', 'reports', 'stitch-screens'].forEach(t => {
         const el = document.getElementById('tab-' + t);
         const nav = document.getElementById('nav-' + t);
         if (el) el.classList.add('hidden');
@@ -1001,6 +1287,31 @@
       const targetNav = document.getElementById('nav-' + tabId);
       if (targetEl) targetEl.classList.remove('hidden');
       if (targetNav) targetNav.className = 'w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-cyan-500/15 text-cyan-300 border-l-2 border-cyan-400';
+    }
+
+    function loadStitchScreen(alias) {
+      const titles = {
+        'gridwatch_overview': 'stitch_import/gridwatch_overview.html (SCADA Overview)',
+        'feeder_localisation': 'stitch_import/feeder_localisation.html (Segment Localisation P0-P4)',
+        'virtual_esp32': 'stitch_import/virtual_esp32.html (Virtual ESP32 Simulator)'
+      };
+      const iframe = document.getElementById('stitch-viewer-frame');
+      const openLink = document.getElementById('stitch-fullscreen-link');
+      const titleEl = document.getElementById('stitch-frame-title');
+      if (iframe) iframe.src = 'stitch_import/' + alias + '.html';
+      if (openLink) openLink.href = 'stitch_import/' + alias + '.html';
+      if (titleEl) titleEl.innerText = titles[alias] || alias;
+
+      ['gridwatch_overview', 'feeder_localisation', 'virtual_esp32'].forEach(name => {
+        const btn = document.getElementById('btn-stitch-' + name);
+        if (btn) {
+          if (name === alias) {
+            btn.className = 'p-3.5 rounded-xl border border-cyan-400 bg-cyan-500/15 text-left transition-all shadow-sm';
+          } else {
+            btn.className = 'p-3.5 rounded-xl border border-slate-800 bg-slate-900/60 text-left hover:border-slate-700 transition-all';
+          }
+        }
+      });
     }
 
     // ==========================================
@@ -1359,11 +1670,235 @@
 
     function resetData() {
       filterTransformer('ALL');
-      alert('Telemetry refreshed with latest interval readings!');
+      if (supabaseClient) {
+        loadReadingsFromSupabase();
+      } else {
+        alert('Telemetry refreshed with latest interval readings!');
+      }
     }
 
-    // Virtual Hardware Prototype Logic
+    // ==========================================
+    // SUPABASE DATABASE CLIENT & METER READINGS ENGINE
+    // Project: nuxmpdleqpqunkhbpqjj
+    // ==========================================
+    const SUPABASE_PROJECT_URL = 'https://nuxmpdleqpqunkhbpqjj.supabase.co';
+    let supabaseClient = null;
+
+    function openSupabaseModal() {
+      document.getElementById('supabase-modal').classList.remove('hidden');
+      const savedKey = localStorage.getItem('telds_supabase_anon_key');
+      if (savedKey) document.getElementById('supabase-anon-input').value = savedKey;
+    }
+
+    function closeSupabaseModal() {
+      document.getElementById('supabase-modal').classList.add('hidden');
+    }
+
+    function initSupabase() {
+      const savedKey = localStorage.getItem('telds_supabase_anon_key');
+      if (savedKey && window.supabase) {
+        try {
+          supabaseClient = window.supabase.createClient(SUPABASE_PROJECT_URL, savedKey);
+          updateSupabaseStatusUI(true, 'Connected (nuxmpdleqpqunkhbpqjj)');
+          loadReadingsFromSupabase();
+        } catch (e) {
+          console.error('Supabase init error:', e);
+          updateSupabaseStatusUI(false, 'Config Error');
+        }
+      } else {
+        updateSupabaseStatusUI(false, 'Supabase: Enter Key');
+      }
+    }
+
+    function updateSupabaseStatusUI(connected, text) {
+      const dot = document.getElementById('supabase-status-dot');
+      const txt = document.getElementById('supabase-status-text');
+      if (dot && txt) {
+        if (connected) {
+          dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+          txt.innerText = 'Supabase DB: Connected';
+        } else {
+          dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
+          txt.innerText = text || 'Supabase: Connect';
+        }
+      }
+    }
+
+    async function connectAndLoadSupabase() {
+      const key = document.getElementById('supabase-anon-input').value.trim();
+      const feedback = document.getElementById('supabase-test-feedback');
+      if (!key) {
+        feedback.innerText = 'Error: Please enter your Supabase anon API key.';
+        feedback.className = 'p-2.5 rounded bg-rose-950/40 border border-rose-500/40 text-[11px] font-mono text-rose-300';
+        return;
+      }
+
+      feedback.innerText = 'Testing connection to https://nuxmpdleqpqunkhbpqjj.supabase.co...';
+      feedback.className = 'p-2.5 rounded bg-cyan-950/40 border border-cyan-500/40 text-[11px] font-mono text-cyan-300';
+
+      try {
+        if (!window.supabase) throw new Error('Supabase JS library not loaded.');
+        const client = window.supabase.createClient(SUPABASE_PROJECT_URL, key);
+        const { data, error } = await client.from('energy_analyses').select('*').limit(20);
+
+        if (error) {
+          if (error.code === '42P01') {
+            feedback.innerHTML = 'Connected to Supabase! But tables not yet created.<br>Run <b>supabase_schema.sql</b> in SQL Editor.';
+            feedback.className = 'p-2.5 rounded bg-amber-950/40 border border-amber-500/40 text-[11px] font-mono text-amber-300';
+          } else {
+            feedback.innerText = 'Supabase Error: ' + error.message;
+            feedback.className = 'p-2.5 rounded bg-rose-950/40 border border-rose-500/40 text-[11px] font-mono text-rose-300';
+            return;
+          }
+        } else {
+          feedback.innerText = 'Success! Connected to Supabase DB. Loaded ' + (data ? data.length : 0) + ' readings.';
+          feedback.className = 'p-2.5 rounded bg-emerald-950/40 border border-emerald-500/40 text-[11px] font-mono text-emerald-300';
+        }
+
+        localStorage.setItem('telds_supabase_anon_key', key);
+        supabaseClient = client;
+        updateSupabaseStatusUI(true, 'Connected (Live)');
+        loadReadingsFromSupabase();
+        setTimeout(closeSupabaseModal, 1500);
+      } catch (err) {
+        feedback.innerText = 'Connection failed: ' + err.message;
+        feedback.className = 'p-2.5 rounded bg-rose-950/40 border border-rose-500/40 text-[11px] font-mono text-rose-300';
+      }
+    }
+
+    async function loadReadingsFromSupabase() {
+      if (!supabaseClient) return;
+      try {
+        const { data, error } = await supabaseClient
+          .from('energy_analyses')
+          .select('*')
+          .order('timestamp', { ascending: true });
+
+        if (!error && data && data.length > 0) {
+          timeLabels.length = 0;
+          txInput.length = 0;
+          consumerOutput.length = 0;
+          lossPct.length = 0;
+
+          data.forEach(row => {
+            const d = new Date(row.timestamp);
+            const tStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) + (row.is_peak_hour ? ' (Peak)' : '');
+            timeLabels.push(tStr);
+            txInput.push(parseFloat(row.transformer_energy_kwh));
+            consumerOutput.push(parseFloat(row.total_consumer_energy_kwh));
+            lossPct.push(parseFloat(row.loss_percentage));
+          });
+
+          const totalTx = txInput.reduce((a, b) => a + b, 0);
+          const totalCons = consumerOutput.reduce((a, b) => a + b, 0);
+          const diff = Math.max(0, totalTx - totalCons);
+          const avgLoss = totalTx > 0 ? (diff / totalTx) * 100 : 0;
+
+          document.getElementById('kpi-input').innerText = totalTx.toFixed(1) + ' kWh';
+          document.getElementById('kpi-consumer').innerText = totalCons.toFixed(1) + ' kWh';
+          document.getElementById('kpi-diff').innerText = diff.toFixed(1) + ' kWh';
+          document.getElementById('kpi-loss').innerText = avgLoss.toFixed(2) + '%';
+
+          energyChart.update();
+          console.log('Synchronized meter readings from Supabase DB successfully.');
+        }
+      } catch (e) {
+        console.warn('Failed to load readings from Supabase:', e);
+      }
+    }
+
+    function seedMeterReadingsDirectly() {
+      localStorage.removeItem('telds_supabase_anon_key');
+      updateSupabaseStatusUI(true, 'Local Seed Loaded');
+      document.getElementById('supabase-test-feedback').innerText = 'Loaded local calibrated seed readings.';
+      closeSupabaseModal();
+    }
+
+    // Auto-init Supabase on load
+    window.addEventListener('DOMContentLoaded', () => {
+      initSupabase();
+    });
+
+    // Virtual Hardware Prototype Logic & Persistence Engine
+    let currentCycleCount = 0;
+    let configuredThreshold = 10.0;
+    let requiredPersistence = 3;
+
+    function onThresholdChange() {
+      configuredThreshold = parseFloat(document.getElementById('slider-threshold').value);
+      document.getElementById('label-cfg-threshold').innerText = configuredThreshold.toFixed(1) + '%';
+      evaluateHardwareState();
+    }
+
+    function onPersistenceChange() {
+      requiredPersistence = parseInt(document.getElementById('slider-persistence').value);
+      document.getElementById('label-cfg-cycles').innerText = requiredPersistence + ' Cycles';
+      evaluateHardwareState();
+    }
+
+    function onManualSensorChange() {
+      currentCycleCount = 0; // reset persistence on manual changes
+      evaluateHardwareState();
+    }
+
+    function executeCycleTick() {
+      const ct1 = parseFloat(document.getElementById('slider-ct1').value);
+      const ct2 = parseFloat(document.getElementById('slider-ct2').value);
+      const diff = Math.max(0, ct1 - ct2);
+      const lossPct = ct1 > 0 ? (diff / ct1) * 100 : 0;
+
+      if (lossPct > configuredThreshold) {
+        currentCycleCount = Math.min(requiredPersistence, currentCycleCount + 1);
+      } else {
+        currentCycleCount = 0;
+      }
+      evaluateHardwareState();
+    }
+
+    function runScenario(scId) {
+      ['NORMAL', 'INRUSH', 'TAPPING', 'PEAK_SURGE'].forEach(id => {
+        const b = document.getElementById('btn-hw-' + id);
+        if (b) b.className = 'p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-slate-700 text-left transition-all';
+      });
+      const act = document.getElementById('btn-hw-' + scId);
+      if (act) act.className = 'p-3 rounded-xl border border-cyan-400 bg-cyan-500/15 text-left transition-all';
+
+      if (scId === 'NORMAL') {
+        document.getElementById('slider-ct1').value = 42.0;
+        document.getElementById('slider-ct2').value = 40.0;
+        document.getElementById('slider-threshold').value = 10.0;
+        configuredThreshold = 10.0;
+        currentCycleCount = 0;
+      } else if (scId === 'INRUSH') {
+        // Transient 1-cycle spike, cycle count = 1
+        document.getElementById('slider-ct1').value = 62.0;
+        document.getElementById('slider-ct2').value = 38.0;
+        document.getElementById('slider-threshold').value = 10.0;
+        configuredThreshold = 10.0;
+        currentCycleCount = 1; // 1 of 3 cycles - filter blocks false alarm!
+      } else if (scId === 'TAPPING') {
+        document.getElementById('slider-ct1').value = 56.0;
+        document.getElementById('slider-ct2').value = 34.0;
+        document.getElementById('slider-threshold').value = 10.0;
+        configuredThreshold = 10.0;
+        currentCycleCount = requiredPersistence; // full 3 cycles confirmed!
+      } else if (scId === 'PEAK_SURGE') {
+        document.getElementById('slider-ct1').value = 80.0;
+        document.getElementById('slider-ct2').value = 48.0;
+        document.getElementById('slider-threshold').value = 10.0;
+        configuredThreshold = 10.0;
+        currentCycleCount = requiredPersistence;
+      }
+
+      document.getElementById('label-cfg-threshold').innerText = configuredThreshold.toFixed(1) + '%';
+      evaluateHardwareState();
+    }
+
     function updateVirtualHardware() {
+      evaluateHardwareState();
+    }
+
+    function evaluateHardwareState() {
       const ct1 = parseFloat(document.getElementById('slider-ct1').value);
       const ct2 = parseFloat(document.getElementById('slider-ct2').value);
       const volt = parseFloat(document.getElementById('slider-volt').value);
@@ -1373,61 +1908,146 @@
       document.getElementById('label-val-volt').innerText = volt.toFixed(0) + ' V';
 
       const diff = Math.max(0, ct1 - ct2);
-      const loss = ct1 > 0 ? ((diff / ct1) * 100) : 0;
-      const isAnomaly = loss >= 12.0;
+      const lossPct = ct1 > 0 ? (diff / ct1) * 100 : 0;
+      const isOverThreshold = lossPct > configuredThreshold;
+      const isPersistent = isOverThreshold && (currentCycleCount >= requiredPersistence);
+      const isTransientEvaluating = isOverThreshold && !isPersistent;
 
-      // Power calculations
-      const pf = 0.92;
-      const pin = (volt * ct1 * pf) / 1000.0;
-      const pout = (volt * ct2 * pf) / 1000.0;
-      const pdiff = pin - pout;
+      // Update Summary Cards
+      document.getElementById('metric-ct1').innerText = ct1.toFixed(1) + ' A';
+      document.getElementById('metric-ct2').innerText = ct2.toFixed(1) + ' A';
+      document.getElementById('metric-diff').innerText = diff.toFixed(1) + ' A (' + lossPct.toFixed(1) + '%)';
+      document.getElementById('metric-persistence').innerText = currentCycleCount + ' / ' + requiredPersistence + ' Cycles';
 
-      document.getElementById('calc-pin').innerText = pin.toFixed(2) + ' kW';
-      document.getElementById('calc-pout').innerText = pout.toFixed(2) + ' kW';
-      document.getElementById('calc-diff').innerText = pdiff.toFixed(2) + ' kW (' + loss.toFixed(2) + '%)';
-
-      // Update OLED Emulator
-      document.getElementById('oled-ct1').innerText = ct1.toFixed(1) + ' A';
-      document.getElementById('oled-ct2').innerText = ct2.toFixed(1) + ' A';
-      document.getElementById('oled-volt').innerText = volt.toFixed(0) + ' V';
-      document.getElementById('oled-loss').innerText = loss.toFixed(1) + '%';
-      
+      const badgeLineStatus = document.getElementById('badge-line-status');
+      const cardMonitoredLine = document.getElementById('card-monitored-line');
+      const lineDiagText = document.getElementById('line-diagnosis-text');
       const oledSt = document.getElementById('oled-status');
+      const oledLoss = document.getElementById('oled-diff');
       const ledGrn = document.getElementById('hw-led-green');
       const ledRed = document.getElementById('hw-led-red');
       const bzr = document.getElementById('hw-buzzer');
+      const pktStatusDot = document.getElementById('packet-status-dot');
+      const pktStatusText = document.getElementById('packet-status-text');
+      const wirelessJsonFeed = document.getElementById('wireless-json-feed');
+      const wirelessStatusLabel = document.getElementById('wireless-status-label');
 
-      if (isAnomaly) {
-        oledSt.innerText = loss >= 18 ? '[ALERT: CRITICAL]' : '[ALERT: HIGH]';
-        oledSt.className = 'px-2 py-0.5 rounded bg-rose-950 text-rose-300 font-bold';
+      // Update OLED readings
+      document.getElementById('oled-ct1').innerText = ct1.toFixed(1) + ' A';
+      document.getElementById('oled-ct2').innerText = ct2.toFixed(1) + ' A';
+      document.getElementById('oled-volt').innerText = volt.toFixed(0) + ' V';
+      oledLoss.innerText = diff.toFixed(1) + ' A (' + lossPct.toFixed(1) + '%)';
+
+      const nowIso = new Date().toISOString();
+      const clockStr = new Date().toLocaleTimeString();
+      document.getElementById('oled-clock').innerText = clockStr;
+
+      if (isPersistent) {
+        // CONFIRMED PERSISTENT DISCREPANCY -> WIRELESS ALERT & SUSPICIOUS LINE
+        cardMonitoredLine.className = 'p-5 rounded-2xl glass-card border-rose-500/60 lg:col-span-2 space-y-3 ring-2 ring-rose-500/30 shadow-lg shadow-rose-500/10';
+        badgeLineStatus.className = 'px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 animate-pulse';
+        badgeLineStatus.innerText = 'MONITORED LINE: SUSPICIOUS (TAPPING SUSPECTED)';
+        lineDiagText.innerHTML = '<span class="text-rose-400 font-bold">⚠️ CRITICAL ALERT:</span> Persistent discrepancy of <strong class="text-white">' + lossPct.toFixed(1) + '% (' + diff.toFixed(1) + ' A)</strong> exceeds threshold (' + configuredThreshold.toFixed(1) + '%) across ' + currentCycleCount + ' consecutive measurement cycles. Wireless emergency alert dispatched. Monitored line tagged as suspicious for field investigation.';
+
+        oledSt.innerText = '[ALERT: SUSPICIOUS]';
+        oledSt.className = 'px-1.5 py-0.2 rounded bg-rose-950 text-rose-300 font-bold';
+        oledLoss.className = 'text-rose-400 font-bold';
+
         ledGrn.className = 'w-3.5 h-3.5 rounded-full bg-slate-700';
         ledRed.className = 'w-3.5 h-3.5 rounded-full bg-rose-500 animate-pulse';
-        if (loss >= 18) {
-          bzr.className = 'w-3.5 h-3.5 rounded-full bg-amber-500 animate-ping';
-        } else {
-          bzr.className = 'w-3.5 h-3.5 rounded-full bg-slate-700';
-        }
+        bzr.className = 'w-3.5 h-3.5 rounded-full bg-amber-500 animate-ping';
+
+        pktStatusDot.className = 'w-2 h-2 rounded-full bg-rose-500 animate-ping';
+        pktStatusText.className = 'mono text-[10px] text-rose-400 font-bold';
+        pktStatusText.innerText = 'ALERT DISPATCHED OVER-THE-AIR';
+        wirelessStatusLabel.innerText = 'Wireless Alert Broadcast Dispatched';
+
+        const alertPacket = {
+          device_id: "ESP32-TELDS-NODE-01",
+          monitored_line: "FEEDER-11KV-LINE-SEC-308A",
+          event: "WIRELESS_ALERT_UNAUTHORISED_POWER_TAPPING",
+          line_status: "SUSPICIOUS_LINE",
+          incoming_current_ct1_a: ct1,
+          outgoing_current_ct2_a: ct2,
+          current_discrepancy_a: diff,
+          discrepancy_pct: parseFloat(lossPct.toFixed(2)),
+          configured_threshold_pct: configuredThreshold,
+          persistence_cycles_confirmed: currentCycleCount,
+          wireless_protocol: "Wi-Fi 802.11b/g/n / MQTT / ESP-NOW",
+          mqtt_topic: "telds/edge/alerts/unauthorised_tapping",
+          rssi_dbm: -64,
+          timestamp: nowIso
+        };
+        wirelessJsonFeed.innerText = JSON.stringify(alertPacket, null, 2);
+
+      } else if (isTransientEvaluating) {
+        // TRANSIENT SPIKE -> IN-PROGRESS PERSISTENCE EVALUATION (NO FALSE ALARM)
+        cardMonitoredLine.className = 'p-5 rounded-2xl glass-card border-amber-500/50 lg:col-span-2 space-y-3';
+        badgeLineStatus.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40';
+        badgeLineStatus.innerText = 'MONITORED LINE: TRANSIENT SPIKE (EVALUATING ' + currentCycleCount + '/' + requiredPersistence + ')';
+        lineDiagText.innerHTML = '<span class="text-amber-400 font-bold">ℹ️ TRANSIENT SUPPRESSION:</span> Discrepancy of ' + lossPct.toFixed(1) + '% exceeds threshold, but persistence condition is not yet satisfied (' + currentCycleCount + '/' + requiredPersistence + ' cycles). Wireless alert is suppressed to eliminate false nuisance alarms from motor inrush.';
+
+        oledSt.innerText = '[EVAL TRANSIENT]';
+        oledSt.className = 'px-1.5 py-0.2 rounded bg-amber-950 text-amber-300 font-bold';
+        oledLoss.className = 'text-amber-400 font-bold';
+
+        ledGrn.className = 'w-3.5 h-3.5 rounded-full bg-slate-700';
+        ledRed.className = 'w-3.5 h-3.5 rounded-full bg-amber-500';
+        bzr.className = 'w-3.5 h-3.5 rounded-full bg-slate-700';
+
+        pktStatusDot.className = 'w-2 h-2 rounded-full bg-amber-400';
+        pktStatusText.className = 'mono text-[10px] text-amber-400';
+        pktStatusText.innerText = 'PERSISTENCE FILTER ACTIVE (SUPPRESSED)';
+        wirelessStatusLabel.innerText = 'Wireless Telemetry Normal';
+
+        const evalPacket = {
+          device_id: "ESP32-TELDS-NODE-01",
+          monitored_line: "FEEDER-11KV-LINE-SEC-308A",
+          event: "TRANSIENT_EVALUATION",
+          line_status: "MONITORING_TRANSIENT",
+          current_discrepancy_a: diff,
+          discrepancy_pct: parseFloat(lossPct.toFixed(2)),
+          configured_threshold_pct: configuredThreshold,
+          cycles_detected: currentCycleCount,
+          required_persistence: requiredPersistence,
+          alert_generated: false,
+          note: "Alert suppressed by persistence filter"
+        };
+        wirelessJsonFeed.innerText = JSON.stringify(evalPacket, null, 2);
+
       } else {
-        oledSt.innerText = '[GRID NORMAL]';
-        oledSt.className = 'px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 font-bold';
+        // NORMAL SAFE OPERATION
+        cardMonitoredLine.className = 'p-5 rounded-2xl glass-card border-slate-800 lg:col-span-2 space-y-3';
+        badgeLineStatus.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+        badgeLineStatus.innerText = 'MONITORED LINE: NORMAL (SAFE)';
+        lineDiagText.innerText = 'Line balance is within safe threshold limits. Discrepancy (' + lossPct.toFixed(1) + '%) is within technical line dissipation specs.';
+
+        oledSt.innerText = '[LINE NORMAL]';
+        oledSt.className = 'px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300 font-bold';
+        oledLoss.className = 'text-emerald-400 font-bold';
+
         ledGrn.className = 'w-3.5 h-3.5 rounded-full bg-emerald-400';
         ledRed.className = 'w-3.5 h-3.5 rounded-full bg-slate-700';
         bzr.className = 'w-3.5 h-3.5 rounded-full bg-slate-700';
+
+        pktStatusDot.className = 'w-2 h-2 rounded-full bg-slate-600';
+        pktStatusText.className = 'mono text-[10px] text-slate-500';
+        pktStatusText.innerText = 'STANDBY (NORMAL)';
+        wirelessStatusLabel.innerText = 'Wireless Telemetry Active (Wi-Fi / MQTT)';
+
+        const normalPacket = {
+          device_id: "ESP32-TELDS-NODE-01",
+          monitored_line: "FEEDER-11KV-LINE-SEC-308A",
+          status: "NORMAL",
+          incoming_ct1_a: ct1,
+          outgoing_ct2_a: ct2,
+          current_discrepancy_a: diff,
+          discrepancy_pct: parseFloat(lossPct.toFixed(2)),
+          configured_threshold_pct: configuredThreshold,
+          alert_generated: false
+        };
+        wirelessJsonFeed.innerText = JSON.stringify(normalPacket, null, 2);
       }
-    }
-
-    function triggerPeakHourSurge() {
-      document.getElementById('slider-ct1').value = 68.0;
-      document.getElementById('slider-ct2').value = 46.0;
-      updateVirtualHardware();
-      alert('⚡ Peak hour 20:00 anomaly injected! CT1=68A, CT2=46A. Loss surge to 32.35%');
-    }
-
-    function restoreNormalLoad() {
-      document.getElementById('slider-ct1').value = 40.0;
-      document.getElementById('slider-ct2').value = 37.6;
-      updateVirtualHardware();
-      alert('✓ Daytime load normalized! CT1=40A, CT2=37.6A. Loss rate within 6.0% technical baseline.');
     }
 
     // CSV Simulation

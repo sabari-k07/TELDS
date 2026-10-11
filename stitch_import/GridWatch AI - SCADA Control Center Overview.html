@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-primary":"#003640","on-background":"#dce2f6","secondary-fixed-dim":"#4ae176","surface-container":"#19202e","on-surface":"#dce2f6","on-tertiary-fixed":"#2a1700","primary-fixed-dim":"#4cd7f6","background":"#0c1321","surface-tint":"#4cd7f6","on-tertiary-fixed-variant":"#653e00","outline-variant":"#3d494c","error-container":"#93000a","on-secondary-fixed":"#002109","on-secondary":"#003915","primary":"#4cd7f6","primary-container":"#06b6d4","surface-container-high":"#232a39","on-tertiary-container":"#563400","surface-variant":"#2e3544","surface-container-lowest":"#070e1c","tertiary":"#ffb95f","surface-bright":"#323949","on-error-container":"#ffdad6","tertiary-fixed-dim":"#ffb95f","secondary-fixed":"#6bff8f","surface-container-low":"#151b2a","error":"#ffb4ab","primary-fixed":"#acedff","on-primary-fixed":"#001f26","secondary-container":"#00b954","on-primary-fixed-variant":"#004e5c","tertiary-container":"#e79400","surface-dim":"#0c1321","on-surface-variant":"#bcc9cd","on-secondary-container":"#004119","on-error":"#690005","tertiary-fixed":"#ffddb8","outline":"#869397","surface-container-highest":"#2e3544","on-secondary-fixed-variant":"#005321","on-primary-container":"#00424f","secondary":"#4ae176","inverse-primary":"#00687a","on-tertiary":"#472a00","inverse-on-surface":"#2a3040","surface":"#0c1321","inverse-surface":"#dce2f6"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"margin-panel":"0.75rem","space-lg":"1rem","space-md":"0.75rem","space-xs":"0.25rem","space-sm":"0.5rem","gutter":"0.75rem","gutter-compact":"0.5rem","space-xl":"1.5rem","margin":"1rem"},"fontFamily":{"headline-xl":["Inter"],"headline-lg":["Inter"],"telemetry-lg":["JetBrains Mono"],"headline-md":["Inter"],"telemetry-md":["JetBrains Mono"],"body-md":["JetBrains Mono"],"label-code":["JetBrains Mono"],"body-sm":["JetBrains Mono"],"headline-sm":["Inter"]},"fontSize":{"headline-xl":["2rem",{"lineHeight":"2.5rem","letterSpacing":"-0.02em","fontWeight":"600"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.015em","fontWeight":"600"}],"telemetry-lg":["1.75rem",{"lineHeight":"2rem","letterSpacing":"-0.03em","fontWeight":"700"}],"headline-md":["1.125rem",{"lineHeight":"1.5rem","letterSpacing":"-0.01em","fontWeight":"600"}],"telemetry-md":["1.25rem",{"lineHeight":"1.5rem","letterSpacing":"-0.02em","fontWeight":"600"}],"body-md":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"400"}],"label-code":["0.6875rem",{"lineHeight":"0.875rem","letterSpacing":"0.04em","fontWeight":"500"}],"body-sm":["0.75rem",{"lineHeight":"1rem","fontWeight":"400"}],"headline-sm":["0.875rem",{"lineHeight":"1.25rem","letterSpacing":"0.02em","fontWeight":"600"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low border-r border-outline-variant/30 z-50 flex flex-col justify-between select-none"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md border-b border-outline-variant/30 flex items-center gap-space-sm bg-surface-container-lowest/60 backdrop-blur-md"><img alt="GridWatch AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vd7j9pPVjS1gO1vBhbS_JJynVpp91kEUfpc66T00Z_MAkcAA6S9-BX6gglXo1kE24roNO2F2RGFIkJbrwo5naRaC18mTW8YGu1fXOJjT-qUdxneWD_xdy9ibt__7pzBNmkogdZBm4iQrogJ-NHWhbH2-o12rOGKlZsK2ibh75XtLlFd1hUHPXe7KH4hKXAzmm0CbjDgbGqAtE3sGW6mLQQvsTFe8M6fu5s9Blm6T4QyXJAZd6ET63HzrU"/><div class="flex flex-col min-w-0 leading-tight"><span class="font-headline-sm text-headline-sm tracking-tight text-on-surface truncate">GridWatch AI</span><span class="font-label-code text-label-code uppercase tracking-wider text-primary truncate">Theft Detection &amp; Digital Twin</span></div></div><div class="px-space-md py-space-xs border-b border-outline-variant/20 bg-surface-container-lowest/30"><div class="flex items-center justify-between text-on-surface-variant font-label-code text-label-code uppercase"><span>Substation Hub</span><span class="text-secondary font-medium flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary inline-block animate-ping"></span>ACTIVE</span></div></div><nav class="flex-1 overflow-y-auto px-space-xs py-space-sm space-y-0.5" data-active-classes="bg-surface-container-high text-primary border-l-2 border-primary font-medium"><a aria-current="page" class="group flex items-center justify-between px-space-sm py-2 rounded-DEFAULT transition-colors bg-surface-container-high text-primary border-l-2 border-primary font-medium" data-path="overview" href="#"><div class="flex items-center gap- space-sm"><span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors mr-2">grid_view</span><span class="font-headline-sm text-headline-sm">Overview</span></div><span class="font-label-code text-label-code text-outline">01</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="feeder-digital-twin" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors mr-2">schema</span><span class="font-headline-sm text-headline-sm">Feeder Digital Twin</span></div><span class="font-label-code text-label-code text-outline">02</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="live-telemetry" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors mr-2">monitoring</span><span class="font-headline-sm text-headline-sm">Live Telemetry</span></div><span class="font-label-code text-label-code text-outline">03</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="theft-detection" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors mr-2">security</span><span class="font-headline-sm text-headline-sm">Theft Detection</span></div><span class="font-label-code text-label-code text-tertiary">CRIT</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="alert-center" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors mr-2">notifications_active</span><span class="font-headline-sm text-headline-sm">Alert Center</span></div><span class="font-label-code text-label-code bg-error-container text-on-error-container px-1.5 py-0.5 rounded-DEFAULT font-bold border border-error/40">3</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="scenario-simulator" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors mr-2">science</span><span class="font-headline-sm text-headline-sm">Scenario Simulator</span></div><span class="relative flex h-2 w-2 mr-1"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="analytics-and-evaluation" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors mr-2">insights</span><span class="font-headline-sm text-headline-sm">Analytics &amp; Evaluation</span></div><span class="font-label-code text-label-code text-outline">07</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="virtual-nodes" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors mr-2">hub</span><span class="font-headline-sm text-headline-sm">Virtual Nodes</span></div><span class="font-label-code text-label-code text-outline">08</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="hardware-design" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors mr-2">memory</span><span class="font-headline-sm text-headline-sm">Hardware Design</span></div><span class="font-label-code text-label-code text-outline">09</span></a><a class="group flex items-center justify-between px-space-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="settings" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors mr-2">tune</span><span class="font-headline-sm text-headline-sm">Settings</span></div><span class="font-label-code text-label-code text-outline">10</span></a></nav></div><div class="p-space-md border-t border-outline-variant/30 bg-surface-container-lowest/90 space-y-space-sm"><div class="space-y-1"><div class="flex items-center justify-between font-label-code text-label-code text-on-surface-variant"><span>SYSTEM HEALTH</span><span class="text-secondary font-semibold">99.98% OK</span></div><div class="flex items-center gap-1.5 font-body-sm text-body-sm text-on-surface"><span class="w-2 h-2 rounded-full bg-secondary inline-block animate-pulse"></span><span class="truncate">SCADA Ingestion Engine</span></div></div><div class="pt-space-xs border-t border-outline-variant/20 flex items-center justify-between font-label-code text-label-code text-on-surface-variant"><span>MQTT TLS 8883</span><span class="text-primary font-mono">14ms</span></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 z-40 px-space-md flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md min-w-0"><div class="flex items-center gap-space-xs px-space-sm py-1.5 bg-surface-container-low border border-outline-variant/40 rounded-DEFAULT cursor-pointer hover:border-primary transition-colors"><span class="material-symbols-outlined text-primary text-[18px]">electric_bolt</span><div class="flex flex-col leading-none"><span class="font-label-code text-label-code text-outline">SELECTED FEEDER</span><span class="font-body-md text-body-md text-on-surface font-semibold truncate max-w-xs">FDR-001 | Madurai Distribution (11kV/415V)</span></div><span class="material-symbols-outlined text-on-surface-variant text-[18px]">expand_more</span></div><div class="flex items-center bg-surface-container-low border border-outline-variant/40 rounded-DEFAULT p-0.5 font-label-code text-label-code"><button class="px-space-sm py-1 rounded-DEFAULT bg-primary text-on-primary font-semibold flex items-center gap-1 shadow-sm" type="button"><span class="w-1.5 h-1.5 rounded-full bg-on-primary"></span>LIVE MODE</button><button class="px-space-sm py-1 rounded-DEFAULT text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-1" type="button">REPLAY</button></div><div class="hidden xl:flex items-center gap-2 px-space-sm py-1 bg-surface-container-low/60 border border-outline-variant/30 rounded-DEFAULT font-label-code text-label-code text-on-surface-variant"><span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span><span>ONLINE (MQTT/TLS 8883)</span><span class="text-outline">|</span><span class="text-outline font-mono">Last sync: 2025-05-20 14:32:08 UTC</span></div></div><div class="flex items-center gap-space-sm shrink-0"><button class="px-space-sm py-1.5 bg-surface-container-high border border-primary/50 text-primary hover:bg-primary hover:text-on-primary font-body-sm text-body-sm font-semibold rounded-DEFAULT transition-all flex items-center gap-1.5" type="button"><span class="material-symbols-outlined text-[16px]">bolt</span><span>Inject Scenario</span></button><button class="relative p-2 rounded-DEFAULT bg-surface-container-low border border-outline-variant/40 text-on-surface-variant hover:text-on-surface hover:border-primary transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-error text-on-error font-label-code text-label-code flex items-center justify-center font-bold">3</span></button><div class="flex items-center gap-space-xs pl-space-xs border-l border-outline-variant/30"><img alt="Profile" class="w-8 h-8 rounded-full object-cover border border-outline-variant/60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8slYWDy-l1dLerT4PktOVfvwjvmne5KAugHm109YS7j48uugXA8B6rvO2ec2Tc8pPer697OzQucoCzRE73eaT_ot17uiScw9QNoluQAi2UqJHG1iqfpzqvh19SQBS1hHRqronZIWjKexGSh7RN3Er-mvQis_pBYwLxte-bM7U6cCH0anhQrF4HOBiMUCHT0WhCRz5D-Jg0nZxcs46noZ1P4ut6jzjw4nySfb-0teaOBJrr9Nltyod"/><div class="hidden 2xl:flex flex-col text-left leading-none"><span class="font-headline-sm text-headline-sm text-on-surface truncate">Dr. Priya Raman</span><span class="font-label-code text-label-code text-on-surface-variant truncate">Sr. Grid Systems Eng</span></div><span class="material-symbols-outlined text-on-surface-variant text-[18px] cursor-pointer">expand_more</span></div></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-4rem)] p-space-md"><div class="flex flex-col w-full space-y-space-md">
+<!-- TOP STATUS BANNER (SCADA TELEMETRY SYNC STRIP) -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest px-space-md py-1.5 rounded-DEFAULT shadow-sm">
+<div class="flex items-center gap-space-sm font-label-code text-label-code">
+<span class="inline-flex items-center gap-1.5 text-primary">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+        STATE ESTIMATOR: SYNCHRONIZED
+      </span>
+<span class="text-outline-variant">|</span>
+<span class="text-on-surface-variant">FEEDER TOPOLOGY: <span class="text-on-surface font-semibold">RADIAL 11kV/415V DT-01</span></span>
+<span class="text-outline-variant">|</span>
+<span class="text-on-surface-variant">POLLING CYCLE: <span class="text-secondary font-mono">1.0s (1000ms SCADA FIFO)</span></span>
+</div>
+<div class="flex items-center gap-space-md font-label-code text-label-code text-on-surface-variant">
+<span>GRID LOSS COEFFICIENT: <span class="text-tertiary font-mono">1.46%</span></span>
+<span>ENSEMBLE CONFIDENCE: <span class="text-secondary font-semibold font-mono">94.8%</span></span>
+<span class="bg-error-container text-on-error-container px-2 py-0.5 rounded-DEFAULT font-bold animate-pulse">2 UNRESOLVED CRITICAL</span>
+</div>
+</div>
+<!-- SECTION 1: TOP KPI SUMMARY STRIP (4 High-Density SCADA Metric Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-sm">
+<!-- KPI 1: Total Supplied -->
+<div class="bg-surface-container-low p-space-md rounded-DEFAULT shadow-sm flex flex-col justify-between relative overflow-hidden group hover:bg-surface-container transition-colors">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">electric_meter</span>
+<span class="font-headline-sm text-headline-sm uppercase tracking-wider text-on-surface-variant">Total Energy Supplied</span>
+</div>
+<span class="font-label-code text-label-code text-outline uppercase">DT-01 Primary</span>
+</div>
+<div class="my-space-sm flex items-baseline justify-between">
+<div class="flex items-baseline gap-1">
+<span class="font-telemetry-lg text-telemetry-lg text-on-surface">1,248.6</span>
+<span class="font-body-md text-body-md text-primary font-semibold">kWh</span>
+</div>
+<span class="font-label-code text-label-code px-1.5 py-0.5 rounded-DEFAULT bg-primary/10 text-primary font-medium">+2.4% vs Baseline</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between items-center font-label-code text-label-code text-on-surface-variant">
+<span>Active Inflow Rate</span>
+<span class="font-mono text-on-surface">184.2 kW</span>
+</div>
+<!-- Mini sparkline SVG -->
+<svg class="w-full h-5 text-primary" fill="none" preserveaspectratio="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 160 20">
+<polyline points="0,15 20,12 40,16 60,9 80,11 100,6 120,8 140,4 160,5" stroke="currentColor"></polyline>
+<polyline class="opacity-30" points="0,18 20,16 40,18 60,14 80,15 100,12 120,13 140,10 160,11" stroke="currentColor" stroke-dasharray="2,2"></polyline>
+</svg>
+</div>
+</div>
+<!-- KPI 2: Energy Accounted -->
+<div class="bg-surface-container-low p-space-md rounded-DEFAULT shadow-sm flex flex-col justify-between relative overflow-hidden group hover:bg-surface-container transition-colors">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/5 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
+<span class="font-headline-sm text-headline-sm uppercase tracking-wider text-on-surface-variant">Energy Accounted</span>
+</div>
+<span class="font-label-code text-label-code px-1.5 py-0.5 rounded-DEFAULT bg-secondary/15 text-secondary font-bold">95.08% HARVEST</span>
+</div>
+<div class="my-space-sm flex items-baseline justify-between">
+<div class="flex items-baseline gap-1">
+<span class="font-telemetry-lg text-telemetry-lg text-on-surface">1,187.2</span>
+<span class="font-body-md text-body-md text-secondary font-semibold">kWh</span>
+</div>
+<span class="font-label-code text-label-code text-on-surface-variant font-mono">42/42 Sync OK</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between items-center font-label-code text-label-code text-on-surface-variant">
+<span>Downstream Consumption</span>
+<span class="text-secondary font-mono">1,187.2 kWh</span>
+</div>
+<!-- Progress bar -->
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="bg-secondary h-full rounded-full" style="width: 95.08%"></div>
+</div>
+</div>
+</div>
+<!-- KPI 3: Unaccounted Energy -->
+<div class="bg-surface-container-low p-space-md rounded-DEFAULT shadow-sm flex flex-col justify-between relative overflow-hidden group hover:bg-surface-container transition-colors">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-tertiary/5 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-tertiary text-[18px]">balance</span>
+<span class="font-headline-sm text-headline-sm uppercase tracking-wider text-on-surface-variant">Unaccounted Energy</span>
+</div>
+<span class="font-label-code text-label-code px-1.5 py-0.5 rounded-DEFAULT bg-tertiary/15 text-tertiary font-bold">4.92% GAP</span>
+</div>
+<div class="my-space-sm flex items-baseline justify-between">
+<div class="flex items-baseline gap-1">
+<span class="font-telemetry-lg text-telemetry-lg text-tertiary">61.4</span>
+<span class="font-body-md text-body-md text-tertiary font-semibold">kWh</span>
+</div>
+<span class="font-label-code text-label-code text-outline font-mono">43.2 kWh Anomaly</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between items-center font-label-code text-label-code text-on-surface-variant">
+<span>I²R Joule Loss: 18.2 kWh</span>
+<span class="text-error font-mono">Theft: 43.2 kWh</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="bg-outline h-full" style="width: 29.6%" title="I2R Technical Loss"></div>
+<div class="bg-error h-full" style="width: 70.4%" title="Non-Technical Extraction"></div>
+</div>
+</div>
+</div>
+<!-- KPI 4: Active Theft Alerts -->
+<div class="bg-surface-container-low p-space-md rounded-DEFAULT shadow-sm flex flex-col justify-between relative overflow-hidden group hover:bg-surface-container transition-colors">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-error/10 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-error text-[18px]">local_fire_department</span>
+<span class="font-headline-sm text-headline-sm uppercase tracking-wider text-on-surface">Theft Incidents</span>
+</div>
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-error"></span>
+</span>
+</div>
+<div class="my-space-sm flex items-baseline justify-between">
+<div class="flex items-baseline gap-1">
+<span class="font-telemetry-lg text-telemetry-lg text-error">3</span>
+<span class="font-body-md text-body-md text-error font-medium">Active Events</span>
+</div>
+<span class="font-label-code text-label-code bg-error-container text-on-error-container px-1.5 py-0.5 rounded-DEFAULT font-bold">URGENT</span>
+</div>
+<div class="flex items-center justify-between font-label-code text-label-code">
+<div class="flex items-center gap-1 text-error">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+<span>2 CRITICAL (Seg-04, 09)</span>
+</div>
+<div class="flex items-center gap-1 text-tertiary">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>1 MED (Seg-12)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 2: DIGITAL TWIN TOPOLOGY CANVAS & SEGMENT INSPECTOR DUAL-PANE -->
+<div class="grid grid-cols-1 2xl:grid-cols-12 gap-space-md">
+<!-- DIGITAL TWIN CANVAS (8 COLS ON 2XL) -->
+<div class="2xl:col-span-8 flex flex-col bg-surface-container-low rounded-DEFAULT shadow-md overflow-hidden">
+<!-- Canvas Header & Toolbar -->
+<div class="p-space-md bg-surface-container flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">account_tree</span>
+<span class="font-headline-md text-headline-md text-on-surface">FDR-001 Topology Digital Twin</span>
+<span class="px-1.5 py-0.5 bg-primary/10 text-primary font-label-code text-label-code rounded-DEFAULT">LIVE 1-SEC TELEMETRY</span>
+</div>
+<span class="font-label-code text-label-code text-on-surface-variant mt-0.5">
+            Substation 11kV → 100kVA DT-01 Transformer → 4 Radial Low-Voltage Feeders → 24 Monitored Nodes
+          </span>
+</div>
+<!-- Controls & Modes -->
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center bg-surface-container-lowest p-0.5 rounded-DEFAULT font-label-code text-label-code">
+<button class="px-space-sm py-1 rounded-DEFAULT bg-primary text-on-primary font-bold" type="button">Energy Flow</button>
+<button class="px-space-sm py-1 rounded-DEFAULT text-on-surface-variant hover:text-on-surface transition-colors" type="button">Risk Heatmap</button>
+<button class="px-space-sm py-1 rounded-DEFAULT text-on-surface-variant hover:text-on-surface transition-colors" type="button">Voltage Profile</button>
+</div>
+<div class="flex items-center bg-surface-container-lowest p-0.5 rounded-DEFAULT text-on-surface-variant">
+<button class="p-1 hover:text-on-surface" title="Zoom In" type="button"><span class="material-symbols-outlined text-[18px]">add</span></button>
+<button class="p-1 hover:text-on-surface" title="Zoom Out" type="button"><span class="material-symbols-outlined text-[18px]">remove</span></button>
+<button class="p-1 hover:text-on-surface" title="Reset View" type="button"><span class="material-symbols-outlined text-[18px]">restart_alt</span></button>
+</div>
+</div>
+</div>
+<!-- Canvas SVG Stage -->
+<div class="relative flex-1 bg-surface-container-lowest p-space-md min-h-[460px] flex flex-col justify-between overflow-x-auto">
+<!-- SVG Grid & Feeder Circuit Schematic -->
+<svg class="w-full h-[410px] select-none min-w-[720px]" fill="none" viewbox="0 0 860 410" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<!-- Pattern grid -->
+<pattern height="24" id="grid-pattern" patternunits="userSpaceOnUse" width="24">
+<path class="text-surface-variant/40" d="M 24 0 L 0 0 0 24" fill="none" stroke="currentColor" stroke-width="0.75"></path>
+</pattern>
+<!-- Glowing filters -->
+<filter height="140%" id="glow-red" width="140%" x="-20%" y="-20%">
+<fegaussianblur result="blur" stddeviation="3"></fegaussianblur>
+<fecomposite in="SourceGraphic" in2="blur" operator="over"></fecomposite>
+</filter>
+<filter height="140%" id="glow-cyan" width="140%" x="-20%" y="-20%">
+<fegaussianblur result="blur" stddeviation="3"></fegaussianblur>
+<fecomposite in="SourceGraphic" in2="blur" operator="over"></fecomposite>
+</filter>
+</defs>
+<!-- Grid Background -->
+<rect fill="url(#grid-pattern)" height="100%" width="100%"></rect>
+<!-- ================= 1. SUBSTATION & SENDING DT ================= -->
+<!-- Substation 11kV Incoming -->
+<g transform="translate(30, 185)">
+<rect class="fill-surface-container-high" height="50" rx="2" stroke="none" width="90" x="0" y="0"></rect>
+<rect class="fill-primary" height="50" width="3" x="0" y="0"></rect>
+<text class="fill-primary font-headline-sm text-[11px] font-bold" x="10" y="20">11kV SUB</text>
+<text class="fill-on-surface-variant font-label-code text-[9px]" x="10" y="36">FEEDER 001</text>
+<circle class="fill-primary" cx="90" cy="25" r="4"></circle>
+</g>
+<!-- Backbone Conductor to DT-01 -->
+<path class="text-primary" d="M 120 210 L 170 210" stroke="currentColor" stroke-width="3"></path>
+<!-- DT-01 Transformer & Sending Meter (SM-01) -->
+<g transform="translate(170, 175)">
+<rect class="fill-surface-container-highest" height="70" rx="3" stroke="none" width="120" x="0" y="0"></rect>
+<circle class="stroke-primary" cx="40" cy="35" fill="none" r="16" stroke-width="2"></circle>
+<circle class="stroke-secondary" cx="58" cy="35" fill="none" r="16" stroke-width="2"></circle>
+<text class="fill-on-surface font-headline-sm text-[10px] font-bold" x="10" y="16">DT-01 (100kVA)</text>
+<text class="fill-primary font-label-code text-[9px]" x="10" y="62">SM-01: 1,248.6 kWh</text>
+</g>
+<!-- Distribution Busbar 415V (Vertical Split) -->
+<path class="text-primary" d="M 290 210 L 320 210" stroke="currentColor" stroke-width="3"></path>
+<path class="text-primary-fixed-dim" d="M 320 60 L 320 360" stroke="currentColor" stroke-width="4"></path>
+<!-- ================= BRANCH 1 (Top Healthy) ================= -->
+<g>
+<path class="text-secondary" d="M 320 70 L 400 70 L 520 70" stroke="currentColor" stroke-dasharray="6,3" stroke-width="2"></path>
+<!-- Node Pole P1 -->
+<rect class="fill-surface-container-high" height="24" rx="2" width="28" x="385" y="58"></rect>
+<text class="fill-on-surface font-label-code text-[9px]" x="390" y="74">P-01</text>
+<!-- Seg-01 Badge -->
+<rect class="fill-surface-container-lowest" height="15" rx="2" width="55" x="430" y="52"></rect>
+<text class="fill-secondary font-label-code text-[8px]" x="435" y="63">SEG-01 [0.4%]</text>
+<!-- Node Pole P2 / Consumers -->
+<circle class="fill-secondary" cx="530" cy="70" r="5"></circle>
+<text class="fill-on-surface font-label-code text-[10px]" x="540" y="74">P-02 (C-01..C-06)</text>
+<!-- Tiny meter dots -->
+<circle class="fill-secondary" cx="680" cy="65" r="3"></circle>
+<circle class="fill-secondary" cx="700" cy="65" r="3"></circle>
+<circle class="fill-secondary" cx="720" cy="65" r="3"></circle>
+<text class="fill-on-surface-variant font-label-code text-[9px]" x="735" y="68">6 Meters OK</text>
+</g>
+<!-- ================= BRANCH 2 (SEG-04 CRITICAL THEFT ACTIVE SELECTION) ================= -->
+<g class="cursor-pointer" id="seg04-group">
+<!-- Pulsing feeder line with mismatch indicator -->
+<path class="text-secondary" d="M 320 160 L 400 160" stroke="currentColor" stroke-width="2"></path>
+<!-- Pole P5 -->
+<rect class="fill-surface-container-high" height="28" rx="2" width="32" x="400" y="146"></rect>
+<text class="fill-on-surface font-label-code text-[10px] font-bold" x="406" y="164">P-05</text>
+<!-- CRITICAL SEG-04 LINE: RED GLOW -->
+<path d="M 432 160 L 590 160" filter="url(#glow-red)" stroke="#ffb4ab" stroke-width="4"></path>
+<line stroke="#93000a" stroke-dasharray="8,4" stroke-width="2" x1="432" x2="590" y1="160" y2="160"></line>
+<!-- Highlight selection box -->
+<rect class="fill-error-container/20" height="66" rx="4" width="140" x="440" y="125"></rect>
+<rect fill="none" height="66" rx="4" stroke="#ffb4ab" stroke-dasharray="4,2" stroke-width="1.5" width="140" x="440" y="125"></rect>
+<!-- Segment Badge -->
+<rect class="fill-error" height="18" rx="2" width="120" x="450" y="132"></rect>
+<text class="fill-on-error font-label-code text-[10px] font-bold" x="456" y="145">SEG-04: THEFT DETECTED</text>
+<text class="fill-error font-label-code text-[9px] font-bold" x="450" y="164">+18.4% MISMATCH (14.8 kW)</text>
+<text class="fill-on-surface font-label-code text-[8px]" x="450" y="178">Ensemble Conf: 94.8%</text>
+<!-- Illegal Tap Marker (Physical Representation) -->
+<g transform="translate(510, 160)">
+<line stroke="#ffb4ab" stroke-dasharray="3,3" stroke-width="2" x1="0" x2="0" y1="0" y2="35"></line>
+<circle class="fill-error" cx="0" cy="35" r="5"></circle>
+<text class="fill-error font-label-code text-[9px] font-bold" x="10" y="38">ILLEGAL HOOK (14.8kW)</text>
+</g>
+<!-- Pole P6 -->
+<rect class="fill-surface-container-high" height="28" rx="2" width="32" x="590" y="146"></rect>
+<text class="fill-on-surface font-label-code text-[10px] font-bold" x="596" y="164">P-06</text>
+<!-- Consumers C-07, C-08, C-09 -->
+<path class="text-outline" d="M 622 160 L 670 145" stroke="currentColor" stroke-width="1.5"></path>
+<circle class="fill-secondary" cx="675" cy="144" r="5"></circle>
+<text class="fill-on-surface font-label-code text-[9px]" x="686" y="148">C-07 (Smart Meter OK)</text>
+<path class="text-outline" d="M 622 160 L 670 160" stroke="currentColor" stroke-width="1.5"></path>
+<circle class="fill-tertiary" cx="675" cy="160" r="5"></circle>
+<text class="fill-tertiary font-label-code text-[9px]" x="686" y="164">C-08 (V-Drop Anomaly)</text>
+<path class="text-outline" d="M 622 160 L 670 176" stroke="currentColor" stroke-width="1.5"></path>
+<circle class="fill-secondary" cx="675" cy="176" r="5"></circle>
+<text class="fill-on-surface font-label-code text-[9px]" x="686" y="180">C-09 (Smart Meter OK)</text>
+</g>
+<!-- ================= BRANCH 3 (SEG-09 RED - METER BYPASS) ================= -->
+<g>
+<path d="M 320 260 L 410 260 L 530 260" stroke="#ffb4ab" stroke-dasharray="4,2" stroke-width="2"></path>
+<!-- Pole P9 -->
+<rect class="fill-surface-container-high" height="24" rx="2" width="28" x="400" y="248"></rect>
+<text class="fill-on-surface font-label-code text-[9px]" x="405" y="264">P-09</text>
+<rect class="fill-error-container" height="16" rx="2" width="60" x="440" y="242"></rect>
+<text class="fill-on-error-container font-label-code text-[8px] font-bold" x="445" y="254">SEG-09 [+11.2%]</text>
+<!-- Pole P10 & Bypassed Consumer -->
+<rect class="fill-surface-container-high" height="24" rx="2" width="28" x="530" y="248"></rect>
+<text class="fill-on-surface font-label-code text-[9px]" x="535" y="264">P-10</text>
+<circle class="fill-error" cx="610" cy="260" r="5"></circle>
+<text class="fill-error font-label-code text-[9px]" x="622" y="264">C-14: Shunt Bypass Pattern</text>
+</g>
+<!-- ================= BRANCH 4 (SEG-12 AMBER - SENSOR NOISE / MICRO-TAP) ================= -->
+<g>
+<path class="text-tertiary" d="M 320 340 L 420 340 L 540 340" stroke="currentColor" stroke-dasharray="5,3" stroke-width="2"></path>
+<!-- Pole P13 -->
+<rect class="fill-surface-container-high" height="24" rx="2" width="28" x="410" y="328"></rect>
+<text class="fill-on-surface font-label-code text-[9px]" x="415" y="344">P-13</text>
+<rect class="fill-tertiary-container" height="16" rx="2" width="60" x="450" y="322"></rect>
+<text class="fill-on-tertiary-container font-label-code text-[8px] font-bold" x="455" y="334">SEG-12 [+3.8%]</text>
+<!-- Pole P14 -->
+<rect class="fill-surface-container-high" height="24" rx="2" width="28" x="540" y="328"></rect>
+<text class="fill-on-surface font-label-code text-[9px]" x="545" y="344">P-14</text>
+<circle class="fill-tertiary" cx="620" cy="340" r="5"></circle>
+<text class="fill-on-surface-variant font-label-code text-[9px]" x="632" y="344">C-21..C-24 (Investigating)</text>
+</g>
+</svg>
+<!-- Dynamic Topology Status Footbar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs bg-surface-container-low px-space-md py-1.5 rounded-DEFAULT">
+<div class="flex items-center gap-space-md font-label-code text-label-code">
+<span class="text-on-surface-variant font-semibold">STATUS LEGEND:</span>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="text-on-surface">Balanced (≤2%)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="text-on-surface">Suspicious (2-4%)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+<span class="text-on-surface">Critical Theft (&gt;4%)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-outline"></span>
+<span class="text-on-surface">Meter Offline</span>
+</div>
+</div>
+<div class="flex items-center gap-2 font-label-code text-label-code text-primary">
+<span class="material-symbols-outlined text-[16px]">touch_app</span>
+<span>CLICK SEGMENT FOR DEEP FORENSICS</span>
+</div>
+</div>
+</div>
+</div>
+<!-- PERSISTENT RIGHT-SIDE SEGMENT INSPECTOR (4 COLS ON 2XL) -->
+<div class="2xl:col-span-4 flex flex-col bg-surface-container-low rounded-DEFAULT shadow-md overflow-hidden">
+<!-- Inspector Header -->
+<div class="p-space-md bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-[20px]">radar</span>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Inspector: SEG-04</span>
+</div>
+<span class="font-label-code text-label-code text-on-surface-variant font-mono">Pole P5 → Pole P6 Line</span>
+</div>
+</div>
+<span class="bg-error-container text-on-error-container px-2 py-0.5 rounded-DEFAULT font-label-code text-label-code font-bold uppercase tracking-wider animate-pulse">
+          CRITICAL THEFT
+        </span>
+</div>
+<!-- Content Body -->
+<div class="p-space-md flex-1 flex flex-col justify-between space-y-space-md">
+<!-- Upstream / Downstream Nodes Mini Spec -->
+<div class="bg-surface-container p-space-sm rounded-DEFAULT space-y-1 font-label-code text-label-code">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>UPSTREAM NODE:</span>
+<span class="text-on-surface font-semibold">Pole P5 (SM-04a Sensing Hub)</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>DOWNSTREAM NODES:</span>
+<span class="text-on-surface font-semibold">Pole P6 (Consumers C-07, 08, 09)</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>CONDUCTOR SPECS:</span>
+<span class="text-primary font-mono">AAC 50mm² @ 240m (0.138 Ω)</span>
+</div>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-2 gap-space-xs">
+<!-- Metric Cell 1 -->
+<div class="bg-surface-container p-space-sm rounded-DEFAULT">
+<span class="font-label-code text-label-code text-on-surface-variant uppercase">Sending Energy</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-telemetry-md text-telemetry-md text-on-surface font-mono">184.2</span>
+<span class="font-body-sm text-body-sm text-primary font-semibold">kWh</span>
+</div>
+</div>
+<!-- Metric Cell 2 -->
+<div class="bg-surface-container p-space-sm rounded-DEFAULT">
+<span class="font-label-code text-label-code text-on-surface-variant uppercase">Billed / Downstream</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-telemetry-md text-telemetry-md text-secondary font-mono">142.6</span>
+<span class="font-body-sm text-body-sm text-secondary font-semibold">kWh</span>
+</div>
+</div>
+<!-- Metric Cell 3 -->
+<div class="bg-surface-container p-space-sm rounded-DEFAULT">
+<span class="font-label-code text-label-code text-on-surface-variant uppercase">I²R Line Loss</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-telemetry-md text-telemetry-md text-outline font-mono">3.4</span>
+<span class="font-body-sm text-body-sm text-outline font-semibold">kWh</span>
+</div>
+</div>
+<!-- Metric Cell 4 -->
+<div class="bg-surface-container p-space-sm rounded-DEFAULT">
+<span class="font-label-code text-label-code text-on-surface-variant uppercase">Residual Energy</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-telemetry-md text-telemetry-md text-error font-mono font-bold">38.2</span>
+<span class="font-body-sm text-body-sm text-error font-semibold">kWh</span>
+</div>
+</div>
+<!-- Metric Cell 5: Full Width Load Estimation -->
+<div class="col-span-2 bg-surface-container p-space-sm rounded-DEFAULT flex items-center justify-between">
+<div>
+<span class="font-label-code text-label-code text-on-surface-variant uppercase">Est. Suspicious Tap Load</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-telemetry-md text-telemetry-md text-error font-mono font-bold">14.8</span>
+<span class="font-body-sm text-body-sm text-error font-semibold">kW Direct Tap</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-code text-label-code text-on-surface-variant uppercase">ML Ensemble</span>
+<div class="font-telemetry-md text-telemetry-md text-secondary font-mono font-bold">94.8% CONF</div>
+</div>
+</div>
+</div>
+<!-- 5-Minute Telemetry Spike Graph (Visual Element) -->
+<div class="space-y-1">
+<div class="flex justify-between items-center font-label-code text-label-code text-on-surface-variant">
+<span>5-MIN RESIDUAL DEVIATION SPIKE</span>
+<span class="text-error font-mono font-semibold">Divergence triggered @ 14:15 UTC</span>
+</div>
+<div class="bg-surface-container p-space-xs rounded-DEFAULT">
+<svg class="w-full h-20 text-error" fill="none" preserveaspectratio="none" viewbox="0 0 300 80">
+<!-- Grid marks -->
+<line stroke="currentColor" stroke-opacity="0.1" x1="0" x2="300" y1="20" y2="20"></line>
+<line stroke="currentColor" stroke-opacity="0.1" x1="0" x2="300" y1="50" y2="50"></line>
+<!-- Normal Baseline -->
+<path d="M0,68 L40,66 L80,67 L120,68 L150,65 L180,68 L210,69 L240,68 L270,67 L300,68" stroke="#869397" stroke-dasharray="3,3" stroke-width="1.5"></path>
+<!-- Anomaly Area -->
+<polygon fill="rgba(244, 63, 94, 0.2)" points="150,65 170,42 190,24 220,18 250,15 280,14 300,12 300,68 150,65"></polygon>
+<!-- Active Anomaly Curve -->
+<path d="M0,68 L40,66 L80,67 L120,68 L150,65 L170,42 L190,24 L220,18 L250,15 L280,14 L300,12" stroke="#ffb4ab" stroke-width="2.5"></path>
+<!-- Divergence Marker -->
+<circle cx="150" cy="65" fill="#ffb4ab" r="4"></circle>
+<text class="font-label-code text-[8px] font-bold" fill="#ffb4ab" x="135" y="60">14:15</text>
+</svg>
+</div>
+</div>
+<!-- Quick Action Forensic Buttons -->
+<div class="grid grid-cols-2 gap-space-xs pt-space-xs">
+<button class="px-space-sm py-2 rounded-DEFAULT bg-primary text-on-primary font-headline-sm text-headline-sm font-semibold flex items-center justify-center gap-1.5 shadow-sm hover:brightness-110 active:scale-[0.98] transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">local_shipping</span>
+<span>Dispatch Crew</span>
+</button>
+<button class="px-space-sm py-2 rounded-DEFAULT bg-surface-container-high text-on-surface hover:text-primary font-headline-sm text-headline-sm font-semibold flex items-center justify-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">show_chart</span>
+<span>Waveform Trace</span>
+</button>
+<button class="px-space-sm py-2 rounded-DEFAULT bg-surface-container-high text-on-surface hover:text-error font-headline-sm text-headline-sm font-semibold flex items-center justify-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">power_off</span>
+<span>Isolate Segment</span>
+</button>
+<button class="px-space-sm py-2 rounded-DEFAULT bg-surface-container-high text-on-surface-variant hover:text-on-surface font-headline-sm text-headline-sm font-medium flex items-center justify-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span>Dismiss (FP)</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3: BOTTOM ANALYTICS & INCIDENT MANAGEMENT (2 COLUMNS) -->
+<div class="grid grid-cols-1 2xl:grid-cols-12 gap-space-md">
+<!-- LEFT COLUMN: RECENT THEFT ALERTS & INCIDENTS TABLE (7 COLS ON 2XL) -->
+<div class="2xl:col-span-7 bg-surface-container-low rounded-DEFAULT shadow-md overflow-hidden flex flex-col justify-between">
+<div>
+<div class="p-space-md bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">gavel</span>
+<span class="font-headline-md text-headline-md text-on-surface">Live Theft Alerts &amp; Forensic Registry</span>
+</div>
+<span class="font-label-code text-label-code text-on-surface-variant font-mono">TOTAL RECORDED TODAY: 14</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead class="bg-surface-container-lowest font-label-code text-label-code text-on-surface-variant uppercase tracking-wider">
+<tr>
+<th class="py-2.5 px-space-md">Alert ID</th>
+<th class="py-2.5 px-space-md">Severity</th>
+<th class="py-2.5 px-space-md">Target Segment</th>
+<th class="py-2.5 px-space-md text-right">Suspected Load</th>
+<th class="py-2.5 px-space-md text-right">Loss Gap</th>
+<th class="py-2.5 px-space-md">Discovered</th>
+<th class="py-2.5 px-space-md">Status</th>
+<th class="py-2.5 px-space-md text-center">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<!-- Row 1: Seg 04 Critical -->
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors group">
+<td class="py-2.5 px-space-md font-mono text-primary font-semibold">ALT-9412</td>
+<td class="py-2.5 px-space-md">
+<span class="bg-error-container text-on-error-container px-2 py-0.5 rounded-DEFAULT font-label-code text-label-code font-bold uppercase inline-block">CRITICAL</span>
+</td>
+<td class="py-2.5 px-space-md font-mono text-on-surface">FDR-001 / SEG-04</td>
+<td class="py-2.5 px-space-md text-right font-mono text-error font-semibold">14.8 kW</td>
+<td class="py-2.5 px-space-md text-right font-mono text-error font-semibold">+18.4%</td>
+<td class="py-2.5 px-space-md font-mono text-on-surface-variant">14:15:22</td>
+<td class="py-2.5 px-space-md">
+<span class="text-tertiary font-label-code text-label-code font-medium flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Investigating
+                  </span>
+</td>
+<td class="py-2.5 px-space-md text-center">
+<button class="px-2 py-1 bg-surface-container-high hover:bg-primary hover:text-on-primary rounded-DEFAULT text-primary font-label-code text-label-code font-semibold transition-colors" type="button">Inspect</button>
+</td>
+</tr>
+<!-- Row 2: Seg 09 High -->
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors group">
+<td class="py-2.5 px-space-md font-mono text-primary font-semibold">ALT-9410</td>
+<td class="py-2.5 px-space-md">
+<span class="bg-error-container/60 text-error px-2 py-0.5 rounded-DEFAULT font-label-code text-label-code font-bold uppercase inline-block">HIGH</span>
+</td>
+<td class="py-2.5 px-space-md font-mono text-on-surface">FDR-001 / SEG-09</td>
+<td class="py-2.5 px-space-md text-right font-mono text-error font-semibold">8.4 kW</td>
+<td class="py-2.5 px-space-md text-right font-mono text-error font-semibold">+11.2%</td>
+<td class="py-2.5 px-space-md font-mono text-on-surface-variant">13:58:04</td>
+<td class="py-2.5 px-space-md">
+<span class="text-primary font-label-code text-label-code font-medium flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Acknowledged
+                  </span>
+</td>
+<td class="py-2.5 px-space-md text-center">
+<button class="px-2 py-1 bg-surface-container-high hover:bg-primary hover:text-on-primary rounded-DEFAULT text-primary font-label-code text-label-code font-semibold transition-colors" type="button">Inspect</button>
+</td>
+</tr>
+<!-- Row 3: Seg 12 Medium -->
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors group">
+<td class="py-2.5 px-space-md font-mono text-primary font-semibold">ALT-9398</td>
+<td class="py-2.5 px-space-md">
+<span class="bg-tertiary/20 text-tertiary px-2 py-0.5 rounded-DEFAULT font-label-code text-label-code font-bold uppercase inline-block">MEDIUM</span>
+</td>
+<td class="py-2.5 px-space-md font-mono text-on-surface">FDR-001 / SEG-12</td>
+<td class="py-2.5 px-space-md text-right font-mono text-tertiary font-semibold">2.9 kW</td>
+<td class="py-2.5 px-space-md text-right font-mono text-tertiary font-semibold">+3.8%</td>
+<td class="py-2.5 px-space-md font-mono text-on-surface-variant">12:44:19</td>
+<td class="py-2.5 px-space-md">
+<span class="text-on-surface-variant font-label-code text-label-code font-medium flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Queued
+                  </span>
+</td>
+<td class="py-2.5 px-space-md text-center">
+<button class="px-2 py-1 bg-surface-container-high hover:bg-primary hover:text-on-primary rounded-DEFAULT text-primary font-label-code text-label-code font-semibold transition-colors" type="button">Inspect</button>
+</td>
+</tr>
+<!-- Row 4: Past resolved event -->
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors opacity-75">
+<td class="py-2.5 px-space-md font-mono text-on-surface-variant">ALT-9382</td>
+<td class="py-2.5 px-space-md">
+<span class="bg-secondary/10 text-secondary px-2 py-0.5 rounded-DEFAULT font-label-code text-label-code font-semibold uppercase inline-block">RESOLVED</span>
+</td>
+<td class="py-2.5 px-space-md font-mono text-on-surface-variant">FDR-001 / SEG-02</td>
+<td class="py-2.5 px-space-md text-right font-mono text-on-surface-variant">0.4 kW</td>
+<td class="py-2.5 px-space-md text-right font-mono text-secondary">+0.6%</td>
+<td class="py-2.5 px-space-md font-mono text-on-surface-variant">10:12:45</td>
+<td class="py-2.5 px-space-md">
+<span class="text-secondary font-label-code text-label-code font-medium">Closed / Repaired</span>
+</td>
+<td class="py-2.5 px-space-md text-center">
+<button class="px-2 py-1 bg-surface-container-high hover:bg-surface-variant rounded-DEFAULT text-outline font-label-code text-label-code" type="button">Logs</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="p-space-sm bg-surface-container flex items-center justify-between font-label-code text-label-code text-on-surface-variant">
+<span>SHOWING 4 OF 14 EVENTS</span>
+<button class="text-primary hover:underline flex items-center gap-1" type="button">
+<span>VIEW FULL AUDIT TRAIL</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- RIGHT COLUMN: REAL-TIME ENERGY BALANCE & DETECTION ENGINE (5 COLS ON 2XL) -->
+<div class="2xl:col-span-5 space-y-space-md flex flex-col justify-between">
+<!-- Energy Balance Multi-Layer Area Chart -->
+<div class="bg-surface-container-low rounded-DEFAULT p-space-md shadow-md">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">stacked_line_chart</span>
+<span class="font-headline-md text-headline-md text-on-surface">Real-Time Energy Balance</span>
+</div>
+<div class="flex items-center gap-space-sm font-label-code text-label-code">
+<span class="flex items-center gap-1"><span class="w-2 h-0.5 bg-primary"></span>Sending</span>
+<span class="flex items-center gap-1"><span class="w-2 h-0.5 bg-secondary"></span>Accounted</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 bg-error/30"></span>Diversion Gap</span>
+</div>
+</div>
+<!-- Inline SVG Multi-Line Loss Chart -->
+<div class="bg-surface-container-lowest p-space-sm rounded-DEFAULT">
+<svg class="w-full h-32 select-none" fill="none" preserveaspectratio="none" viewbox="0 0 400 120">
+<!-- Background grid -->
+<line class="text-outline-variant/30" stroke="currentColor" x1="0" x2="400" y1="30" y2="30"></line>
+<line class="text-outline-variant/30" stroke="currentColor" x1="0" x2="400" y1="70" y2="70"></line>
+<line class="text-outline-variant/30" stroke="currentColor" x1="0" x2="400" y1="100" y2="100"></line>
+<!-- Unaccounted Shaded Gap (Theft Area between Sending and Accounted) -->
+<polygon fill="rgba(244, 63, 94, 0.25)" points="
+              0,40 50,38 100,42 150,39 200,32 250,28 300,24 350,22 400,20
+              400,48 350,52 300,56 250,58 200,52 150,50 100,51 50,47 0,49
+            "></polygon>
+<!-- Sending Energy Curve (Cyan) -->
+<path d="M0,40 L50,38 L100,42 L150,39 L200,32 L250,28 L300,24 L350,22 L400,20" stroke="#4cd7f6" stroke-width="2.5"></path>
+<!-- Accounted Meter Sum Curve (Green) -->
+<path d="M0,49 L50,47 L100,51 L150,50 L200,52 L250,58 L300,56 L350,52 L400,48" stroke="#4ae176" stroke-width="2"></path>
+<!-- I2R Thermal Lower Baseline (Dotted) -->
+<path d="M0,54 L50,52 L100,56 L150,55 L200,58 L250,64 L300,62 L350,58 L400,54" stroke="#869397" stroke-dasharray="2,2" stroke-width="1.5"></path>
+<!-- Callout Tag on diversion -->
+<circle cx="350" cy="22" fill="#4cd7f6" r="3.5"></circle>
+<circle cx="350" cy="52" fill="#4ae176" r="3.5"></circle>
+<line stroke="#ffb4ab" stroke-width="1.5" x1="350" x2="350" y1="22" y2="52"></line>
+</svg>
+<div class="flex justify-between items-center font-label-code text-label-code text-on-surface-variant pt-1 px-1">
+<span>13:30 UTC</span>
+<span>13:50 UTC</span>
+<span>14:10 UTC</span>
+<span class="text-primary font-semibold">14:32:08 (CURRENT)</span>
+</div>
+</div>
+</div>
+<!-- Detection Engine Multi-Layer Stack Card -->
+<div class="bg-surface-container-low rounded-DEFAULT p-space-md shadow-md space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">neurology</span>
+<span class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-wider">AI Theft Detection Engine Status</span>
+</div>
+<span class="font-label-code text-label-code px-1.5 py-0.5 rounded-DEFAULT bg-secondary/15 text-secondary font-bold">ALL 3 LAYERS CONVERGED</span>
+</div>
+<div class="grid grid-cols-3 gap-space-xs text-center">
+<div class="bg-surface-container p-space-sm rounded-DEFAULT">
+<span class="font-label-code text-label-code text-on-surface-variant">L1: Residual Filter</span>
+<div class="font-telemetry-md text-telemetry-md text-primary font-mono font-bold mt-0.5">99.4%</div>
+<span class="font-label-code text-[10px] text-secondary">Active Delta</span>
+</div>
+<div class="bg-surface-container p-space-sm rounded-DEFAULT">
+<span class="font-label-code text-label-code text-on-surface-variant">L2: Isolation Forest</span>
+<div class="font-telemetry-md text-telemetry-md text-tertiary font-mono font-bold mt-0.5">0.88</div>
+<span class="font-label-code text-[10px] text-tertiary">High Anomaly</span>
+</div>
+<div class="bg-surface-container p-space-sm rounded-DEFAULT">
+<span class="font-label-code text-label-code text-on-surface-variant">L3: XGBoost Classifier</span>
+<div class="font-telemetry-md text-telemetry-md text-error font-mono font-bold mt-0.5">94.8%</div>
+<span class="font-label-code text-[10px] text-error font-bold">Tap Confirmed</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- CONTROL ROOM STATUS STRIP -->
+<div class="p-space-sm bg-surface-container-low rounded-DEFAULT flex flex-wrap items-center justify-between gap-space-sm font-label-code text-label-code text-on-surface-variant shadow-sm">
+<div class="flex items-center gap-space-sm">
+<span class="text-primary font-semibold">SCADA DISPATCH CONSOLE</span>
+<span>•</span>
+<span>SUBSTATION: MADURAI 110kV/11kV MAIN</span>
+<span>•</span>
+<span>FEEDER RUNTIME: 428d 14h WITHOUT OUTAGE</span>
+</div>
+<div class="flex items-center gap-space-md">
+<span>SERVER LOAD: <span class="text-on-surface font-mono">18.4%</span></span>
+<span>FIFO INGEST BUFFER: <span class="text-secondary font-mono">0.02ms</span></span>
+<span>ENCRYPTION: <span class="text-on-surface font-mono">AES-256-GCM</span></span>
+</div>
+</div>
+</div></main></div></body></html>

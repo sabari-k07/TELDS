@@ -7,21 +7,23 @@
 
 ## ⚡ The 4 Pillars of TELDS
 
-### 1. Full-Stack Web Application
-- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, Recharts, and Lucide Icons.
-- **Backend:** Python, FastAPI, SQLAlchemy ORM, Alembic migrations, and Pandas analytics.
+### 1. SCADA Digital Twin & Full-Stack Web Application
+- **Main SCADA Control Center (`index.html`):** High-density digital twin control center powered by Google Stitch SCADA interface, featuring interactive feeder SVG topology (DT-01, SEG-01 to SEG-12), persistent right-side forensic inspector drawer, live 1-second telemetry streams, harmonic waveform traces, segment circuit breakers, and crew dispatching.
+- **Floating Minimized Hardware Lab (`telds_dashboard.html`):** The 9-tab legacy prototype engine is accessible as a persistent minimized picture-in-picture widget docked at the bottom right corner with minimize, maximize, and standalone tab controls.
+- **Cloud Database (Supabase PostgreSQL):** Integrated with Supabase (`nuxmpdleqpqunkhbpqjj.supabase.co`), complete with table schemas, row-level security, and audit logs defined in [`supabase_schema.sql`](file:///c:/Users/ELCOT/OneDrive/Desktop/software%20based%20E-system/supabase_schema.sql).
 - **Mathematical Engine:**
   - $\Delta \text{ Energy} = \text{Transformer Input} - \sum \text{Consumer Meter Consumption}$
   - $\text{Loss } \% = (\Delta \text{ Energy} / \text{Transformer Input}) \times 100$
 - **Loss Separation:** Isolates 6.0% technical baseline from unexplained losses. **Never automatically classifies loss as electricity theft.**
 - **Peak-Hour Dynamics:** Dedicated surveillance for 19:00 – 22:00 (7 PM – 10 PM).
-- **Interactive Standalone App:** [`telds_dashboard.html`](file:///c:/Users/ELCOT/OneDrive/Desktop/software%20based%20E-system/telds_dashboard.html) (zero-dependency, double-click to run in any browser).
 
-### 2. Virtual Hardware Prototype
-- **Microcontroller:** ESP32 DevKit v1 with dual-core 240MHz architecture.
-- **Measuring Point 1 (CT1):** Transformer secondary winding input current (SCT-013-000, 100A/50mA).
-- **Measuring Point 2 (CT2):** Consumer aggregate outgoing feeder current (SCT-013-000, 100A/50mA).
-- **Voltage Measurement:** ZMPT101B active AC voltage transformer module (230V AC nominal).
+### 2. Virtual Hardware Prototype & Unauthorised Power Tapping Detection
+- **System Description:** Microcontroller-based unauthorised power tapping detection system using two current measurement points (CT1 incoming vs. CT2 outgoing) and wireless communication.
+- **ESP32 Edge Engine:** Compares incoming and outgoing current values, calculates the discrepancy, and checks it against a configurable threshold.
+- **Persistence Filter:** Confirms discrepancies across configurable consecutive cycles to filter out transient motor inrush spikes, preventing nuisance tripping.
+- **Automated Wireless Alerting:** Generates simulated Wi-Fi/MQTT JSON alert telemetry, activating local alarms and flagging the monitored distribution line as `SUSPICIOUS (TAPPING SUSPECTED)`.
+- **Scenario Simulation Engine:** 4 realistic scenarios (Balanced Normal, Inrush Transient, Confirmed Tapping, High Peak Bypass) built into [`telds_dashboard.html`](file:///c:/Users/ELCOT/OneDrive/Desktop/software%20based%20E-system/telds_dashboard.html).
+- **Physical Prototype Extension:** Complete schematic diagrams, 2-layer PCB layout with 2mm isolation slots, weatherproof IP54 enclosure specifications, and itemized Bill of Materials.
 - **C++ Firmware:** [`hardware/firmware/esp32_firmware.ino`](file:///c:/Users/ELCOT/OneDrive/Desktop/software%20based%20E-system/hardware/firmware/esp32_firmware.ino) with True RMS 5kHz sampling and edge threshold detection.
 - **Wokwi Simulation:** Ready-to-run in browser via [`hardware/simulation/diagram.json`](file:///c:/Users/ELCOT/OneDrive/Desktop/software%20based%20E-system/hardware/simulation/diagram.json) and [`wokwi.toml`](file:///c:/Users/ELCOT/OneDrive/Desktop/software%20based%20E-system/hardware/simulation/wokwi.toml).
 - **Virtual ESP32 Simulator Script:** Standalone Python script [`hardware/virtual_esp32_simulator.py`](file:///c:/Users/ELCOT/OneDrive/Desktop/software%20based%20E-system/hardware/virtual_esp32_simulator.py) streaming live HTTP telemetry to backend.

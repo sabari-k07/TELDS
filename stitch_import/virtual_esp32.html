@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-secondary": "#003828", "secondary-container": "#00bf91", "on-tertiary-fixed-variant": "#91002d", "secondary-fixed-dim": "#45deae", "inverse-surface": "#dbe2fa", "secondary": "#45deae", "tertiary-fixed": "#ffdadb", "on-surface-variant": "#bac9cc", "on-primary": "#00363e", "surface-container-highest": "#2d3547", "on-primary-fixed": "#001f24", "tertiary": "#ffd5d7", "on-secondary-fixed": "#002116", "surface-container-lowest": "#060e1f", "surface-container-low": "#131b2d", "surface-container": "#181f31", "on-background": "#dbe2fa", "tertiary-container": "#ffadb4", "primary": "#8fedff", "background": "#0b1324", "error-container": "#93000a", "outline": "#859396", "primary-container": "#06d6f0", "surface-tint": "#18daf4", "surface": "#0b1324", "surface-variant": "#2d3547", "surface-container-high": "#222a3c", "on-tertiary": "#67001d", "on-primary-fixed-variant": "#004e59", "primary-fixed-dim": "#18daf4", "inverse-primary": "#006876", "tertiary-fixed-dim": "#ffb2b8", "on-surface": "#dbe2fa", "surface-dim": "#0b1324", "surface-bright": "#31394c", "secondary-fixed": "#68fbc9", "on-primary-container": "#005964", "on-secondary-container": "#004734", "on-tertiary-container": "#a30033", "outline-variant": "#3b494c", "inverse-on-surface": "#283042", "on-error-container": "#ffdad6", "on-tertiary-fixed": "#40000f", "on-secondary-fixed-variant": "#00513c", "primary-fixed": "#9fefff", "error": "#ffb4ab", "on-error": "#690005" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter": "0.5rem", "space-xl": "1.5rem", "gutter-md": "0.75rem", "margin-md": "1rem", "margin-lg": "1.5rem", "space-sm": "0.5rem", "margin": "0.75rem", "space-xs": "0.25rem", "space-lg": "1rem", "space-md": "0.75rem", "gutter-lg": "1rem" }, "fontFamily": { "label-md": [ "JetBrains Mono" ], "headline-md": [ "IBM Plex Sans" ], "telemetry-display-mobile": [ "JetBrains Mono" ], "headline-lg": [ "IBM Plex Sans" ], "headline-lg-mobile": [ "IBM Plex Sans" ], "headline-sm": [ "IBM Plex Sans" ], "label-sm": [ "JetBrains Mono" ], "body-lg": [ "JetBrains Mono" ], "body-sm": [ "JetBrains Mono" ], "body-md": [ "JetBrains Mono" ], "telemetry-display": [ "JetBrains Mono" ] }, "fontSize": { "label-md": [ "11px", { "lineHeight": "14px", "fontWeight": "600" } ], "headline-md": [ "20px", { "lineHeight": "28px", "fontWeight": "600" } ], "telemetry-display-mobile": [ "20px", { "lineHeight": "24px", "fontWeight": "700" } ], "headline-lg": [ "32px", { "lineHeight": "40px", "fontWeight": "600" } ], "headline-lg-mobile": [ "24px", { "lineHeight": "32px", "fontWeight": "600" } ], "headline-sm": [ "16px", { "lineHeight": "24px", "fontWeight": "600" } ], "label-sm": [ "10px", { "lineHeight": "12px", "fontWeight": "500" } ], "body-lg": [ "14px", { "lineHeight": "20px", "fontWeight": "400" } ], "body-sm": [ "11px", { "lineHeight": "16px", "fontWeight": "400" } ], "body-md": [ "12px", { "lineHeight": "18px", "fontWeight": "400" } ], "telemetry-display": [ "28px", { "lineHeight": "32px", "fontWeight": "700" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary selection:text-on-primary"><header class="fixed top-0 left-0 right-0 z-50 h-16 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.4)] px-gutter-lg flex items-center justify-between"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-md"><img alt="TELDS Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMh7GqPSJxFIorzH63ySxWDEzinv6-RxgKqUgHLwB2wgKn_OGJ7TrVa5Knk_vXYm1D5ba0F98n_Zz52ORc-owcE7e9UG0aR2zeAHL6AZMl6nCocUTMWbKqUrhyiLi3Cv867ayha0kRhX1LeXUb2U7NUR8fDD2M7XJaAJf6ZMS2xJWjQ-jGC3NTL6NYwYlHmF9shRoci5FfMugaY5rncVQp2wOOWaKMB6KkB-VAFEQaNDe-T6UYqo2e"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-wider uppercase leading-none">TELDS</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Full-Stack Grid Analytics &amp; IoT Prototype</span></div></div><div class="h-6 w-px bg-surface-container-highest"></div><div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-space-xs"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span></span><span class="font-label-md text-label-md text-secondary tracking-wider uppercase">ESP32 Dual-CT Active</span><span class="font-label-sm text-label-sm text-on-surface-variant font-mono">[TELEMETRY_SYNC]</span></div></div><div class="flex items-center gap-space-lg"><div class="flex items-center bg-surface-container-lowest p-space-xs"><button class="px-space-md py-space-xs font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors uppercase" type="button">Admin</button><button class="px-space-md py-space-xs font-label-md text-label-md bg-primary-container text-on-primary-container font-bold uppercase" type="button">Engineer</button><button class="px-space-md py-space-xs font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors uppercase" type="button">Operator</button><button class="px-space-md py-space-xs font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors uppercase" type="button">Inspector</button></div><div class="flex items-center gap-space-md"><button aria-label="Telemetry Notifications" class="relative flex items-center justify-center p-space-xs text-on-surface-variant hover:text-primary transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-0 right-0 flex h-4 w-4 items-center justify-center bg-error-container font-label-sm text-label-sm text-on-error-container font-bold">3</span></button><div class="h-6 w-px bg-surface-container-highest"></div><div class="flex items-center gap-space-md pl-space-xs"><div class="flex flex-col text-right"><span class="font-body-md text-body-md font-bold text-on-surface leading-tight">Eng. Maya Chen, P.E.</span><span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Lead SCADA Engineer</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI5pj0s0K0Ld-URqIketei4hdE6QXOWh1mWrENR8vgTTVyv_nVg8r1uyDVTVXCLzur9e-tVxw5cyhT0avZaNQkSJpI31ejqUrnhZkeL5Beh4fZhAOo3SXWmMHTtYEpXmsqV6b0qQQJpc9semDo3hhBL4bMtMKCovQiKeVBGlFpLUdWbvpncjN7X7TBnGESgbTKjQ1ZHQN-7SYY8-gnxa2sk4QnEP3m_W3oxAn71wp8uDmvkB1nUR7e"/></div></div></div></header><aside class="fixed left-0 top-16 bottom-0 w-72 bg-surface-container-low shadow-[1px_0_8px_rgba(0,0,0,0.3)] z-40 flex flex-col justify-between overflow-y-auto"><div class="p-space-md"><div class="pb-space-sm mb-space-sm"><span class="font-label-sm text-label-sm text-on-surface-variant tracking-widest uppercase">Substation Navigation Matrix</span></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-bold"><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="loss-dashboard" href="#"><span class="material-symbols-outlined text-[18px]">bar_chart</span><span class="font-label-md text-label-md uppercase tracking-wider">1. Loss Dashboard</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="segment-localisation" href="#"><span class="material-symbols-outlined text-[18px]">hub</span><span class="font-label-md text-label-md uppercase tracking-wider">2. Segment Localisation</span></a><a aria-current="page" class="flex items-center gap-space-md px-space-md py-space-sm transition-colors bg-primary-container text-on-primary-container font-bold" data-path="virtual-esp32-node" href="#"><span class="material-symbols-outlined text-[18px]">terminal</span><span class="font-label-md text-label-md uppercase tracking-wider">3. Virtual ESP32 Node</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="hardware-schematics-pcb" href="#"><span class="material-symbols-outlined text-[18px]">developer_board</span><span class="font-label-md text-label-md uppercase tracking-wider">4. Hardware Schematics &amp; PCB</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="feeders-transformers" href="#"><span class="material-symbols-outlined text-[18px]">bolt</span><span class="font-label-md text-label-md uppercase tracking-wider">5. Feeders &amp; Transformers</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="csv-ingestion" href="#"><span class="material-symbols-outlined text-[18px]">cloud_upload</span><span class="font-label-md text-label-md uppercase tracking-wider">6. CSV Ingestion</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="investigations" href="#"><span class="material-symbols-outlined text-[18px]">gavel</span><span class="font-label-md text-label-md uppercase tracking-wider">7. Investigations</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="audit-reports" href="#"><span class="material-symbols-outlined text-[18px]">description</span><span class="font-label-md text-label-md uppercase tracking-wider">8. Audit Reports</span></a></nav></div><div class="p-space-md flex flex-col gap-space-md bg-surface-container-lowest"><div class="flex items-start gap-space-xs bg-surface-container-high p-space-sm"><span class="material-symbols-outlined text-secondary text-[16px] mt-0.5">warning</span><div class="flex flex-col"><span class="font-label-sm text-label-sm text-secondary uppercase font-bold">OPERATIONAL: 34.2°C Ambient</span><span class="font-label-sm text-label-sm text-on-surface-variant">High Humidity Warning</span></div></div><div class="bg-surface-container p-space-md flex flex-col gap-space-xs"><div class="flex items-center justify-between"><span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">Calc Ref Card</span><span class="font-label-sm text-label-sm text-on-surface-variant font-mono">STD-IEEE</span></div><div class="flex flex-col gap-space-xs font-mono text-on-surface py-space-xs"><div class="bg-surface-container-low px-space-xs py-0.5 font-label-sm text-label-sm text-on-surface">Δ Energy = Tx Input − Consumer Total</div><div class="bg-surface-container-low px-space-xs py-0.5 font-label-sm text-label-sm text-secondary">Loss % = (Δ / Tx Input) × 100</div></div><p class="font-label-sm text-label-sm text-on-surface-variant italic leading-normal">Note: Discrepancy is an indicator of possible abnormality, not definitive proof of theft.</p></div><div class="flex justify-between items-center px-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant font-mono">SYS_VER: 2.4.1-PRD</span><span class="font-label-sm text-label-sm text-secondary font-mono">BUS_OK</span></div></div></aside><div class="pl-72"><main class="w-full pt-16 bg-surface min-h-screen px-gutter-lg py-margin-md"><div class="flex flex-col w-full text-on-surface">
+<!-- Sub-Header & Global Edge Node Actions Bar -->
+<div class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-md mb-margin-md pb-space-md bg-surface-container-low p-space-md shadow-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm mb-space-xs">
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 bg-primary-container text-on-primary-container font-mono tracking-widest uppercase">NODE-SIM_V2.4</span>
+<span class="font-label-sm text-label-sm text-outline font-mono">MAC: 24:6F:28:B4:9C:12</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary tracking-wide uppercase leading-tight">Unauthorised Power Tapping Detection System</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">ESP32 edge controller with dual-point current measurement and wireless alert telemetry.</p>
+</div>
+<!-- Live Telemetry Badge + Quick Triggers -->
+<div class="flex flex-wrap items-center gap-space-md">
+<!-- Wireless Status Box -->
+<div class="flex items-center gap-space-md bg-surface-container px-space-md py-space-sm shadow-sm">
+<div class="flex items-center gap-space-xs">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
+</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-secondary uppercase leading-none">Wireless Telemetry Active</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono mt-0.5">MQTT 192.168.4.1:1883 [12ms]</span>
+</div>
+</div>
+</div>
+<!-- Quick Metrics Strip -->
+<div class="hidden lg:flex items-center gap-space-md bg-surface-container-lowest px-space-md py-space-sm font-mono text-on-surface-variant text-label-sm font-label-sm">
+<div>LOOP: <span class="text-primary font-bold">20ms</span></div>
+<div class="w-px h-4 bg-surface-container-highest"></div>
+<div>HEAP: <span class="text-secondary font-bold">214KB</span></div>
+<div class="w-px h-4 bg-surface-container-highest"></div>
+<div>UPTIME: <span class="text-on-surface font-bold">14d 06h</span></div>
+</div>
+<!-- Quick Action Buttons -->
+<div class="flex items-center gap-space-xs">
+<button class="px-space-md py-space-sm bg-tertiary-container hover:bg-tertiary text-on-tertiary-container font-label-md text-label-md uppercase font-bold transition-all shadow-sm flex items-center gap-space-xs" id="btn-trigger-anomaly" type="button">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+<span>Trigger Peak Anomaly</span>
+</button>
+<button class="px-space-md py-space-sm bg-surface-container-high hover:bg-surface-bright text-primary font-label-md text-label-md uppercase font-bold transition-all shadow-sm flex items-center gap-space-xs" id="btn-normalize-load" type="button">
+<span class="material-symbols-outlined text-[16px]">restart_alt</span>
+<span>Normalize Daytime Load</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Scenario Matrix Grid -->
+<div class="mb-margin-md">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-mono">SCENARIO RUNTIME EMULATION REGISTER</span>
+<span class="font-label-sm text-label-sm text-primary font-mono">[AUTOPILOT_PRESETS]</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Scenario Card 1 -->
+<div class="cursor-pointer bg-surface-container-low hover:bg-surface-container p-space-md transition-all shadow-sm relative group" id="card-scen-1" onclick="applyScenario(1)">
+<div class="flex items-start justify-between mb-space-xs">
+<span class="font-label-md text-label-md font-bold text-on-surface group-hover:text-primary transition-colors">1. Normal Balanced</span>
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 bg-secondary/10 text-secondary font-mono uppercase">BALANCED</span>
+</div>
+<div class="font-mono text-body-sm font-body-sm text-on-surface-variant flex justify-between py-0.5">
+<span>CT1: 42.4A</span>
+<span>CT2: 41.8A</span>
+</div>
+<div class="flex items-center justify-between pt-space-xs font-mono">
+<span class="text-label-sm font-label-sm text-outline">Δ Discrepancy:</span>
+<span class="font-label-md text-label-md font-bold text-secondary">1.4% (PASS)</span>
+</div>
+</div>
+<!-- Scenario Card 2 -->
+<div class="cursor-pointer bg-surface-container-low hover:bg-surface-container p-space-md transition-all shadow-sm relative group" id="card-scen-2" onclick="applyScenario(2)">
+<div class="flex items-start justify-between mb-space-xs">
+<span class="font-label-md text-label-md font-bold text-on-surface group-hover:text-primary transition-colors">2. Transient Inrush</span>
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 bg-tertiary/10 text-tertiary-fixed font-mono uppercase">SUPPRESSED</span>
+</div>
+<div class="font-mono text-body-sm font-body-sm text-on-surface-variant flex justify-between py-0.5">
+<span>CT1: 85.0A</span>
+<span>CT2: 45.0A</span>
+</div>
+<div class="flex items-center justify-between pt-space-xs font-mono">
+<span class="text-label-sm font-label-sm text-outline">Trip Filter:</span>
+<span class="font-label-md text-label-md font-bold text-tertiary-fixed">1/3 Cycles Δ 47.1%</span>
+</div>
+</div>
+<!-- Scenario Card 3 -->
+<div class="cursor-pointer bg-surface-container-high p-space-md transition-all shadow-sm relative group" id="card-scen-3" onclick="applyScenario(3)">
+<div class="absolute -top-1 right-2 px-1 bg-primary text-on-primary font-label-sm text-label-sm font-mono">ACTIVE</div>
+<div class="flex items-start justify-between mb-space-xs">
+<span class="font-label-md text-label-md font-bold text-primary">3. Unauthorised Tapping</span>
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 bg-error-container text-on-error-container font-mono uppercase font-bold">RED ANOMALY</span>
+</div>
+<div class="font-mono text-body-sm font-body-sm text-on-surface-variant flex justify-between py-0.5">
+<span>CT1: 68.2A</span>
+<span>CT2: 44.1A</span>
+</div>
+<div class="flex items-center justify-between pt-space-xs font-mono">
+<span class="text-label-sm font-label-sm text-outline">Persistence:</span>
+<span class="font-label-md text-label-md font-bold text-error">5/3 Cycles Δ 35.3%</span>
+</div>
+</div>
+<!-- Scenario Card 4 -->
+<div class="cursor-pointer bg-surface-container-low hover:bg-surface-container p-space-md transition-all shadow-sm relative group" id="card-scen-4" onclick="applyScenario(4)">
+<div class="flex items-start justify-between mb-space-xs">
+<span class="font-label-md text-label-md font-bold text-on-surface group-hover:text-primary transition-colors">4. High Peak Tapping</span>
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 bg-error-container text-on-error-container font-mono uppercase font-bold">CRITICAL TRIP</span>
+</div>
+<div class="font-mono text-body-sm font-body-sm text-on-surface-variant flex justify-between py-0.5">
+<span>CT1: 94.5A</span>
+<span>CT2: 32.0A</span>
+</div>
+<div class="flex items-center justify-between pt-space-xs font-mono">
+<span class="text-label-sm font-label-sm text-outline">Persistence:</span>
+<span class="font-label-md text-label-md font-bold text-error">12/3 Cycles Δ 66.1%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary Workstation Grid: Signal Injection, ESP32 Architecture & OLED Telemetry -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Left 7 Cols: Signal Injection Sliders + Calibration + Hardware Schematic Preview -->
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<!-- Signal Injection Deck -->
+<div class="bg-surface-container-low shadow-md">
+<div class="bg-surface-container-lowest px-space-md py-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">tune</span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface">Analog Signal Injection Matrix</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-mono">ADC1_CH4/CH5/CH0</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-lg">
+<!-- CT1 Slider -->
+<div class="flex flex-col gap-space-xs bg-surface-container p-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 bg-primary"></span>
+<span class="font-label-md text-label-md font-bold text-primary uppercase">CT1 — Transformer Feeder Input</span>
+</div>
+<div class="flex items-baseline gap-space-xs font-mono">
+<span class="font-telemetry-display text-telemetry-display text-primary font-bold" id="disp-ct1">68.2</span>
+<span class="text-label-md font-label-md text-on-surface-variant">A RMS</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              SCT-013-000 Non-invasive split core current transformer on Tx primary low-voltage distribution busbar.
+            </p>
+<div class="pt-space-xs">
+<input class="w-full h-2 bg-surface-container-lowest accent-primary cursor-pointer" id="slider-ct1" max="100" min="0" step="0.1" type="range" value="68.2"/>
+<div class="flex justify-between font-mono text-label-sm font-label-sm text-outline mt-1">
+<span>0.0 A</span>
+<span>25.0 A</span>
+<span>50.0 A</span>
+<span>75.0 A</span>
+<span>100.0 A</span>
+</div>
+</div>
+</div>
+<!-- CT2 Slider -->
+<div class="flex flex-col gap-space-xs bg-surface-container p-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 bg-secondary"></span>
+<span class="font-label-md text-label-md font-bold text-secondary uppercase">CT2 — Consumer Aggregate Load</span>
+</div>
+<div class="flex items-baseline gap-space-xs font-mono">
+<span class="font-telemetry-display text-telemetry-display text-secondary font-bold" id="disp-ct2">44.1</span>
+<span class="text-label-md font-label-md text-on-surface-variant">A RMS</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Summed downstream digital consumer smart meters or feeder secondary branch monitoring point.
+            </p>
+<div class="pt-space-xs">
+<input class="w-full h-2 bg-surface-container-lowest accent-secondary cursor-pointer" id="slider-ct2" max="100" min="0" step="0.1" type="range" value="44.1"/>
+<div class="flex justify-between font-mono text-label-sm font-label-sm text-outline mt-1">
+<span>0.0 A</span>
+<span>25.0 A</span>
+<span>50.0 A</span>
+<span>75.0 A</span>
+<span>100.0 A</span>
+</div>
+</div>
+</div>
+<!-- AC Mains Voltage Slider -->
+<div class="flex flex-col gap-space-xs bg-surface-container p-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 bg-tertiary-fixed"></span>
+<span class="font-label-md text-label-md font-bold text-tertiary-fixed uppercase">AC Grid Bus Voltage</span>
+</div>
+<div class="flex items-baseline gap-space-xs font-mono">
+<span class="font-telemetry-display text-telemetry-display text-tertiary-fixed font-bold" id="disp-vrms">231.4</span>
+<span class="text-label-md font-label-md text-on-surface-variant">V RMS</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              ZMPT101B precision active single-phase AC voltage transformer sensor module (50Hz mains reference).
+            </p>
+<div class="pt-space-xs">
+<input class="w-full h-2 bg-surface-container-lowest accent-tertiary-fixed cursor-pointer" id="slider-vrms" max="260" min="180" step="0.2" type="range" value="231.4"/>
+<div class="flex justify-between font-mono text-label-sm font-label-sm text-outline mt-1">
+<span>180.0 V</span>
+<span>200.0 V</span>
+<span>220.0 V</span>
+<span>240.0 V</span>
+<span>260.0 V</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Real-Time Vector & Phase Comparator Graph -->
+<div class="bg-surface-container-low p-space-md shadow-md">
+<div class="flex items-center justify-between mb-space-sm pb-space-xs bg-surface-container-lowest px-space-md py-space-xs">
+<span class="font-label-md text-label-md text-primary uppercase font-bold tracking-wider">Dual-CT Cycle Real-Time Phase Waveforms</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">T = 20.00ms (50.0 Hz)</span>
+</div>
+<div class="relative bg-surface-container-lowest p-space-md h-44 flex items-center justify-center overflow-hidden">
+<!-- Technical Grid SVG -->
+<svg class="w-full h-full" id="phase-oscilloscope" preserveaspectratio="none" viewbox="0 0 600 120">
+<defs>
+<pattern height="20" id="grid" patternunits="userSpaceOnUse" width="30">
+<path class="text-surface-variant/40" d="M 30 0 L 0 0 0 20" fill="none" stroke="currentColor" stroke-width="0.7"></path>
+</pattern>
+</defs>
+<rect fill="url(#grid)" height="100%" width="100%"></rect>
+<line class="text-surface-container-highest" stroke="currentColor" stroke-dasharray="4 4" stroke-width="1.5" x1="0" x2="600" y1="60" y2="60"></line>
+<!-- CT1 Waveform Path (Cyan) -->
+<path class="transition-all duration-300" d="M0,60 Q75,-10 150,60 T300,60 T450,60 T600,60" fill="none" id="wave-ct1" stroke="#8fedff" stroke-width="2.5"></path>
+<!-- CT2 Waveform Path (Green) -->
+<path class="transition-all duration-300" d="M0,60 Q75,15 150,60 T300,60 T450,60 T600,60" fill="none" id="wave-ct2" stroke="#45deae" stroke-dasharray="3 2" stroke-width="2.5"></path>
+<!-- Voltage reference line (Muted amber) -->
+<path d="M0,60 Q75,-30 150,60 T300,60 T450,60 T600,60" fill="none" opacity="0.35" stroke="#ffd5d7" stroke-width="1"></path>
+</svg>
+<!-- Graph Overlay Legend -->
+<div class="absolute bottom-2 left-3 flex gap-space-md font-mono text-label-sm font-label-sm bg-surface-container-lowest/90 px-space-xs py-0.5">
+<span class="text-primary flex items-center gap-1"><span class="w-2.5 h-0.5 bg-primary"></span>CT1 Bus</span>
+<span class="text-secondary flex items-center gap-1"><span class="w-2.5 h-0.5 bg-secondary"></span>CT2 Aggregate</span>
+<span class="text-tertiary-fixed/60 flex items-center gap-1"><span class="w-2.5 h-0.5 bg-tertiary-fixed"></span>VAC Ref</span>
+</div>
+<div class="absolute top-2 right-3 font-mono text-label-sm font-label-sm text-error bg-surface-container-lowest/90 px-space-xs py-0.5" id="graph-delta-tag">
+            Δ Diff: +24.1 A RMS
+          </div>
+</div>
+</div>
+<!-- Hardware GPIO Pinout & Buzzer Relay Status -->
+<div class="bg-surface-container-low p-space-md shadow-md">
+<div class="flex items-center justify-between mb-space-md pb-space-xs bg-surface-container-lowest px-space-md py-space-xs">
+<span class="font-label-md text-label-md uppercase font-bold text-on-surface">ESP32 Hardware Physical Output Indicators</span>
+<span class="font-label-sm text-label-sm text-outline font-mono">SOC_WROOM_32D</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md">
+<!-- GPIO2 Normal LED -->
+<div class="bg-surface-container p-space-md flex flex-col justify-between transition-all" id="gpio2-card">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-mono text-outline">GPIO 02</span>
+<span class="w-3 h-3 rounded-full bg-secondary-container/40" id="gpio2-dot"></span>
+</div>
+<div class="my-space-sm">
+<div class="font-label-md text-label-md font-bold uppercase text-on-surface">Normal LED</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Grid Phase Balance</div>
+</div>
+<div class="font-label-sm text-label-sm font-mono text-outline" id="gpio2-status">STATE: OFF (IDLE)</div>
+</div>
+<!-- GPIO4 Anomaly LED -->
+<div class="bg-surface-container p-space-md flex flex-col justify-between transition-all shadow-[0_0_12px_rgba(251,69,103,0.25)]" id="gpio4-card">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-mono text-outline">GPIO 04</span>
+<span class="w-3 h-3 rounded-full bg-error animate-ping" id="gpio4-dot"></span>
+</div>
+<div class="my-space-sm">
+<div class="font-label-md text-label-md font-bold uppercase text-error">Anomaly LED</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Optical Theft Strobe</div>
+</div>
+<div class="font-label-sm text-label-sm font-mono text-error font-bold" id="gpio4-status">STATE: 10Hz FLASHING</div>
+</div>
+<!-- GPIO15 Buzzer Alarm -->
+<div class="bg-surface-container p-space-md flex flex-col justify-between transition-all" id="gpio15-card">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-mono text-outline">GPIO 15</span>
+<span class="w-3 h-3 rounded-full bg-tertiary-fixed" id="gpio15-dot"></span>
+</div>
+<div class="my-space-sm">
+<div class="font-label-md text-label-md font-bold uppercase text-tertiary-fixed">Buzzer Alarm</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Acoustic Trip Piezo</div>
+</div>
+<div class="font-label-sm text-label-sm font-mono text-tertiary-fixed font-bold" id="gpio15-status">STATE: 2.4kHz ACTIVE PULSE</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right 5 Cols: SSD1306 Realistic OLED Preview + SCADA Algorithmic Calibrator -->
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<!-- Realistic ESP32 SSD1306 I2C OLED Panel -->
+<div class="bg-surface-container-low p-space-md shadow-xl flex flex-col">
+<div class="flex items-center justify-between mb-space-sm pb-space-xs bg-surface-container-lowest px-space-md py-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">screenshot_monitor</span>
+<span class="font-label-md text-label-md uppercase font-bold text-on-surface">Physical OLED Diagnostics (SSD1306)</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">0.96" I2C 0x3C</span>
+</div>
+<!-- The Physical Microcontroller Screen Chassis -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg shadow-inner flex flex-col items-center">
+<!-- PCB Silk Screen Header -->
+<div class="w-full flex justify-between items-center px-space-sm pb-space-xs text-on-surface-variant/70 font-mono text-label-sm font-label-sm uppercase">
+<span>GND  VCC  SCL  SDA</span>
+<span class="text-primary font-bold">SSD1306 128x64</span>
+</div>
+<!-- Glass Bezel & Pixels Enclosure -->
+<div class="w-full bg-[#03070d] p-space-md rounded shadow-[inset_0_2px_12px_rgba(0,0,0,0.9)] relative overflow-hidden">
+<!-- Glass glare gradient line -->
+<div class="absolute -top-12 -left-12 w-48 h-24 bg-gradient-to-br from-white/10 to-transparent rotate-12 pointer-events-none"></div>
+<!-- Monospaced High-Contrast OLED Pixel Font Simulation -->
+<div class="font-mono text-primary text-[13px] leading-[19px] tracking-tight selection:bg-none">
+<div class="flex justify-between border-b border-primary/20 pb-0.5">
+<span class="text-primary font-bold">TELDS-NODE-01</span>
+<span class="text-secondary font-bold">LIVE [WiFi]</span>
+</div>
+<div class="flex justify-between text-on-surface-variant py-0.5 text-[11px]">
+<span id="oled-clock">TIME: 14:32:08 UTC</span>
+<span>RSSI: -58dBm</span>
+</div>
+<div class="py-0.5 flex justify-between">
+<span>CT1: <strong class="text-primary" id="oled-ct1">68.2A</strong></span>
+<span>CT2: <strong class="text-secondary" id="oled-ct2">44.1A</strong></span>
+</div>
+<div class="py-0.5 flex justify-between">
+<span>Vrms: <strong class="text-tertiary-fixed" id="oled-vrms">231.4V</strong></span>
+<span>PF: <span class="text-white">0.96</span></span>
+</div>
+<div class="flex justify-between py-0.5 text-on-background">
+<span>DISCREP: <strong class="text-error font-bold" id="oled-discrep">35.3%</strong></span>
+<span class="text-error font-bold" id="oled-tag">[HIGH]</span>
+</div>
+<div class="mt-1 pt-0.5 border-t border-primary/20 flex justify-between items-center">
+<span class="text-error font-bold tracking-widest animate-pulse" id="oled-status">** THEFT DETECT **</span>
+<span class="text-[10px] text-on-surface-variant font-mono" id="oled-cycles">P:5/3</span>
+</div>
+</div>
+</div>
+<!-- Microchip Pin Label bottom -->
+<div class="w-full flex justify-center pt-space-xs text-outline font-mono text-[9px] tracking-widest">
+            I2C_FAST_MODE 400kHz | WIRELESS SYNC OK
+          </div>
+</div>
+<!-- Telemetry & Loss Summary Statistics Panel -->
+<div class="mt-space-md grid grid-cols-2 gap-space-xs font-mono">
+<div class="bg-surface-container p-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase block">Feeder Input Power</span>
+<span class="font-headline-sm text-headline-sm text-primary font-bold" id="calc-p-in">15.78 kW</span>
+</div>
+<div class="bg-surface-container p-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase block">Consumer Power</span>
+<span class="font-headline-sm text-headline-sm text-secondary font-bold" id="calc-p-out">10.20 kW</span>
+</div>
+<div class="bg-surface-container p-space-sm col-span-2 flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase block">Calculated Delta Loss</span>
+<span class="font-headline-md text-headline-md text-error font-bold leading-tight" id="calc-delta-loss">5.58 kW</span>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-outline block">HTTP REST TELEMETRY</span>
+<span class="font-label-sm text-label-sm text-secondary font-mono">POST /v1/telemetry 200 OK</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Algorithmic Detection & Firmware Threshold Tuning -->
+<div class="bg-surface-container-low p-space-md shadow-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-xs bg-surface-container-lowest px-space-md py-space-xs">
+<span class="font-label-md text-label-md uppercase font-bold text-on-surface">Detection Filter Firmware Parameters</span>
+<span class="font-label-sm text-label-sm text-primary font-mono">MATH_IEEE_1459</span>
+</div>
+<!-- Discrepancy Slider -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex justify-between items-baseline font-mono">
+<span class="font-label-md text-label-md text-on-surface">Discrepancy Threshold (Δ% Trip)</span>
+<span class="font-label-md text-label-md text-primary font-bold" id="disp-thresh">10.0%</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-lowest accent-primary cursor-pointer" id="slider-threshold" max="50" min="2" step="0.5" type="range" value="10.0"/>
+<div class="flex justify-between font-mono text-label-sm font-label-sm text-outline">
+<span>2.0% (Sensitive)</span>
+<span>25.0% (Normal)</span>
+<span>50.0% (Coarse)</span>
+</div>
+</div>
+<!-- Persistence Filter Slider -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex justify-between items-baseline font-mono">
+<span class="font-label-md text-label-md text-on-surface">Persistence Requirement (Cycles)</span>
+<span class="font-label-md text-label-md text-primary font-bold" id="disp-persist">3 Consecutive Cycles</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-lowest accent-primary cursor-pointer" id="slider-persistence" max="10" min="1" step="1" type="range" value="3"/>
+<div class="flex justify-between font-mono text-label-sm font-label-sm text-outline">
+<span>1 Cycle (Raw)</span>
+<span>5 Cycles</span>
+<span>10 Cycles (Debounced)</span>
+</div>
+</div>
+<!-- Real-Time Formulation Reference Card -->
+<div class="bg-surface-container p-space-md flex flex-col gap-space-xs font-mono text-label-sm font-label-sm">
+<div class="text-outline uppercase text-[10px]">Real-Time Arithmetic Execution</div>
+<div class="bg-surface-container-lowest p-space-xs text-on-surface">
+            ΔI = max(CT1 − CT2, 0) = max(<span id="formula-ct1">68.2</span> − <span id="formula-ct2">44.1</span>, 0) = <strong class="text-primary" id="formula-delta-a">24.1 A</strong>
+</div>
+<div class="bg-surface-container-lowest p-space-xs text-on-surface">
+            Discrepancy % = (ΔI / CT1) × 100 = (<span id="formula-sub">24.1 / 68.2</span>) × 100 = <strong class="text-error" id="formula-perc">35.33%</strong>
+</div>
+<div class="p-space-xs bg-surface-container-high text-on-surface-variant italic text-[11px] leading-tight mt-space-xs">
+            Clarification: Current discrepancy is an indicator of possible abnormality or unmetered tapping, not definitive proof of theft.
+          </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Real-Time Simulator Logic Script -->
+<script>
+  (function () {
+    // State variables
+    let state = {
+      ct1: 68.2,
+      ct2: 44.1,
+      vrms: 231.4,
+      threshold: 10.0,
+      persistence: 3,
+      currentCycleCounter: 5,
+      pf: 0.96
+    };
+
+    // DOM Elements
+    const sliderCt1 = document.getElementById('slider-ct1');
+    const sliderCt2 = document.getElementById('slider-ct2');
+    const sliderVrms = document.getElementById('slider-vrms');
+    const sliderThresh = document.getElementById('slider-threshold');
+    const sliderPersist = document.getElementById('slider-persistence');
+
+    const dispCt1 = document.getElementById('disp-ct1');
+    const dispCt2 = document.getElementById('disp-ct2');
+    const dispVrms = document.getElementById('disp-vrms');
+    const dispThresh = document.getElementById('disp-thresh');
+    const dispPersist = document.getElementById('disp-persist');
+
+    // OLED Elements
+    const oledCt1 = document.getElementById('oled-ct1');
+    const oledCt2 = document.getElementById('oled-ct2');
+    const oledVrms = document.getElementById('oled-vrms');
+    const oledDiscrep = document.getElementById('oled-discrep');
+    const oledTag = document.getElementById('oled-tag');
+    const oledStatus = document.getElementById('oled-status');
+    const oledCycles = document.getElementById('oled-cycles');
+    const oledClock = document.getElementById('oled-clock');
+
+    // Power calculations
+    const calcPIn = document.getElementById('calc-p-in');
+    const calcPOut = document.getElementById('calc-p-out');
+    const calcDeltaLoss = document.getElementById('calc-delta-loss');
+
+    // Formulations
+    const formulaCt1 = document.getElementById('formula-ct1');
+    const formulaCt2 = document.getElementById('formula-ct2');
+    const formulaDeltaA = document.getElementById('formula-delta-a');
+    const formulaSub = document.getElementById('formula-sub');
+    const formulaPerc = document.getElementById('formula-perc');
+
+    // GPIO Elements
+    const gpio2Card = document.getElementById('gpio2-card');
+    const gpio2Dot = document.getElementById('gpio2-dot');
+    const gpio2Status = document.getElementById('gpio2-status');
+
+    const gpio4Card = document.getElementById('gpio4-card');
+    const gpio4Dot = document.getElementById('gpio4-dot');
+    const gpio4Status = document.getElementById('gpio4-status');
+
+    const gpio15Card = document.getElementById('gpio15-card');
+    const gpio15Dot = document.getElementById('gpio15-dot');
+    const gpio15Status = document.getElementById('gpio15-status');
+
+    // Waveform & tags
+    const waveCt1 = document.getElementById('wave-ct1');
+    const waveCt2 = document.getElementById('wave-ct2');
+    const graphDeltaTag = document.getElementById('graph-delta-tag');
+
+    function updateSimulation() {
+      // 1. Math computation
+      const ct1Val = parseFloat(state.ct1);
+      const ct2Val = parseFloat(state.ct2);
+      const vrmsVal = parseFloat(state.vrms);
+      const threshVal = parseFloat(state.threshold);
+      const persistVal = parseInt(state.persistence, 10);
+
+      const deltaI = Math.max(0, ct1Val - ct2Val);
+      const discrepancyPct = ct1Val > 0 ? (deltaI / ct1Val) * 100 : 0;
+
+      const pInKW = (ct1Val * vrmsVal * state.pf) / 1000;
+      const pOutKW = (ct2Val * vrmsVal * state.pf) / 1000;
+      const deltaLossKW = Math.max(0, pInKW - pOutKW);
+
+      // 2. Update Display Readouts
+      dispCt1.innerText = ct1Val.toFixed(1);
+      dispCt2.innerText = ct2Val.toFixed(1);
+      dispVrms.innerText = vrmsVal.toFixed(1);
+      dispThresh.innerText = threshVal.toFixed(1) + '%';
+      dispPersist.innerText = persistVal + ' Consecutive Cycles';
+
+      // 3. Formula readouts
+      formulaCt1.innerText = ct1Val.toFixed(1);
+      formulaCt2.innerText = ct2Val.innerText = ct2Val.toFixed(1);
+      formulaDeltaA.innerText = deltaI.toFixed(1) + ' A';
+      formulaSub.innerText = `${deltaI.toFixed(1)} / ${ct1Val.toFixed(1)}`;
+      formulaPerc.innerText = discrepancyPct.toFixed(1) + '%';
+
+      // 4. Power readouts
+      calcPIn.innerText = pInKW.toFixed(2) + ' kW';
+      calcPOut.innerText = pOutKW.toFixed(2) + ' kW';
+      calcDeltaLoss.innerText = deltaLossKW.toFixed(2) + ' kW';
+
+      // 5. OLED Updates
+      oledCt1.innerText = ct1Val.toFixed(1) + 'A';
+      oledCt2.innerText = ct2Val.toFixed(1) + 'A';
+      oledVrms.innerText = vrmsVal.toFixed(1) + 'V';
+      oledDiscrep.innerText = discrepancyPct.toFixed(1) + '%';
+      oledCycles.innerText = `P:${state.currentCycleCounter}/${persistVal}`;
+
+      // Detection condition
+      const isBreached = discrepancyPct >= threshVal;
+      const isPersistent = isBreached && (state.currentCycleCounter >= persistVal);
+
+      if (isPersistent) {
+        oledTag.innerText = '[HIGH]';
+        oledTag.className = 'text-error font-bold';
+        oledStatus.innerText = '** THEFT DETECT **';
+        oledStatus.className = 'text-error font-bold tracking-widest animate-pulse';
+
+        // GPIO States: Alert Active
+        gpio2Dot.className = 'w-3 h-3 rounded-full bg-secondary-container/20';
+        gpio2Status.innerText = 'STATE: OFF (SUPPRESSED)';
+        gpio2Status.className = 'font-label-sm text-label-sm font-mono text-outline';
+
+        gpio4Dot.className = 'w-3 h-3 rounded-full bg-error animate-ping';
+        gpio4Status.innerText = 'STATE: 10Hz FLASHING';
+        gpio4Status.className = 'font-label-sm text-label-sm font-mono text-error font-bold';
+
+        gpio15Dot.className = 'w-3 h-3 rounded-full bg-tertiary-fixed';
+        gpio15Status.innerText = 'STATE: 2.4kHz ACTIVE PULSE';
+        gpio15Status.className = 'font-label-sm text-label-sm font-mono text-tertiary-fixed font-bold';
+
+        graphDeltaTag.innerText = `Δ Trip: +${deltaI.toFixed(1)} A RMS`;
+        graphDeltaTag.className = 'absolute top-2 right-3 font-mono text-label-sm font-label-sm text-error bg-surface-container-lowest/90 px-space-xs py-0.5';
+      } else if (isBreached && !isPersistent) {
+        oledTag.innerText = '[WARN]';
+        oledTag.className = 'text-tertiary-fixed font-bold';
+        oledStatus.innerText = 'FILTERING INRUSH';
+        oledStatus.className = 'text-tertiary-fixed font-bold tracking-wider';
+
+        gpio2Dot.className = 'w-3 h-3 rounded-full bg-secondary-container/40';
+        gpio2Status.innerText = 'STATE: OFF';
+        gpio2Status.className = 'font-label-sm text-label-sm font-mono text-outline';
+
+        gpio4Dot.className = 'w-3 h-3 rounded-full bg-tertiary-fixed animate-pulse';
+        gpio4Status.innerText = 'STATE: DEBOUNCE WAIT';
+        gpio4Status.className = 'font-label-sm text-label-sm font-mono text-tertiary-fixed font-bold';
+
+        gpio15Dot.className = 'w-3 h-3 rounded-full bg-surface-container-highest';
+        gpio15Status.innerText = 'STATE: MUTED';
+        gpio15Status.className = 'font-label-sm text-label-sm font-mono text-outline';
+
+        graphDeltaTag.innerText = `Inrush: +${deltaI.toFixed(1)} A RMS`;
+        graphDeltaTag.className = 'absolute top-2 right-3 font-mono text-label-sm font-label-sm text-tertiary-fixed bg-surface-container-lowest/90 px-space-xs py-0.5';
+      } else {
+        oledTag.innerText = '[NORM]';
+        oledTag.className = 'text-secondary font-bold';
+        oledStatus.innerText = 'SYSTEM BALANCED';
+        oledStatus.className = 'text-secondary font-bold tracking-wider';
+
+        // GPIO States: Normal
+        gpio2Dot.className = 'w-3 h-3 rounded-full bg-secondary';
+        gpio2Status.innerText = 'STATE: SOLID ON';
+        gpio2Status.className = 'font-label-sm text-label-sm font-mono text-secondary font-bold';
+
+        gpio4Dot.className = 'w-3 h-3 rounded-full bg-surface-container-highest';
+        gpio4Status.innerText = 'STATE: OFF';
+        gpio4Status.className = 'font-label-sm text-label-sm font-mono text-outline';
+
+        gpio15Dot.className = 'w-3 h-3 rounded-full bg-surface-container-highest';
+        gpio15Status.innerText = 'STATE: SILENT';
+        gpio15Status.className = 'font-label-sm text-label-sm font-mono text-outline';
+
+        graphDeltaTag.innerText = `Normal: +${deltaI.toFixed(1)} A RMS`;
+        graphDeltaTag.className = 'absolute top-2 right-3 font-mono text-label-sm font-label-sm text-secondary bg-surface-container-lowest/90 px-space-xs py-0.5';
+      }
+
+      // 6. Oscilloscope Path Distortion
+      const ct1Amp = Math.min(50, (ct1Val / 100) * 52);
+      const ct2Amp = Math.min(50, (ct2Val / 100) * 52);
+
+      const d1 = `M0,60 Q75,${60 - ct1Amp} 150,60 T300,60 T450,60 T600,60`;
+      const d2 = `M0,60 Q75,${60 - ct2Amp} 150,60 T300,60 T450,60 T600,60`;
+      waveCt1.setAttribute('d', d1);
+      waveCt2.setAttribute('d', d2);
+    }
+
+    // Event Bindings
+    sliderCt1.addEventListener('input', (e) => {
+      state.ct1 = parseFloat(e.target.value);
+      updateSimulation();
+    });
+
+    sliderCt2.addEventListener('input', (e) => {
+      state.ct2 = parseFloat(e.target.value);
+      updateSimulation();
+    });
+
+    sliderVrms.addEventListener('input', (e) => {
+      state.vrms = parseFloat(e.target.value);
+      updateSimulation();
+    });
+
+    sliderThresh.addEventListener('input', (e) => {
+      state.threshold = parseFloat(e.target.value);
+      updateSimulation();
+    });
+
+    sliderPersist.addEventListener('input', (e) => {
+      state.persistence = parseInt(e.target.value, 10);
+      updateSimulation();
+    });
+
+    // Top buttons
+    document.getElementById('btn-trigger-anomaly').addEventListener('click', () => {
+      applyScenario(4);
+    });
+
+    document.getElementById('btn-normalize-load').addEventListener('click', () => {
+      applyScenario(1);
+    });
+
+    // Scenarios function
+    window.applyScenario = function (id) {
+      // Clear scenario cards active style
+      for (let i = 1; i <= 4; i++) {
+        const card = document.getElementById(`card-scen-${i}`);
+        if (card) {
+          card.classList.remove('bg-surface-container-high');
+          card.classList.add('bg-surface-container-low');
+        }
+      }
+      const activeCard = document.getElementById(`card-scen-${id}`);
+      if (activeCard) {
+        activeCard.classList.remove('bg-surface-container-low');
+        activeCard.classList.add('bg-surface-container-high');
+      }
+
+      if (id === 1) {
+        state.ct1 = 42.4;
+        state.ct2 = 41.8;
+        state.currentCycleCounter = 0;
+      } else if (id === 2) {
+        state.ct1 = 85.0;
+        state.ct2 = 45.0;
+        state.currentCycleCounter = 1;
+      } else if (id === 3) {
+        state.ct1 = 68.2;
+        state.ct2 = 44.1;
+        state.currentCycleCounter = 5;
+      } else if (id === 4) {
+        state.ct1 = 94.5;
+        state.ct2 = 32.0;
+        state.currentCycleCounter = 12;
+      }
+
+      sliderCt1.value = state.ct1;
+      sliderCt2.value = state.ct2;
+      updateSimulation();
+    };
+
+    // Live Clock Simulator on OLED
+    setInterval(() => {
+      const now = new Date();
+      const hrs = String(now.getUTCHours()).padStart(2, '0');
+      const mins = String(now.getUTCMinutes()).padStart(2, '0');
+      const secs = String(now.getUTCSeconds()).padStart(2, '0');
+      oledClock.innerText = `TIME: ${hrs}:${mins}:${secs} UTC`;
+    }, 1000);
+
+    // Initial render
+    updateSimulation();
+  })();
+</script></main></div></body></html>

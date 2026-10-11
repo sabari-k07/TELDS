@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "stitch": {
+      "serverUrl": "https://stitch.googleapis.com/mcp",
+      "env": {
+        "STITCH_API_KEY": "YOUR_STITCH_API_KEY_HERE"
+      }
+    },
+    "supabase": {
+      "serverUrl": "https://mcp.supabase.com/mcp",
+      "env": {
+        "SUPABASE_PROJECT_REF": "nuxmpdleqpqunkhbpqjj"
+      }
+    }
+  }
+}

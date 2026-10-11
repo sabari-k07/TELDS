@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Stitch Connect — GridWatch AI Feeder Twin Showcase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #070B14; color: #F1F5F9; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .header-font { font-family: 'IBM+Plex+Sans', sans-serif; }
+    .stitch-glow { box-shadow: 0 0 30px rgba(6, 214, 240, 0.15); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#070B14] text-slate-100">
+
+  <!-- TOP HEADER -->
+  <header class="h-16 border-b border-[#233047] bg-[#0B1220]/90 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-50">
+    <div class="flex items-center space-x-3">
+      <div class="w-9 h-9 rounded bg-[#06D6F0] flex items-center justify-center font-black text-[#070B14] shadow-lg shadow-[#06D6F0]/20 font-mono text-base">
+        ⚡
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-base tracking-tight text-white">Google Stitch Connect</span>
+          <span class="px-2 py-0.5 rounded text-[10px] mono font-bold bg-[#06D6F0]/15 text-[#06D6F0] border border-[#06D6F0]/30">LIVE API IMPORT</span>
+        </div>
+        <div class="text-[11px] mono text-slate-400">Project: GridWatch AI Feeder Twin (<span class="text-[#06D6F0]">6362821073693272948</span>)</div>
+      </div>
+    </div>
+
+    <div class="flex items-center space-x-3">
+      <a href="../telds_dashboard.html" class="px-3.5 py-1.5 rounded border border-[#233047] hover:border-[#06D6F0] text-xs mono text-slate-300 hover:text-[#06D6F0] transition-colors flex items-center gap-1.5">
+        <span>← Back to TELDS Dashboard</span>
+      </a>
+      <a id="btn-fullscreen-out" href="gridwatch_overview.html" target="_blank" class="px-3.5 py-1.5 rounded bg-[#06D6F0] text-[#070B14] font-bold text-xs mono hover:bg-[#5EE8F8] transition-colors flex items-center gap-1 shadow-md shadow-[#06D6F0]/20">
+        <span>↗ Fullscreen Screen</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 p-6 md:p-8 space-y-6 max-w-7xl mx-auto w-full">
+
+    <!-- HERO / STATUS STRIP -->
+    <div class="p-5 rounded border border-[#233047] bg-[#0E1627] flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2 text-xs mono text-slate-400">
+          <span class="w-2 h-2 rounded-full bg-[#22C99A] animate-pulse"></span>
+          <span>Authentication Verified: Stitch REST API via Google Cloud</span>
+        </div>
+        <h1 class="text-xl font-bold text-white tracking-tight">Imported Screens Showcase & Live Interactive Preview</h1>
+        <p class="text-xs text-slate-400">All 3 generated screens from Stitch have been synchronized with full fidelity HTML/Tailwind and captured screenshots.</p>
+      </div>
+
+      <div class="flex items-center gap-2 font-mono text-xs">
+        <div class="px-3 py-2 rounded bg-[#0B1220] border border-[#233047] text-center">
+          <div class="text-[10px] text-slate-400 uppercase">Synchronized</div>
+          <div class="font-bold text-[#06D6F0]">3 / 3 Screens</div>
+        </div>
+        <div class="px-3 py-2 rounded bg-[#0B1220] border border-[#233047] text-center">
+          <div class="text-[10px] text-slate-400 uppercase">Theme</div>
+          <div class="font-bold text-[#22C99A]">Dark SCADA</div>
+        </div>
+        <div class="px-3 py-2 rounded bg-[#0B1220] border border-[#233047] text-center">
+          <div class="text-[10px] text-slate-400 uppercase">Status</div>
+          <div class="font-bold text-[#FB4567]">Ready</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN SELECTOR CARDS -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      
+      <!-- CARD 1 -->
+      <div onclick="selectScreen('gridwatch_overview', this)" id="card-gridwatch_overview" class="p-4 rounded border-2 border-[#06D6F0] bg-[#0E1627] cursor-pointer hover:bg-[#121D33] transition-all relative group">
+        <div class="flex items-center justify-between mb-2">
+          <span class="px-2 py-0.5 rounded text-[10px] mono font-bold bg-[#06D6F0]/20 text-[#06D6F0] border border-[#06D6F0]/30">SCREEN 01</span>
+          <span class="text-[10px] mono text-slate-400">Overview Dashboard</span>
+        </div>
+        <h3 class="font-bold text-base text-white group-hover:text-[#06D6F0] transition-colors">GridWatch AI — SCADA Control Center Overview</h3>
+        <p class="text-xs text-slate-400 mt-1 line-clamp-2">Complete SCADA NOC control room view with top 4 KPI cards, feeder digital twin canvas, segment inspector drawer, and theft alerts table.</p>
+        <div class="mt-3 pt-3 border-t border-[#233047] flex items-center justify-between text-[11px] mono text-slate-400">
+          <span>HTML (55 KB)</span>
+          <span class="text-[#06D6F0] font-semibold">Active In Viewer →</span>
+        </div>
+      </div>
+
+      <!-- CARD 2 -->
+      <div onclick="selectScreen('feeder_localisation', this)" id="card-feeder_localisation" class="p-4 rounded border border-[#233047] bg-[#0E1627] cursor-pointer hover:border-[#06D6F0] hover:bg-[#121D33] transition-all relative group">
+        <div class="flex items-center justify-between mb-2">
+          <span class="px-2 py-0.5 rounded text-[10px] mono font-bold bg-[#FB4567]/20 text-[#FB4567] border border-[#FB4567]/30">SCREEN 02</span>
+          <span class="text-[10px] mono text-slate-400">Localisation P0-P4</span>
+        </div>
+        <h3 class="font-bold text-base text-white group-hover:text-[#06D6F0] transition-colors">TELDS — Feeder Segment Localisation & Topology</h3>
+        <p class="text-xs text-slate-400 mt-1 line-clamp-2">Radial line distribution hierarchy (P0 → P4), multi-point current balances, and automated critical mismatch isolation for SEG-P1-P2.</p>
+        <div class="mt-3 pt-3 border-t border-[#233047] flex items-center justify-between text-[11px] mono text-slate-400">
+          <span>HTML (53 KB)</span>
+          <span class="text-slate-500 group-hover:text-[#06D6F0]">Click to View →</span>
+        </div>
+      </div>
+
+      <!-- CARD 3 -->
+      <div onclick="selectScreen('virtual_esp32', this)" id="card-virtual_esp32" class="p-4 rounded border border-[#233047] bg-[#0E1627] cursor-pointer hover:border-[#06D6F0] hover:bg-[#121D33] transition-all relative group">
+        <div class="flex items-center justify-between mb-2">
+          <span class="px-2 py-0.5 rounded text-[10px] mono font-bold bg-[#22C99A]/20 text-[#22C99A] border border-[#22C99A]/30">SCREEN 03</span>
+          <span class="text-[10px] mono text-slate-400">ESP32 Hardware</span>
+        </div>
+        <h3 class="font-bold text-base text-white group-hover:text-[#06D6F0] transition-colors">TELDS — Virtual ESP32 Node & Edge Simulator</h3>
+        <p class="text-xs text-slate-400 mt-1 line-clamp-2">ESP32 edge controller with dual-point current measurement, signal injection sliders, persistence requirement cycles, and GPIO status LEDs.</p>
+        <div class="mt-3 pt-3 border-t border-[#233047] flex items-center justify-between text-[11px] mono text-slate-400">
+          <span>HTML (48 KB)</span>
+          <span class="text-slate-500 group-hover:text-[#06D6F0]">Click to View →</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PREVIEW TABS & CONTROLS -->
+    <div class="flex items-center justify-between border-b border-[#233047] pb-3">
+      <div class="flex items-center space-x-2">
+        <button onclick="setViewMode('iframe')" id="tab-btn-iframe" class="px-4 py-1.5 rounded bg-[#06D6F0] text-[#070B14] font-bold text-xs mono">
+          Interactive Live Preview (HTML)
+        </button>
+        <button onclick="setViewMode('screenshot')" id="tab-btn-screenshot" class="px-4 py-1.5 rounded bg-[#0E1627] border border-[#233047] text-slate-300 hover:text-white font-medium text-xs mono">
+          Stitch Hi-Res Screenshot (PNG)
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2 text-xs mono text-slate-400">
+        <span id="current-screen-label">Displaying: gridwatch_overview.html</span>
+      </div>
+    </div>
+
+    <!-- LIVE VIEWPORT -->
+    <div class="rounded border border-[#233047] bg-[#070B14] overflow-hidden stitch-glow relative">
+      <!-- Address Bar Style Header -->
+      <div class="h-10 px-4 bg-[#0B1220] border-b border-[#233047] flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="w-3 h-3 rounded bg-[#FB4567]/90 inline-block"></span>
+          <span class="w-3 h-3 rounded bg-[#FBBF24]/90 inline-block"></span>
+          <span class="w-3 h-3 rounded bg-[#22C99A]/90 inline-block"></span>
+          <span id="viewport-url" class="text-xs mono text-slate-400 ml-2">file:///stitch_import/gridwatch_overview.html</span>
+        </div>
+        <div class="flex items-center gap-2 text-[11px] mono">
+          <span class="text-slate-500">Resolution: 2560px Wide Canvas</span>
+        </div>
+      </div>
+
+      <!-- Iframe Mode -->
+      <div id="container-iframe" class="w-full relative" style="height: 850px;">
+        <iframe id="main-preview-frame" src="gridwatch_overview.html" class="w-full h-full border-0 bg-[#070B14]"></iframe>
+      </div>
+
+      <!-- Screenshot Mode -->
+      <div id="container-screenshot" class="w-full hidden overflow-y-auto bg-[#070B14] p-4 text-center" style="max-height: 850px;">
+        <img id="main-preview-img" src="GridWatch AI - SCADA Control Center Overview.png" alt="Stitch Screenshot" class="mx-auto rounded border border-[#233047] shadow-2xl max-w-full">
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    let activeScreen = 'gridwatch_overview';
+    const screensMap = {
+      'gridwatch_overview': {
+        file: 'gridwatch_overview.html',
+        img: 'GridWatch AI - SCADA Control Center Overview.png',
+        label: 'GridWatch AI - SCADA Control Center Overview'
+      },
+      'feeder_localisation': {
+        file: 'feeder_localisation.html',
+        img: 'TELDS - Feeder Segment Localisation & Topology.png',
+        label: 'TELDS - Feeder Segment Localisation & Topology'
+      },
+      'virtual_esp32': {
+        file: 'virtual_esp32.html',
+        img: 'TELDS - Virtual ESP32 Node & Edge Simulator.png',
+        label: 'TELDS - Virtual ESP32 Node & Edge Simulator'
+      }
+    };
+
+    function selectScreen(key, el) {
+      activeScreen = key;
+      const data = screensMap[key];
+      
+      document.getElementById('main-preview-frame').src = data.file;
+      document.getElementById('main-preview-img').src = data.img;
+      document.getElementById('btn-fullscreen-out').href = data.file;
+      document.getElementById('viewport-url').innerText = 'file:///stitch_import/' + data.file;
+      document.getElementById('current-screen-label').innerText = 'Displaying: ' + data.file;
+
+      // Update card borders
+      ['gridwatch_overview', 'feeder_localisation', 'virtual_esp32'].forEach(k => {
+        const c = document.getElementById('card-' + k);
+        if (c) {
+          if (k === key) {
+            c.className = 'p-4 rounded border-2 border-[#06D6F0] bg-[#0E1627] cursor-pointer hover:bg-[#121D33] transition-all relative group';
+          } else {
+            c.className = 'p-4 rounded border border-[#233047] bg-[#0E1627] cursor-pointer hover:border-[#06D6F0] hover:bg-[#121D33] transition-all relative group';
+          }
+        }
+      });
+    }
+
+    function setViewMode(mode) {
+      const ifr = document.getElementById('container-iframe');
+      const img = document.getElementById('container-screenshot');
+      const btnIfr = document.getElementById('tab-btn-iframe');
+      const btnImg = document.getElementById('tab-btn-screenshot');
+
+      if (mode === 'iframe') {
+        ifr.classList.remove('hidden');
+        img.classList.add('hidden');
+        btnIfr.className = 'px-4 py-1.5 rounded bg-[#06D6F0] text-[#070B14] font-bold text-xs mono';
+        btnImg.className = 'px-4 py-1.5 rounded bg-[#0E1627] border border-[#233047] text-slate-300 hover:text-white font-medium text-xs mono';
+      } else {
+        ifr.classList.add('hidden');
+        img.classList.remove('hidden');
+        btnImg.className = 'px-4 py-1.5 rounded bg-[#06D6F0] text-[#070B14] font-bold text-xs mono';
+        btnIfr.className = 'px-4 py-1.5 rounded bg-[#0E1627] border border-[#233047] text-slate-300 hover:text-white font-medium text-xs mono';
+      }
+    }
+  </script>
+</body>
+</html>

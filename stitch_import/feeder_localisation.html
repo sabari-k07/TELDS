@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-secondary": "#003828", "secondary-container": "#00bf91", "on-tertiary-fixed-variant": "#91002d", "secondary-fixed-dim": "#45deae", "inverse-surface": "#dbe2fa", "secondary": "#45deae", "tertiary-fixed": "#ffdadb", "on-surface-variant": "#bac9cc", "on-primary": "#00363e", "surface-container-highest": "#2d3547", "on-primary-fixed": "#001f24", "tertiary": "#ffd5d7", "on-secondary-fixed": "#002116", "surface-container-lowest": "#060e1f", "surface-container-low": "#131b2d", "surface-container": "#181f31", "on-background": "#dbe2fa", "tertiary-container": "#ffadb4", "primary": "#8fedff", "background": "#0b1324", "error-container": "#93000a", "outline": "#859396", "primary-container": "#06d6f0", "surface-tint": "#18daf4", "surface": "#0b1324", "surface-variant": "#2d3547", "surface-container-high": "#222a3c", "on-tertiary": "#67001d", "on-primary-fixed-variant": "#004e59", "primary-fixed-dim": "#18daf4", "inverse-primary": "#006876", "tertiary-fixed-dim": "#ffb2b8", "on-surface": "#dbe2fa", "surface-dim": "#0b1324", "surface-bright": "#31394c", "secondary-fixed": "#68fbc9", "on-primary-container": "#005964", "on-secondary-container": "#004734", "on-tertiary-container": "#a30033", "outline-variant": "#3b494c", "inverse-on-surface": "#283042", "on-error-container": "#ffdad6", "on-tertiary-fixed": "#40000f", "on-secondary-fixed-variant": "#00513c", "primary-fixed": "#9fefff", "error": "#ffb4ab", "on-error": "#690005" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter": "0.5rem", "space-xl": "1.5rem", "gutter-md": "0.75rem", "margin-md": "1rem", "margin-lg": "1.5rem", "space-sm": "0.5rem", "margin": "0.75rem", "space-xs": "0.25rem", "space-lg": "1rem", "space-md": "0.75rem", "gutter-lg": "1rem" }, "fontFamily": { "label-md": [ "JetBrains Mono" ], "headline-md": [ "IBM Plex Sans" ], "telemetry-display-mobile": [ "JetBrains Mono" ], "headline-lg": [ "IBM Plex Sans" ], "headline-lg-mobile": [ "IBM Plex Sans" ], "headline-sm": [ "IBM Plex Sans" ], "label-sm": [ "JetBrains Mono" ], "body-lg": [ "JetBrains Mono" ], "body-sm": [ "JetBrains Mono" ], "body-md": [ "JetBrains Mono" ], "telemetry-display": [ "JetBrains Mono" ] }, "fontSize": { "label-md": [ "11px", { "lineHeight": "14px", "fontWeight": "600" } ], "headline-md": [ "20px", { "lineHeight": "28px", "fontWeight": "600" } ], "telemetry-display-mobile": [ "20px", { "lineHeight": "24px", "fontWeight": "700" } ], "headline-lg": [ "32px", { "lineHeight": "40px", "fontWeight": "600" } ], "headline-lg-mobile": [ "24px", { "lineHeight": "32px", "fontWeight": "600" } ], "headline-sm": [ "16px", { "lineHeight": "24px", "fontWeight": "600" } ], "label-sm": [ "10px", { "lineHeight": "12px", "fontWeight": "500" } ], "body-lg": [ "14px", { "lineHeight": "20px", "fontWeight": "400" } ], "body-sm": [ "11px", { "lineHeight": "16px", "fontWeight": "400" } ], "body-md": [ "12px", { "lineHeight": "18px", "fontWeight": "400" } ], "telemetry-display": [ "28px", { "lineHeight": "32px", "fontWeight": "700" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary selection:text-on-primary"><header class="fixed top-0 left-0 right-0 z-50 h-16 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.4)] px-gutter-lg flex items-center justify-between"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-md"><img alt="TELDS Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMh7GqPSJxFIorzH63ySxWDEzinv6-RxgKqUgHLwB2wgKn_OGJ7TrVa5Knk_vXYm1D5ba0F98n_Zz52ORc-owcE7e9UG0aR2zeAHL6AZMl6nCocUTMWbKqUrhyiLi3Cv867ayha0kRhX1LeXUb2U7NUR8fDD2M7XJaAJf6ZMS2xJWjQ-jGC3NTL6NYwYlHmF9shRoci5FfMugaY5rncVQp2wOOWaKMB6KkB-VAFEQaNDe-T6UYqo2e"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-wider uppercase leading-none">TELDS</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Full-Stack Grid Analytics &amp; IoT Prototype</span></div></div><div class="h-6 w-px bg-surface-container-highest"></div><div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-space-xs"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span></span><span class="font-label-md text-label-md text-secondary tracking-wider uppercase">ESP32 Dual-CT Active</span><span class="font-label-sm text-label-sm text-on-surface-variant font-mono">[TELEMETRY_SYNC]</span></div></div><div class="flex items-center gap-space-lg"><div class="flex items-center bg-surface-container-lowest p-space-xs"><button class="px-space-md py-space-xs font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors uppercase" type="button">Admin</button><button class="px-space-md py-space-xs font-label-md text-label-md bg-primary-container text-on-primary-container font-bold uppercase" type="button">Engineer</button><button class="px-space-md py-space-xs font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors uppercase" type="button">Operator</button><button class="px-space-md py-space-xs font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors uppercase" type="button">Inspector</button></div><div class="flex items-center gap-space-md"><button aria-label="Telemetry Notifications" class="relative flex items-center justify-center p-space-xs text-on-surface-variant hover:text-primary transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-0 right-0 flex h-4 w-4 items-center justify-center bg-error-container font-label-sm text-label-sm text-on-error-container font-bold">3</span></button><div class="h-6 w-px bg-surface-container-highest"></div><div class="flex items-center gap-space-md pl-space-xs"><div class="flex flex-col text-right"><span class="font-body-md text-body-md font-bold text-on-surface leading-tight">Eng. Maya Chen, P.E.</span><span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Lead SCADA Engineer</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI5pj0s0K0Ld-URqIketei4hdE6QXOWh1mWrENR8vgTTVyv_nVg8r1uyDVTVXCLzur9e-tVxw5cyhT0avZaNQkSJpI31ejqUrnhZkeL5Beh4fZhAOo3SXWmMHTtYEpXmsqV6b0qQQJpc9semDo3hhBL4bMtMKCovQiKeVBGlFpLUdWbvpncjN7X7TBnGESgbTKjQ1ZHQN-7SYY8-gnxa2sk4QnEP3m_W3oxAn71wp8uDmvkB1nUR7e"/></div></div></div></header><aside class="fixed left-0 top-16 bottom-0 w-72 bg-surface-container-low shadow-[1px_0_8px_rgba(0,0,0,0.3)] z-40 flex flex-col justify-between overflow-y-auto"><div class="p-space-md"><div class="pb-space-sm mb-space-sm"><span class="font-label-sm text-label-sm text-on-surface-variant tracking-widest uppercase">Substation Navigation Matrix</span></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-bold"><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="loss-dashboard" href="#"><span class="material-symbols-outlined text-[18px]">bar_chart</span><span class="font-label-md text-label-md uppercase tracking-wider">1. Loss Dashboard</span></a><a aria-current="page" class="flex items-center gap-space-md px-space-md py-space-sm transition-colors bg-primary-container text-on-primary-container font-bold" data-path="segment-localisation" href="#"><span class="material-symbols-outlined text-[18px]">hub</span><span class="font-label-md text-label-md uppercase tracking-wider">2. Segment Localisation</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="virtual-esp32-node" href="#"><span class="material-symbols-outlined text-[18px]">terminal</span><span class="font-label-md text-label-md uppercase tracking-wider">3. Virtual ESP32 Node</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="hardware-schematics-pcb" href="#"><span class="material-symbols-outlined text-[18px]">developer_board</span><span class="font-label-md text-label-md uppercase tracking-wider">4. Hardware Schematics &amp; PCB</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="feeders-transformers" href="#"><span class="material-symbols-outlined text-[18px]">bolt</span><span class="font-label-md text-label-md uppercase tracking-wider">5. Feeders &amp; Transformers</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="csv-ingestion" href="#"><span class="material-symbols-outlined text-[18px]">cloud_upload</span><span class="font-label-md text-label-md uppercase tracking-wider">6. CSV Ingestion</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="investigations" href="#"><span class="material-symbols-outlined text-[18px]">gavel</span><span class="font-label-md text-label-md uppercase tracking-wider">7. Investigations</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="audit-reports" href="#"><span class="material-symbols-outlined text-[18px]">description</span><span class="font-label-md text-label-md uppercase tracking-wider">8. Audit Reports</span></a></nav></div><div class="p-space-md flex flex-col gap-space-md bg-surface-container-lowest"><div class="flex items-start gap-space-xs bg-surface-container-high p-space-sm"><span class="material-symbols-outlined text-secondary text-[16px] mt-0.5">warning</span><div class="flex flex-col"><span class="font-label-sm text-label-sm text-secondary uppercase font-bold">OPERATIONAL: 34.2°C Ambient</span><span class="font-label-sm text-label-sm text-on-surface-variant">High Humidity Warning</span></div></div><div class="bg-surface-container p-space-md flex flex-col gap-space-xs"><div class="flex items-center justify-between"><span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">Calc Ref Card</span><span class="font-label-sm text-label-sm text-on-surface-variant font-mono">STD-IEEE</span></div><div class="flex flex-col gap-space-xs font-mono text-on-surface py-space-xs"><div class="bg-surface-container-low px-space-xs py-0.5 font-label-sm text-label-sm text-on-surface">Δ Energy = Tx Input − Consumer Total</div><div class="bg-surface-container-low px-space-xs py-0.5 font-label-sm text-label-sm text-secondary">Loss % = (Δ / Tx Input) × 100</div></div><p class="font-label-sm text-label-sm text-on-surface-variant italic leading-normal">Note: Discrepancy is an indicator of possible abnormality, not definitive proof of theft.</p></div><div class="flex justify-between items-center px-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant font-mono">SYS_VER: 2.4.1-PRD</span><span class="font-label-sm text-label-sm text-secondary font-mono">BUS_OK</span></div></div></aside><div class="pl-72"><main class="w-full pt-16 bg-surface min-h-screen px-gutter-lg py-margin-md"><div class="flex flex-col w-full gap-space-lg">
+<!-- Top Operational Header & State Banner -->
+<div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-space-md bg-surface-container-low p-space-md shadow-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 bg-surface-container-highest text-primary font-mono uppercase tracking-widest">Topology: Tier-1 Radial</span>
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 bg-surface-container-highest text-on-surface-variant font-mono">FEEDER_ID: FDR-001</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">Madurai 11kV/415V • 250kVA Distribution Tx</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-tight font-bold">Feeder Topology &amp; Measurement Nodes (P0 → P4)</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Radial line distribution hierarchy, multi-point current balances, and automated anomaly isolation.</p>
+</div>
+<!-- Alert Strip -->
+<div class="flex items-center gap-space-md bg-surface-container-lowest px-space-md py-space-sm w-full lg:w-auto justify-between lg:justify-end">
+<div class="flex items-center gap-space-xs">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-error"></span>
+</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-error uppercase font-bold tracking-wider">CRITICAL MISMATCH ISOLATED</span>
+<span class="font-label-sm text-label-sm text-on-surface font-mono">SPAN: SEG-P1-P2 (POLE #14 → #28)</span>
+</div>
+</div>
+<div class="h-8 w-px bg-surface-container-highest mx-space-xs hidden sm:block"></div>
+<div class="flex items-center gap-space-sm">
+<div class="flex flex-col text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Diversion Rate</span>
+<span class="font-label-md text-label-md text-error font-mono font-bold">5.58 kW</span>
+</div>
+<div class="flex flex-col text-right pl-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Confidence</span>
+<span class="font-label-md text-label-md text-secondary font-mono font-bold">96.4%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Operational Filter Strip & Quick Stats Bar -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md items-center">
+<!-- Filter Switchers -->
+<div class="md:col-span-6 flex items-center gap-space-xs bg-surface-container-low p-space-xs overflow-x-auto">
+<button class="filter-btn active px-space-md py-space-xs font-label-md text-label-md bg-primary-container text-on-primary-container font-bold uppercase transition-colors" data-filter="all" type="button">All Nodes (5)</button>
+<button class="filter-btn px-space-md py-space-xs font-label-md text-label-md text-on-surface-variant hover:text-on-surface bg-surface-container-lowest font-bold uppercase transition-colors" data-filter="anomalies" type="button">Anomalies Only (1)</button>
+<button class="filter-btn px-space-md py-space-xs font-label-md text-label-md text-on-surface-variant hover:text-on-surface bg-surface-container-lowest font-bold uppercase transition-colors" data-filter="residual" type="button">High Residual (&gt;3%)</button>
+<button class="filter-btn px-space-md py-space-xs font-label-md text-label-md text-on-surface-variant hover:text-on-surface bg-surface-container-lowest font-bold uppercase transition-colors" data-filter="normal" type="button">Normal (3)</button>
+</div>
+<!-- Telemetry System Stats -->
+<div class="md:col-span-6 grid grid-cols-4 gap-space-xs text-center">
+<div class="bg-surface-container-low p-space-xs flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Nodes</span>
+<span class="font-label-md text-label-md text-on-surface font-mono font-bold">5 Monitored</span>
+</div>
+<div class="bg-surface-container-low p-space-xs flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Segments</span>
+<span class="font-label-md text-label-md text-on-surface font-mono font-bold">4 Active</span>
+</div>
+<div class="bg-surface-container-low p-space-xs flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Sync Cadence</span>
+<span class="font-label-md text-label-md text-secondary font-mono font-bold">1000 ms</span>
+</div>
+<div class="bg-surface-container-low p-space-xs flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">CT Resolution</span>
+<span class="font-label-md text-label-md text-primary font-mono font-bold">Dual 16-Bit</span>
+</div>
+</div>
+</div>
+<!-- Horizontal Single-Line Diagram & Node Grid -->
+<div class="flex flex-col bg-surface-container-low p-space-md shadow-lg overflow-x-auto">
+<div class="flex items-center justify-between pb-space-sm mb-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">account_tree</span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface font-bold">Physical Pole Array • Bus Distribution Line (720m Radial Extent)</span>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="font-label-sm text-label-sm text-secondary flex items-center gap-1 font-mono">
+<span class="inline-block w-2 h-2 bg-secondary"></span> BALANCED (Δ &lt; 4%)
+        </span>
+<span class="font-label-sm text-label-sm text-tertiary-container flex items-center gap-1 font-mono">
+<span class="inline-block w-2 h-2 bg-tertiary-container"></span> JOULE STRESS
+        </span>
+<span class="font-label-sm text-label-sm text-error flex items-center gap-1 font-mono">
+<span class="inline-block w-2 h-2 bg-error"></span> BYPASS FAULT
+        </span>
+</div>
+</div>
+<!-- Topology Node Cards (P0 -> P4) with inter-node routing connectors -->
+<div class="min-w-[1020px] flex flex-col gap-space-md">
+<!-- Node Row -->
+<div class="grid grid-cols-5 gap-space-md relative">
+<!-- P0 Substation Node -->
+<div class="bg-surface-container p-space-md flex flex-col gap-space-sm relative group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 bg-primary-container text-on-primary-container font-mono font-bold">NODE P0</span>
+<span class="flex items-center gap-1 font-label-sm text-label-sm text-secondary font-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> ONLINE
+            </span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Substation Breaker</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant font-mono">DIST: 0.0 m • FEED ORIGIN</div>
+</div>
+<div class="grid grid-cols-2 gap-space-xs pt-space-xs font-mono">
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">VOLTAGE</span>
+<span class="font-label-md text-label-md text-primary font-bold">415.2 V</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">CURRENT</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">68.2 A</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">ENERGY</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">342.8 kWh</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">LINK</span>
+<span class="font-label-md text-label-md text-secondary font-bold">ETH (100%)</span>
+</div>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant font-mono text-[10px] pt-1">
+<span>TX_HEAD_SM0</span>
+<span class="text-primary font-bold">→ DOWNSTREAM</span>
+</div>
+</div>
+<!-- P1 Pole #14 -->
+<div class="bg-surface-container p-space-md flex flex-col gap-space-sm relative group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 bg-surface-container-highest text-primary font-mono font-bold">NODE P1</span>
+<span class="flex items-center gap-1 font-label-sm text-label-sm text-secondary font-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> ONLINE
+            </span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Pole #14</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant font-mono">DIST: 180.0 m • TAP SPAN 1</div>
+</div>
+<div class="grid grid-cols-2 gap-space-xs pt-space-xs font-mono">
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">VOLTAGE</span>
+<span class="font-label-md text-label-md text-primary font-bold">412.8 V</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">CURRENT</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">67.5 A</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">ENERGY</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">338.2 kWh</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">LINK</span>
+<span class="font-label-md text-label-md text-secondary font-bold">-54 dBm (92%)</span>
+</div>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant font-mono text-[10px] pt-1">
+<span>SM_NODE_14</span>
+<span class="text-error font-bold font-mono">Δ INJECTION UP</span>
+</div>
+</div>
+<!-- P2 Pole #28 (Fault Downstream Boundary) -->
+<div class="bg-surface-container p-space-md flex flex-col gap-space-sm relative group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 bg-surface-container-highest text-primary font-mono font-bold">NODE P2</span>
+<span class="flex items-center gap-1 font-label-sm text-label-sm text-secondary font-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> ONLINE
+            </span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Pole #28</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant font-mono">DIST: 360.0 m • TAP SPAN 2</div>
+</div>
+<div class="grid grid-cols-2 gap-space-xs pt-space-xs font-mono">
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">VOLTAGE</span>
+<span class="font-label-md text-label-md text-primary font-bold">404.1 V</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">CURRENT</span>
+<span class="font-label-md text-label-md text-error font-bold">44.1 A</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">ENERGY</span>
+<span class="font-label-md text-label-md text-error font-bold">221.4 kWh</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">LINK</span>
+<span class="font-label-md text-label-md text-secondary font-bold">-62 dBm (84%)</span>
+</div>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant font-mono text-[10px] pt-1">
+<span>SM_NODE_28</span>
+<span class="text-error font-bold font-mono">LOSS TRIPPED</span>
+</div>
+</div>
+<!-- P3 Pole #42 -->
+<div class="bg-surface-container p-space-md flex flex-col gap-space-sm relative group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 bg-surface-container-highest text-primary font-mono font-bold">NODE P3</span>
+<span class="flex items-center gap-1 font-label-sm text-label-sm text-secondary font-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> ONLINE
+            </span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Pole #42</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant font-mono">DIST: 540.0 m • TAP SPAN 3</div>
+</div>
+<div class="grid grid-cols-2 gap-space-xs pt-space-xs font-mono">
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">VOLTAGE</span>
+<span class="font-label-md text-label-md text-primary font-bold">399.5 V</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">CURRENT</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">28.6 A</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">ENERGY</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">143.6 kWh</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">LINK</span>
+<span class="font-label-md text-label-md text-secondary font-bold">-71 dBm (71%)</span>
+</div>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant font-mono text-[10px] pt-1">
+<span>SM_NODE_42</span>
+<span class="text-secondary font-bold font-mono">STABLE DROP</span>
+</div>
+</div>
+<!-- P4 Pole #56 Terminal End -->
+<div class="bg-surface-container p-space-md flex flex-col gap-space-sm relative group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 bg-surface-container-highest text-primary font-mono font-bold">NODE P4</span>
+<span class="flex items-center gap-1 font-label-sm text-label-sm text-secondary font-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> ONLINE
+            </span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Pole #56</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant font-mono">DIST: 720.0 m • FEED TERMINUS</div>
+</div>
+<div class="grid grid-cols-2 gap-space-xs pt-space-xs font-mono">
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">VOLTAGE</span>
+<span class="font-label-md text-label-md text-primary font-bold">396.2 V</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">CURRENT</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">12.4 A</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">ENERGY</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">62.3 kWh</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">LINK</span>
+<span class="font-label-md text-label-md text-secondary font-bold">-78 dBm (60%)</span>
+</div>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant font-mono text-[10px] pt-1">
+<span>SM_NODE_56</span>
+<span class="text-on-surface-variant font-bold font-mono">DEAD-END SHUNT</span>
+</div>
+</div>
+</div>
+<!-- Segment Link Vectors (Spanning Nodes) -->
+<div class="grid grid-cols-4 gap-space-md pt-space-xs">
+<!-- SEG-P0-P1 -->
+<div class="segment-card bg-surface-container p-space-md flex flex-col justify-between gap-space-sm relative transition-all" data-segment="p0-p1">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary font-mono font-bold">SEG-P0-P1</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-surface-container-lowest text-secondary font-mono font-bold">NORMAL</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">P0 (0m) → P1 (180m) • ACSR 50mm²</span>
+<div class="flex items-baseline gap-space-xs mt-1">
+<span class="font-telemetry-display text-telemetry-display text-secondary font-bold">+1.3%</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">(Δ 4.6 kWh)</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-lowest h-1.5 overflow-hidden">
+<div class="bg-secondary h-full" style="width: 32.5%"></div>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant font-mono">
+<span>R: 0.104 Ω</span>
+<span>THRESH: 4.0%</span>
+</div>
+</div>
+<!-- SEG-P1-P2 (ANOMALY HIGHLIGHT) -->
+<div class="segment-card active bg-surface-container-high p-space-md flex flex-col justify-between gap-space-sm relative cursor-pointer ring-2 ring-error shadow-xl" data-segment="p1-p2">
+<div class="absolute -top-3 left-3 bg-error text-surface font-label-sm text-label-sm px-2 py-0.5 font-bold uppercase tracking-wider flex items-center gap-1 shadow-md">
+<span class="material-symbols-outlined text-[13px]">warning</span> LOCALISED ANOMALY ROOT CAUSE
+          </div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-error font-mono font-bold">SEG-P1-P2</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-error text-surface font-mono font-bold animate-pulse">CRITICAL THEFT</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">P1 (180m) → P2 (360m) • ACSR 50mm²</span>
+<div class="flex items-baseline gap-space-xs mt-1">
+<span class="font-telemetry-display text-telemetry-display text-error font-bold">+34.5%</span>
+<span class="font-label-sm text-label-sm text-error font-mono font-bold">(Δ 116.8 kWh)</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-lowest h-1.5 overflow-hidden">
+<div class="bg-error h-full" style="width: 100%"></div>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant font-mono">
+<span class="text-error font-bold font-mono">R: 0.104 Ω</span>
+<span class="text-error font-bold font-mono">THRESH EXCEEDED ×8.6</span>
+</div>
+</div>
+<!-- SEG-P2-P3 -->
+<div class="segment-card bg-surface-container p-space-md flex flex-col justify-between gap-space-sm relative transition-all" data-segment="p2-p3">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary font-mono font-bold">SEG-P2-P3</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-surface-container-lowest text-secondary font-mono font-bold">NORMAL</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">P2 (360m) → P3 (540m) • ACSR 50mm²</span>
+<div class="flex items-baseline gap-space-xs mt-1">
+<span class="font-telemetry-display text-telemetry-display text-secondary font-bold">+2.1%</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">(Δ 7.2 kWh)</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-lowest h-1.5 overflow-hidden">
+<div class="bg-secondary h-full" style="width: 52.5%"></div>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant font-mono">
+<span>R: 0.104 Ω</span>
+<span>THRESH: 4.0%</span>
+</div>
+</div>
+<!-- SEG-P3-P4 -->
+<div class="segment-card bg-surface-container p-space-md flex flex-col justify-between gap-space-sm relative transition-all" data-segment="p3-p4">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary font-mono font-bold">SEG-P3-P4</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-surface-container-lowest text-tertiary-container text-on-tertiary-container font-mono font-bold">ELEVATED</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">P3 (540m) → P4 (720m) • ACSR 50mm²</span>
+<div class="flex items-baseline gap-space-xs mt-1">
+<span class="font-telemetry-display text-telemetry-display text-tertiary-container font-bold">+3.6%</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">(Δ 12.1 kWh)</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-lowest h-1.5 overflow-hidden">
+<div class="bg-tertiary-container h-full" style="width: 90%"></div>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant font-mono">
+<span>R: 0.104 Ω (Joule Loss)</span>
+<span>THRESH: 4.0%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Deep Forensic Inspection Area & Detailed Ledger Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg">
+<!-- Left 7 Columns: Accounting Matrix Ledger & Physical Context -->
+<div class="xl:col-span-7 flex flex-col gap-space-lg">
+<!-- Multi-Point Accounting Ledger Table -->
+<div class="bg-surface-container-low p-space-md shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">table_chart</span>
+<span class="font-label-md text-label-md text-on-surface uppercase font-bold tracking-wider">Multi-Point Accounting Ledger • Continuous Node Propagation</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">TS: 2025-05-18 14:32:00.000 UTC</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-mono">
+<thead>
+<tr class="bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm uppercase">
+<th class="p-space-xs">Span / Segment</th>
+<th class="p-space-xs text-right">Send (kWh)</th>
+<th class="p-space-xs text-right">Recv (kWh)</th>
+<th class="p-space-xs text-right">I²R Theo (kWh)</th>
+<th class="p-space-xs text-right">Net Res (kWh)</th>
+<th class="p-space-xs text-right">Δ Mismatch</th>
+<th class="p-space-xs text-center">State</th>
+<th class="p-space-xs text-right">Cmd</th>
+</tr>
+</thead>
+<tbody class="font-body-sm text-body-sm divide-y-0">
+<tr class="bg-surface-container hover:bg-surface-container-high transition-colors">
+<td class="p-space-xs text-on-surface font-bold">SEG-P0-P1</td>
+<td class="p-space-xs text-right text-on-surface">342.8</td>
+<td class="p-space-xs text-right text-on-surface">338.2</td>
+<td class="p-space-xs text-right text-on-surface-variant">4.2</td>
+<td class="p-space-xs text-right text-secondary">0.4</td>
+<td class="p-space-xs text-right text-secondary font-bold">+1.3%</td>
+<td class="p-space-xs text-center">
+<span class="px-1.5 py-0.5 bg-surface-container-lowest text-secondary font-label-sm text-label-sm">PASS</span>
+</td>
+<td class="p-space-xs text-right">
+<button class="text-primary hover:underline text-[10px] uppercase font-bold" type="button">Log</button>
+</td>
+</tr>
+<tr class="bg-surface-container-high hover:bg-surface-container-highest transition-colors font-bold text-on-surface">
+<td class="p-space-xs text-error flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-error"></span> SEG-P1-P2
+                </td>
+<td class="p-space-xs text-right text-on-surface">338.2</td>
+<td class="p-space-xs text-right text-on-surface">221.4</td>
+<td class="p-space-xs text-right text-on-surface-variant">4.8</td>
+<td class="p-space-xs text-right text-error font-bold">112.0</td>
+<td class="p-space-xs text-right text-error font-bold text-base">+34.5%</td>
+<td class="p-space-xs text-center">
+<span class="px-1.5 py-0.5 bg-error text-surface font-label-sm text-label-sm">FAULT</span>
+</td>
+<td class="p-space-xs text-right">
+<button class="text-error hover:underline text-[10px] uppercase font-bold" type="button">Isolate</button>
+</td>
+</tr>
+<tr class="bg-surface-container hover:bg-surface-container-high transition-colors">
+<td class="p-space-xs text-on-surface font-bold">SEG-P2-P3</td>
+<td class="p-space-xs text-right text-on-surface">221.4</td>
+<td class="p-space-xs text-right text-on-surface">143.6</td>
+<td class="p-space-xs text-right text-on-surface-variant">3.1</td>
+<td class="p-space-xs text-right text-secondary">4.1</td>
+<td class="p-space-xs text-right text-secondary font-bold">+2.1%</td>
+<td class="p-space-xs text-center">
+<span class="px-1.5 py-0.5 bg-surface-container-lowest text-secondary font-label-sm text-label-sm">PASS</span>
+</td>
+<td class="p-space-xs text-right">
+<button class="text-primary hover:underline text-[10px] uppercase font-bold" type="button">Log</button>
+</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container-high transition-colors">
+<td class="p-space-xs text-on-surface font-bold">SEG-P3-P4</td>
+<td class="p-space-xs text-right text-on-surface">143.6</td>
+<td class="p-space-xs text-right text-on-surface">62.3</td>
+<td class="p-space-xs text-right text-on-surface-variant">2.4</td>
+<td class="p-space-xs text-right text-tertiary-container">9.7</td>
+<td class="p-space-xs text-right text-tertiary-container font-bold">+3.6%</td>
+<td class="p-space-xs text-center">
+<span class="px-1.5 py-0.5 bg-surface-container-lowest text-tertiary-container font-label-sm text-label-sm">WARN</span>
+</td>
+<td class="p-space-xs text-right">
+<button class="text-primary hover:underline text-[10px] uppercase font-bold" type="button">Log</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Technical explanation of localisation principle -->
+<div class="bg-surface-container p-space-sm mt-space-xs flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">info</span>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold">Downstream Child Propagation Accounting Principle</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant leading-relaxed">
+              Energy balance per span is evaluated dynamically: <code class="text-on-surface font-mono bg-surface-container-lowest px-1">ΔE_seg = E_upstream - ∑(E_downstream + E_served) - I²R_loss</code>.
+              When a theft hook or unauthorized tap occurs between Pole #14 and Pole #28, the mismatch appears <strong class="text-on-surface font-mono">strictly confined to SEG-P1-P2</strong>. Subsequent segments (SEG-P2-P3, SEG-P3-P4) retain balance against downstream sum, pinpointing the physical line span without field guesswork.
+            </p>
+</div>
+</div>
+</div>
+<!-- Live Oscillography / Divergence Trace Visualizer -->
+<div class="bg-surface-container-low p-space-md shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">show_chart</span>
+<span class="font-label-md text-label-md text-on-surface uppercase font-bold tracking-wider">10-Minute High-Frequency Divergence Monitor (1-Min Aggregated)</span>
+</div>
+<span class="font-label-sm text-label-sm text-error font-mono font-bold">PERSISTENCE: 14/14 SATISFIED</span>
+</div>
+<!-- Inline SVG Waveform/Divergence Chart -->
+<div class="bg-surface-container-lowest p-space-sm relative">
+<div class="flex justify-between items-center text-[10px] font-mono text-on-surface-variant pb-1">
+<span>RESIDUAL CURRENT TRACE (Δ I_residual)</span>
+<span class="text-error font-bold">FAULT TRIGGER LEVEL: 8.5 A</span>
+</div>
+<svg aria-label="10-minute residual trace graph" class="w-full h-36 overflow-visible" viewbox="0 0 700 140">
+<!-- Grid Lines -->
+<line class="text-surface-container-highest" stroke="currentColor" stroke-dasharray="3 3" x1="0" x2="700" y1="20" y2="20"></line>
+<line class="text-surface-container-highest" stroke="currentColor" stroke-dasharray="3 3" x1="0" x2="700" y1="60" y2="60"></line>
+<line class="text-surface-container-highest" stroke="currentColor" stroke-dasharray="3 3" x1="0" x2="700" y1="100" y2="100"></line>
+<!-- Safe Threshold Band (Under 8.5A) -->
+<rect class="text-secondary opacity-5" fill="currentColor" height="60" width="700" x="0" y="80"></rect>
+<line class="text-secondary opacity-40" stroke="currentColor" stroke-width="1.5" x1="0" x2="700" y1="80" y2="80"></line>
+<!-- Threshold Line (Critical) -->
+<line class="text-error" stroke="currentColor" stroke-dasharray="4 2" stroke-width="1.5" x1="0" x2="700" y1="45" y2="45"></line>
+<text class="text-error font-mono text-[9px]" fill="currentColor" text-anchor="end" x="690" y="40">FAULT THRESHOLD (15.0A)</text>
+<!-- Baseline Seg-P0-P1 Normal Curve (Teal) -->
+<path class="text-secondary" d="M 0,118 Q 80,122 160,119 T 320,120 T 480,121 T 640,118 T 700,119" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+<!-- Anomaly Seg-P1-P2 Curve (Coral Red, sharp step up at T-14 min) -->
+<path class="text-error" d="M 0,115 L 120,114 L 140,32 L 200,30 L 260,34 L 320,28 L 380,31 L 440,29 L 500,33 L 560,30 L 620,29 L 700,31" fill="none" stroke="currentColor" stroke-width="2.5"></path>
+<!-- Suspected Hook Attachment Timestamp -->
+<circle class="text-error animate-ping" cx="140" cy="32" fill="currentColor" r="4"></circle>
+<circle class="text-error" cx="140" cy="32" fill="currentColor" r="3"></circle>
+<text class="text-error font-mono text-[9px] font-bold" fill="currentColor" x="145" y="24">STEP STEP DETECT: +23.4 A</text>
+<!-- Current Trace Fill Under Anomaly -->
+<polygon class="text-error opacity-10" fill="currentColor" points="140,32 140,140 700,140 700,31 620,29 560,30 500,33 440,29 380,31 320,28 260,34 200,30"></polygon>
+</svg>
+<div class="flex justify-between items-center text-[10px] font-mono text-on-surface-variant pt-2">
+<span>T - 15m (14:17)</span>
+<span>T - 10m (14:22)</span>
+<span>T - 5m (14:27)</span>
+<span class="text-primary font-bold">LIVE (14:32:00)</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-space-xs pt-1 font-mono text-[11px]">
+<div class="bg-surface-container p-space-xs">
+<span class="text-on-surface-variant block">STEP ONSET</span>
+<span class="text-on-surface font-bold">14:18:12 UTC</span>
+</div>
+<div class="bg-surface-container p-space-xs">
+<span class="text-on-surface-variant block">PEAK TAP DIVERGENCE</span>
+<span class="text-error font-bold">24.1 A • 5.92 kW</span>
+</div>
+<div class="bg-surface-container p-space-xs">
+<span class="text-on-surface-variant block">CONFIRMATION STATE</span>
+<span class="text-secondary font-bold">TRIP_LATCHED</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right 5 Columns: Forensic Inspector Drawer / Detail Panel -->
+<div class="xl:col-span-5 flex flex-col gap-space-md">
+<!-- Main Forensic Inspector Container -->
+<div class="bg-surface-container-low p-space-md shadow-xl flex flex-col gap-space-md">
+<!-- Panel Header -->
+<div class="flex items-start justify-between pb-space-sm bg-surface-container p-space-sm">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-error text-surface font-mono font-bold">TARGET SEGMENT</span>
+<span class="font-label-md text-label-md text-error font-mono font-bold">SEG-P1-P2</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1">Forensic Inspector • Pole #14 → #28</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">Span Distance: 180 meters • Lat: 9.9252° N, Long: 78.1198° E</span>
+</div>
+<span class="material-symbols-outlined text-error text-[28px]">search_insights</span>
+</div>
+<!-- Metric Balance Strip -->
+<div class="grid grid-cols-2 gap-space-xs font-mono">
+<div class="bg-surface-container p-space-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Upstream Energy (P1)</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">338.2</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">kWh</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">Pole #14 (SM-14) Dual-CT</span>
+</div>
+<div class="bg-surface-container p-space-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Downstream Energy (P2)</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">221.4</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">kWh</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Pole #28 (SM-28) Dual-CT</span>
+</div>
+<div class="bg-surface-container p-space-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Theo I²R Conductor Loss</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-headline-md text-headline-md text-on-surface-variant font-bold">4.8</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">kWh</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">ACSR 50mm² @ 34°C Amb</span>
+</div>
+<div class="bg-surface-container-high p-space-sm flex flex-col justify-between ring-1 ring-error">
+<span class="font-label-sm text-label-sm text-error uppercase font-bold">Net Unaccounted Residual</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-headline-md text-headline-md text-error font-bold">112.0</span>
+<span class="font-label-sm text-label-sm text-error">kWh</span>
+</div>
+<span class="font-label-sm text-label-sm text-error font-bold">+34.5% Net Deficit</span>
+</div>
+</div>
+<!-- Anomaly Diagnostics Breakdown -->
+<div class="bg-surface-container p-space-md flex flex-col gap-space-sm">
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">Classification &amp; Machine Inference</span>
+<div class="flex flex-col gap-space-xs font-mono text-body-sm">
+<div class="flex justify-between items-center py-1 bg-surface-container-lowest px-space-xs">
+<span class="text-on-surface-variant">Estimated Diversion Power:</span>
+<span class="text-error font-bold">5.58 kW Continuous</span>
+</div>
+<div class="flex justify-between items-center py-1 bg-surface-container-lowest px-space-xs">
+<span class="text-on-surface-variant">Anomaly Classification:</span>
+<span class="text-error font-bold">DIRECT OVERHEAD SHUNT HOOK</span>
+</div>
+<div class="flex justify-between items-center py-1 bg-surface-container-lowest px-space-xs">
+<span class="text-on-surface-variant">Window Persistence:</span>
+<span class="text-on-surface font-bold">14 / 14 windows (100% Saturation)</span>
+</div>
+<div class="flex justify-between items-center py-1 bg-surface-container-lowest px-space-xs">
+<span class="text-on-surface-variant">Sensor Precision Quality (SQI):</span>
+<span class="text-secondary font-bold">99.2% (Dual CT Phase Sync)</span>
+</div>
+<div class="flex justify-between items-center py-1 bg-surface-container-lowest px-space-xs">
+<span class="text-on-surface-variant">Inference Confidence Score:</span>
+<span class="text-primary font-bold">96.4% Probability</span>
+</div>
+</div>
+</div>
+<!-- Field Photo Telemetry Thumbnail / Physical Line Span -->
+<div class="bg-surface-container p-space-md flex flex-col gap-space-xs">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">Span Physical Survey • Geo-Context</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">CAM_NODE: P1_ORTHO</span>
+</div>
+<div class="relative overflow-hidden group">
+<img class="w-full h-36 object-cover bg-surface-container-lowest filter brightness-90 hover:brightness-100 transition-all" data-alt="Rugged industrial electrical distribution pole line with ACSR overhead conductors, outdoor SCADA CT monitoring boxes mounted on concrete pole, dark moody high-contrast lighting with technical cyan indicators, crisp engineering survey photo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBS41vSnW638aPJUhWlDr7s7J_-wWvrsETQvv6Ol9tZiYZ7SLYnGrTzcnYcVBe74UQMmZsbLzLexKyoyDIgQv6u-TbpbyA0Z8fC1dU6sxWHBarTphcpvOTVhABnHvLDk_vrwwAG9Qj-ttGiDTC1YthQMhWjAcHWTPQazBmlVZaW7qgOp9VyQpS6zaWWohcwUVNkMbR4uyEpoje7Wa2KtnVPL0czJ6T01z-DzK4pI5R-779EH-Q_264X"/>
+<div class="absolute bottom-2 left-2 bg-surface-container-lowest px-2 py-0.5 font-label-sm text-label-sm text-on-surface font-mono opacity-90">
+              Pole #14 • Overhead Span 180m • Ground Clearance: 6.8m
+            </div>
+<div class="absolute top-2 right-2 bg-error text-surface px-1.5 py-0.5 font-label-sm text-label-sm font-bold font-mono">
+              INSPECTION REQUIRED
+            </div>
+</div>
+</div>
+<!-- Operational Dispatch Action Strip -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<button class="w-full py-space-sm px-space-md bg-error hover:bg-error-container text-surface hover:text-on-error font-label-md text-label-md font-bold uppercase tracking-wider flex items-center justify-center gap-space-sm transition-colors shadow-md" type="button">
+<span class="material-symbols-outlined text-[18px]">local_police</span>
+            Dispatch Field Inspection Crew (Zone 2 Squad)
+          </button>
+<div class="grid grid-cols-2 gap-space-xs">
+<button class="py-space-xs px-space-md bg-surface-container hover:bg-surface-container-high text-primary font-label-sm text-label-sm font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+              Export Forensic Packet
+            </button>
+<button class="py-space-xs px-space-md bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download_done</span>
+              Trigger 100Hz COMTRADE
+            </button>
+</div>
+<button class="py-space-xs px-space-md bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm font-bold uppercase tracking-wider text-center transition-colors" type="button">
+            Mark Verified Shunt Tap (Acknowledge Incident #9421)
+          </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Simple interactive segment switcher & filter handler for industrial usability
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const segmentCards = document.querySelectorAll('.segment-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => {
+          b.classList.remove('bg-primary-container', 'text-on-primary-container');
+          b.classList.add('bg-surface-container-lowest', 'text-on-surface-variant');
+        });
+        btn.classList.remove('bg-surface-container-lowest', 'text-on-surface-variant');
+        btn.classList.add('bg-primary-container', 'text-on-primary-container');
+
+        const filter = btn.dataset.filter;
+        segmentCards.forEach(card => {
+          if (filter === 'all') {
+            card.style.opacity = '1';
+          } else if (filter === 'anomalies') {
+            card.style.opacity = card.dataset.segment === 'p1-p2' ? '1' : '0.25';
+          } else if (filter === 'residual') {
+            card.style.opacity = (card.dataset.segment === 'p1-p2' || card.dataset.segment === 'p3-p4') ? '1' : '0.25';
+          } else if (filter === 'normal') {
+            card.style.opacity = (card.dataset.segment === 'p0-p1' || card.dataset.segment === 'p2-p3') ? '1' : '0.25';
+          }
+        });
+      });
+    });
+
+    segmentCards.forEach(card => {
+      card.addEventListener('click', () => {
+        segmentCards.forEach(c => c.classList.remove('ring-2', 'ring-primary'));
+        if (!card.classList.contains('ring-error')) {
+          card.classList.add('ring-2', 'ring-primary');
+        }
+      });
+    });
+  });
+</script></main></div></body></html>

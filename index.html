@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>GridWatch AI — High-Density SCADA Digital Twin & Feeder Theft Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-primary": "#003640",
+            "on-background": "#dce2f6",
+            "secondary-fixed-dim": "#4ae176",
+            "surface-container": "#19202e",
+            "on-surface": "#dce2f6",
+            "on-tertiary-fixed": "#2a1700",
+            "primary-fixed-dim": "#4cd7f6",
+            "background": "#0c1321",
+            "surface-tint": "#4cd7f6",
+            "on-tertiary-fixed-variant": "#653e00",
+            "outline-variant": "#3d494c",
+            "error-container": "#93000a",
+            "on-secondary-fixed": "#002109",
+            "on-secondary": "#003915",
+            "primary": "#4cd7f6",
+            "primary-container": "#06b6d4",
+            "surface-container-high": "#232a39",
+            "on-tertiary-container": "#563400",
+            "surface-variant": "#2e3544",
+            "surface-container-lowest": "#070e1c",
+            "tertiary": "#ffb95f",
+            "surface-bright": "#323949",
+            "on-error-container": "#ffdad6",
+            "tertiary-fixed-dim": "#ffb95f",
+            "secondary-fixed": "#6bff8f",
+            "surface-container-low": "#151b2a",
+            "error": "#ffb4ab",
+            "primary-fixed": "#acedff",
+            "on-primary-fixed": "#001f26",
+            "secondary-container": "#00b954",
+            "on-primary-fixed-variant": "#004e5c",
+            "tertiary-container": "#e79400",
+            "surface-dim": "#0c1321",
+            "on-surface-variant": "#bcc9cd",
+            "on-secondary-container": "#004119",
+            "on-error": "#690005",
+            "tertiary-fixed": "#ffddb8",
+            "outline": "#869397",
+            "surface-container-highest": "#2e3544",
+            "on-secondary-fixed-variant": "#005321",
+            "on-primary-container": "#00424f",
+            "secondary": "#4ae176",
+            "inverse-primary": "#006876",
+            "on-tertiary": "#472a00",
+            "inverse-on-surface": "#2a3040",
+            "surface": "#0c1321",
+            "inverse-surface": "#dce2f6"
+          },
+          borderRadius: {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          fontFamily: {
+            "headline": ["Inter", "sans-serif"],
+            "mono": ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #070e1c; }
+    ::-webkit-scrollbar-thumb { background: #232a39; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4cd7f6; }
+
+    .glow-cyan { filter: drop-shadow(0 0 8px rgba(76, 215, 246, 0.4)); }
+    .glow-red { filter: drop-shadow(0 0 8px rgba(255, 180, 171, 0.6)); }
+    .glow-green { filter: drop-shadow(0 0 8px rgba(74, 225, 118, 0.5)); }
+
+    /* Floating Window Transition */
+    .pip-window {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pip-minimized {
+      transform: translateY(120%) scale(0.9);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .pip-expanded {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .pip-maximized {
+      top: 1rem !important;
+      left: 1rem !important;
+      right: 1rem !important;
+      bottom: 1rem !important;
+      width: calc(100vw - 2rem) !important;
+      height: calc(100vh - 2rem) !important;
+      max-width: none !important;
+      max-height: none !important;
+      border-radius: 0.5rem;
+    }
+  </style>
+</head>
+<body class="bg-surface font-mono text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen overflow-x-hidden">
+
+  <!-- ========================================================================= -->
+  <!-- LEFT PERSISTENT SIDEBAR NAVIGATION                                       -->
+  <!-- ========================================================================= -->
+  <aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low border-r border-outline-variant/30 z-50 flex flex-col justify-between select-none">
+    <div class="flex flex-col flex-1 min-h-0">
+      
+      <!-- Logo Brand -->
+      <div class="h-16 px-4 border-b border-outline-variant/30 flex items-center gap-3 bg-surface-container-lowest/60 backdrop-blur-md">
+        <div class="w-9 h-9 rounded-md bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center font-bold text-black shadow-lg shadow-cyan-500/20 text-lg">
+          ⚡
+        </div>
+        <div class="flex flex-col min-w-0 leading-tight">
+          <span class="font-headline text-base font-bold tracking-tight text-on-surface truncate">GridWatch AI</span>
+          <span class="text-[10px] uppercase tracking-wider text-primary truncate font-semibold">Theft Detection &amp; Digital Twin</span>
+        </div>
+      </div>
+
+      <!-- Active Hub Indicator -->
+      <div class="px-4 py-2 border-b border-outline-variant/20 bg-surface-container-lowest/30">
+        <div class="flex items-center justify-between text-on-surface-variant text-[11px] uppercase">
+          <span>Substation Hub</span>
+          <span class="text-secondary font-medium flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-secondary inline-block animate-ping"></span>
+            ACTIVE 11kV
+          </span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="flex-1 overflow-y-auto px-2 py-3 space-y-1">
+        
+        <button onclick="switchView('overview')" id="nav-btn-overview" class="w-full text-left group flex items-center justify-between px-3 py-2 rounded transition-colors bg-surface-container-high text-primary border-l-2 border-primary font-medium">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-primary">grid_view</span>
+            <span class="font-headline text-sm font-semibold">SCADA Overview</span>
+          </div>
+          <span class="text-[10px] text-primary font-bold">01</span>
+        </button>
+
+        <button onclick="switchView('feeder')" id="nav-btn-feeder" class="w-full text-left group flex items-center justify-between px-3 py-2 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors border-l-2 border-transparent">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors">schema</span>
+            <span class="font-headline text-sm">Feeder Digital Twin (P0-P4)</span>
+          </div>
+          <span class="text-[10px] text-outline">02</span>
+        </button>
+
+        <button onclick="switchView('virtual_esp32')" id="nav-btn-esp32" class="w-full text-left group flex items-center justify-between px-3 py-2 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors border-l-2 border-transparent">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors">terminal</span>
+            <span class="font-headline text-sm">Virtual ESP32 Node</span>
+          </div>
+          <span class="text-[10px] text-outline">03</span>
+        </button>
+
+        <button onclick="openScenarioModal()" class="w-full text-left group flex items-center justify-between px-3 py-2 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors border-l-2 border-transparent">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors">science</span>
+            <span class="font-headline text-sm">Scenario Simulator</span>
+          </div>
+          <span class="relative flex h-2 w-2 mr-1">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+          </span>
+        </button>
+
+        <button onclick="filterAlerts('CRITICAL')" class="w-full text-left group flex items-center justify-between px-3 py-2 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors border-l-2 border-transparent">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors">security</span>
+            <span class="font-headline text-sm">Theft Detection</span>
+          </div>
+          <span class="text-[10px] text-tertiary font-bold">CRIT</span>
+        </button>
+
+        <button onclick="scrollToAlerts()" class="w-full text-left group flex items-center justify-between px-3 py-2 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors border-l-2 border-transparent">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors">notifications_active</span>
+            <span class="font-headline text-sm">Alert Center</span>
+          </div>
+          <span id="nav-alert-count" class="text-[10px] bg-error-container text-on-error-container px-1.5 py-0.5 rounded font-bold border border-error/40">3</span>
+        </button>
+
+        <div class="pt-3 pb-1 px-3">
+          <div class="text-[10px] uppercase tracking-wider text-outline font-semibold">Hardware Prototype Lab</div>
+        </div>
+
+        <!-- BUTTON TO OPEN THE MINIMIZED PROTOTYPE SCREEN -->
+        <button onclick="togglePip(true)" class="w-full text-left group flex items-center justify-between px-3 py-2.5 rounded bg-cyan-950/30 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-900/40 hover:text-white transition-all shadow-sm">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-cyan-400">picture_in_picture</span>
+            <div class="flex flex-col leading-tight">
+              <span class="font-headline text-xs font-bold text-white">TELDS Hardware Lab</span>
+              <span class="text-[9px] text-cyan-400/80">9-Tab Legacy Engine</span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-[16px] text-cyan-400">open_in_new</span>
+        </button>
+
+      </nav>
+    </div>
+
+    <!-- Sidebar Bottom Status Footer -->
+    <div class="p-3 border-t border-outline-variant/30 bg-surface-container-lowest/90 space-y-2">
+      <div class="space-y-1">
+        <div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+          <span>SYSTEM HEALTH</span>
+          <span class="text-secondary font-semibold">99.98% OK</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-xs text-on-surface">
+          <span class="w-2 h-2 rounded-full bg-secondary inline-block animate-pulse"></span>
+          <span class="truncate">SCADA Ingestion Engine</span>
+        </div>
+      </div>
+      <div class="pt-2 border-t border-outline-variant/20 flex items-center justify-between text-[11px] text-on-surface-variant">
+        <span>MQTT TLS 8883</span>
+        <span class="text-primary font-mono" id="sidebar-latency">14ms</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN APP CONTAINER                                                        -->
+  <!-- ========================================================================= -->
+  <div class="pl-72 flex flex-col min-h-screen">
+    
+    <!-- TOP APP HEADER BAR -->
+    <header class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 z-40 px-4 flex items-center justify-between gap-4">
+      
+      <!-- Left Section: Feeder Selector & Live Telemetry Switcher -->
+      <div class="flex items-center gap-3 min-w-0">
+        <!-- Feeder Selector Dropdown -->
+        <div onclick="openFeederSelector()" class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-low border border-outline-variant/40 rounded cursor-pointer hover:border-primary transition-colors">
+          <span class="material-symbols-outlined text-primary text-[18px]">electric_bolt</span>
+          <div class="flex flex-col leading-none">
+            <span class="text-[10px] text-outline uppercase tracking-wider">SELECTED FEEDER</span>
+            <span id="selected-feeder-label" class="text-xs text-on-surface font-semibold truncate max-w-xs">FDR-001 | Madurai Distribution (11kV/415V)</span>
+          </div>
+          <span class="material-symbols-outlined text-on-surface-variant text-[18px]">expand_more</span>
+        </div>
+
+        <!-- Mode Toggle: Live vs Replay -->
+        <div class="flex items-center bg-surface-container-low border border-outline-variant/40 rounded p-0.5 text-xs">
+          <button id="btn-mode-live" onclick="setTelemetryMode('LIVE')" class="px-3 py-1 rounded bg-primary text-on-primary font-semibold flex items-center gap-1 shadow-sm transition-all" type="button">
+            <span class="w-1.5 h-1.5 rounded-full bg-on-primary animate-pulse"></span>
+            LIVE MODE
+          </button>
+          <button id="btn-mode-replay" onclick="setTelemetryMode('REPLAY')" class="px-3 py-1 rounded text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-1" type="button">
+            REPLAY
+          </button>
+        </div>
+
+        <!-- Supabase Cloud DB Live Indicator -->
+        <div onclick="openSupabaseDialog()" title="Supabase Database Status" class="hidden xl:flex items-center gap-2 px-3 py-1 bg-surface-container-low/60 border border-secondary/30 rounded text-xs cursor-pointer hover:border-secondary transition-colors">
+          <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+          <span class="text-secondary font-bold">Supabase: nuxmpdleqpqunkhbpqjj</span>
+          <span class="text-outline">|</span>
+          <span id="header-timestamp" class="text-outline font-mono">14:32:08 UTC</span>
+        </div>
+      </div>
+
+      <!-- Right Section: Actions & Profile -->
+      <div class="flex items-center gap-3 shrink-0">
+        <!-- Scenario Inject Button -->
+        <button onclick="openScenarioModal()" class="px-3 py-1.5 bg-surface-container-high border border-primary/50 text-primary hover:bg-primary hover:text-on-primary text-xs font-semibold rounded transition-all flex items-center gap-1.5 shadow-sm active:scale-95" type="button">
+          <span class="material-symbols-outlined text-[16px]">bolt</span>
+          <span>Inject Scenario</span>
+        </button>
+
+        <!-- Notification Bell -->
+        <button onclick="scrollToAlerts()" class="relative p-2 rounded bg-surface-container-low border border-outline-variant/40 text-on-surface-variant hover:text-on-surface hover:border-primary transition-colors" type="button">
+          <span class="material-symbols-outlined text-[20px]">notifications</span>
+          <span id="header-alert-pill" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-error text-on-error text-[10px] flex items-center justify-center font-bold">3</span>
+        </button>
+
+        <!-- User Profile Pill -->
+        <div class="flex items-center gap-2 pl-2 border-l border-outline-variant/30">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-bold text-white text-xs border border-cyan-400/40">
+            PR
+          </div>
+          <div class="hidden 2xl:flex flex-col text-left leading-none">
+            <span class="font-headline text-xs font-semibold text-on-surface truncate">Dr. Priya Raman</span>
+            <span class="text-[10px] text-on-surface-variant truncate">Sr. Grid Systems Eng</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW CONTAINER 1: SCADA OVERVIEW (DEFAULT VIEW)                           -->
+    <!-- ========================================================================= -->
+    <main id="view-overview" class="w-full pt-20 p-4 space-y-4">
+      
+      <!-- TOP STATUS BANNER (SCADA TELEMETRY SYNC STRIP) -->
+      <div class="flex flex-wrap items-center justify-between gap-2 bg-surface-container-lowest px-4 py-2 rounded shadow-sm border border-outline-variant/20">
+        <div class="flex items-center gap-3 text-xs">
+          <span class="inline-flex items-center gap-1.5 text-primary font-bold">
+            <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            STATE ESTIMATOR: SYNCHRONIZED
+          </span>
+          <span class="text-outline-variant">|</span>
+          <span class="text-on-surface-variant">FEEDER TOPOLOGY: <span class="text-on-surface font-semibold">RADIAL 11kV/415V DT-01</span></span>
+          <span class="text-outline-variant">|</span>
+          <span class="text-on-surface-variant">POLLING CYCLE: <span class="text-secondary font-mono">1.0s (1000ms FIFO)</span></span>
+        </div>
+        <div class="flex items-center gap-4 text-xs text-on-surface-variant">
+          <span>GRID LOSS COEFFICIENT: <span id="kpi-loss-coef" class="text-tertiary font-mono font-semibold">1.46%</span></span>
+          <span>ENSEMBLE CONFIDENCE: <span id="kpi-conf" class="text-secondary font-semibold font-mono">94.8%</span></span>
+          <span id="badge-critical-strip" class="bg-error-container text-on-error-container px-2 py-0.5 rounded font-bold animate-pulse text-[11px]">2 UNRESOLVED CRITICAL</span>
+        </div>
+      </div>
+
+      <!-- SECTION 1: TOP 4 HIGH-DENSITY SCADA METRIC CARDS -->
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+        
+        <!-- KPI 1: Total Supplied -->
+        <div class="bg-surface-container-low p-4 rounded shadow-sm flex flex-col justify-between relative overflow-hidden group hover:bg-surface-container transition-colors border border-outline-variant/20">
+          <div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full blur-xl pointer-events-none"></div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-primary text-[18px]">electric_meter</span>
+              <span class="font-headline text-xs uppercase tracking-wider text-on-surface-variant font-bold">Total Energy Supplied</span>
+            </div>
+            <span class="text-[10px] text-outline uppercase font-semibold">DT-01 Primary</span>
+          </div>
+          <div class="my-3 flex items-baseline justify-between">
+            <div class="flex items-baseline gap-1">
+              <span id="card-supplied-val" class="text-2xl font-bold font-mono text-on-surface">1,248.6</span>
+              <span class="text-sm text-primary font-semibold">kWh</span>
+            </div>
+            <span class="text-[11px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">+2.4% vs Baseline</span>
+          </div>
+          <div class="space-y-1">
+            <div class="flex justify-between items-center text-[11px] text-on-surface-variant">
+              <span>Active Inflow Rate</span>
+              <span id="card-inflow-rate" class="font-mono text-on-surface font-semibold">184.2 kW</span>
+            </div>
+            <svg class="w-full h-5 text-primary" fill="none" preserveaspectratio="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 160 20">
+              <polyline points="0,15 20,12 40,16 60,9 80,11 100,6 120,8 140,4 160,5" stroke="currentColor"></polyline>
+              <polyline class="opacity-30" points="0,18 20,16 40,18 60,14 80,15 100,12 120,13 140,10 160,11" stroke="currentColor" stroke-dasharray="2,2"></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <!-- KPI 2: Energy Accounted -->
+        <div class="bg-surface-container-low p-4 rounded shadow-sm flex flex-col justify-between relative overflow-hidden group hover:bg-surface-container transition-colors border border-outline-variant/20">
+          <div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/5 rounded-full blur-xl pointer-events-none"></div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
+              <span class="font-headline text-xs uppercase tracking-wider text-on-surface-variant font-bold">Energy Accounted</span>
+            </div>
+            <span id="card-harvest-badge" class="text-[10px] px-1.5 py-0.5 rounded bg-secondary/15 text-secondary font-bold">95.08% HARVEST</span>
+          </div>
+          <div class="my-3 flex items-baseline justify-between">
+            <div class="flex items-baseline gap-1">
+              <span id="card-accounted-val" class="text-2xl font-bold font-mono text-on-surface">1,187.2</span>
+              <span class="text-sm text-secondary font-semibold">kWh</span>
+            </div>
+            <span class="text-[11px] text-on-surface-variant font-mono">42/42 Meters Synced</span>
+          </div>
+          <div class="space-y-1">
+            <div class="flex justify-between items-center text-[11px] text-on-surface-variant">
+              <span>Downstream Consumption</span>
+              <span id="card-accounted-down" class="text-secondary font-mono font-semibold">1,187.2 kWh</span>
+            </div>
+            <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+              <div id="bar-accounted" class="bg-secondary h-full rounded-full transition-all duration-500" style="width: 95.08%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI 3: Unaccounted Energy -->
+        <div class="bg-surface-container-low p-4 rounded shadow-sm flex flex-col justify-between relative overflow-hidden group hover:bg-surface-container transition-colors border border-outline-variant/20">
+          <div class="absolute -right-4 -top-4 w-24 h-24 bg-tertiary/5 rounded-full blur-xl pointer-events-none"></div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-tertiary text-[18px]">balance</span>
+              <span class="font-headline text-xs uppercase tracking-wider text-on-surface-variant font-bold">Unaccounted Energy</span>
+            </div>
+            <span id="card-gap-badge" class="text-[10px] px-1.5 py-0.5 rounded bg-tertiary/15 text-tertiary font-bold">4.92% GAP</span>
+          </div>
+          <div class="my-3 flex items-baseline justify-between">
+            <div class="flex items-baseline gap-1">
+              <span id="card-unaccounted-val" class="text-2xl font-bold font-mono text-tertiary">61.4</span>
+              <span class="text-sm text-tertiary font-semibold">kWh</span>
+            </div>
+            <span id="card-anomaly-val" class="text-[11px] text-outline font-mono">43.2 kWh Anomaly</span>
+          </div>
+          <div class="space-y-1">
+            <div class="flex justify-between items-center text-[11px] text-on-surface-variant">
+              <span>I²R Joule: <span id="card-joule-val">18.2 kWh</span></span>
+              <span class="text-error font-mono font-semibold">Theft: <span id="card-theft-kwh">43.2 kWh</span></span>
+            </div>
+            <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+              <div id="bar-joule" class="bg-outline h-full" style="width: 29.6%" title="I2R Technical Loss"></div>
+              <div id="bar-theft" class="bg-error h-full" style="width: 70.4%" title="Non-Technical Extraction"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI 4: Active Theft Incidents -->
+        <div class="bg-surface-container-low p-4 rounded shadow-sm flex flex-col justify-between relative overflow-hidden group hover:bg-surface-container transition-colors border border-outline-variant/20">
+          <div class="absolute -right-4 -top-4 w-24 h-24 bg-error/10 rounded-full blur-xl pointer-events-none"></div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-error text-[18px]">local_fire_department</span>
+              <span class="font-headline text-xs uppercase tracking-wider text-on-surface font-bold">Theft Incidents</span>
+            </div>
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-error"></span>
+            </span>
+          </div>
+          <div class="my-3 flex items-baseline justify-between">
+            <div class="flex items-baseline gap-1">
+              <span id="card-active-thefts" class="text-2xl font-bold font-mono text-error">3</span>
+              <span class="text-sm text-error font-medium">Active Events</span>
+            </div>
+            <span class="text-[10px] bg-error-container text-on-error-container px-1.5 py-0.5 rounded font-bold">URGENT</span>
+          </div>
+          <div class="flex items-center justify-between text-[11px]">
+            <div class="flex items-center gap-1 text-error">
+              <span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+              <span id="card-theft-subtext-crit">2 CRITICAL (Seg-04, 09)</span>
+            </div>
+            <div class="flex items-center gap-1 text-tertiary">
+              <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+              <span id="card-theft-subtext-med">1 MED (Seg-12)</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SECTION 2: DIGITAL TWIN TOPOLOGY CANVAS & PERSISTENT RIGHT-SIDE INSPECTOR -->
+      <div class="grid grid-cols-1 2xl:grid-cols-12 gap-4">
+        
+        <!-- DIGITAL TWIN CANVAS (8 COLS ON 2XL) -->
+        <div class="2xl:col-span-8 flex flex-col bg-surface-container-low rounded shadow-md overflow-hidden border border-outline-variant/30">
+          
+          <!-- Canvas Header & Interactive Controls -->
+          <div class="p-3 bg-surface-container flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant/20">
+            <div class="flex flex-col">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[20px]">account_tree</span>
+                <span class="font-headline text-sm font-bold text-on-surface">FDR-001 Topology Digital Twin</span>
+                <span class="px-1.5 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded">LIVE 1-SEC TELEMETRY</span>
+              </div>
+              <span class="text-[11px] text-on-surface-variant mt-0.5">
+                Substation 11kV → 100kVA DT-01 Transformer → 4 Radial Low-Voltage Feeders → 24 Monitored Nodes
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="flex items-center bg-surface-container-lowest p-0.5 rounded text-xs">
+                <button onclick="setMapLayer('FLOW')" id="btn-layer-flow" class="px-2.5 py-1 rounded bg-primary text-on-primary font-bold transition-all">Energy Flow</button>
+                <button onclick="setMapLayer('RISK')" id="btn-layer-risk" class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface transition-all">Risk Heatmap</button>
+                <button onclick="setMapLayer('VOLT')" id="btn-layer-volt" class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface transition-all">Voltage Profile</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Canvas SVG Stage with Full Interactive Nodes -->
+          <div class="relative flex-1 bg-surface-container-lowest p-4 min-h-[430px] flex flex-col justify-between overflow-x-auto">
+            
+            <svg id="feeder-svg-canvas" class="w-full h-[400px] select-none min-w-[760px]" fill="none" viewbox="0 0 860 410" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern height="24" id="grid-pattern" patternunits="userSpaceOnUse" width="24">
+                  <path class="text-surface-variant/40" d="M 24 0 L 0 0 0 24" fill="none" stroke="currentColor" stroke-width="0.75"></path>
+                </pattern>
+                <filter height="140%" id="glow-red" width="140%" x="-20%" y="-20%">
+                  <feGaussianBlur result="blur" stdDeviation="3"></feGaussianBlur>
+                  <feComposite in="SourceGraphic" in2="blur" operator="over"></feComposite>
+                </filter>
+                <filter height="140%" id="glow-cyan" width="140%" x="-20%" y="-20%">
+                  <feGaussianBlur result="blur" stdDeviation="3"></feGaussianBlur>
+                  <feComposite in="SourceGraphic" in2="blur" operator="over"></feComposite>
+                </filter>
+              </defs>
+
+              <rect fill="url(#grid-pattern)" height="100%" width="100%"></rect>
+
+              <!-- ================= 1. SUBSTATION & SENDING DT-01 ================= -->
+              <g class="cursor-pointer group" onclick="selectSegment('SUB-01')">
+                <rect class="fill-surface-container-high group-hover:fill-surface-container-highest transition-colors" height="50" rx="3" width="90" x="30" y="185"></rect>
+                <rect class="fill-primary" height="50" width="3" x="30" y="185"></rect>
+                <text class="fill-primary font-headline text-[11px] font-bold" x="40" y="205">11kV SUB</text>
+                <text class="fill-on-surface-variant text-[9px]" x="40" y="221">MADURAI-01</text>
+                <circle class="fill-primary" cx="120" cy="210" r="4"></circle>
+              </g>
+
+              <!-- Backbone to DT-01 -->
+              <path class="text-primary" d="M 120 210 L 170 210" stroke="currentColor" stroke-width="3"></path>
+
+              <!-- DT-01 Transformer -->
+              <g class="cursor-pointer group" onclick="selectSegment('DT-01')">
+                <rect class="fill-surface-container-highest group-hover:stroke-primary group-hover:stroke-[1.5px]" height="70" rx="4" width="120" x="170" y="175"></rect>
+                <circle class="stroke-primary" cx="210" cy="210" fill="none" r="16" stroke-width="2"></circle>
+                <circle class="stroke-secondary" cx="228" cy="210" fill="none" r="16" stroke-width="2"></circle>
+                <text class="fill-on-surface font-headline text-[11px] font-bold" x="180" y="193">DT-01 (100kVA)</text>
+                <text id="svg-dt01-label" class="fill-primary text-[9px] font-mono" x="180" y="238">SM-01: 1,248.6 kWh</text>
+              </g>
+
+              <!-- Vertical 415V Busbar -->
+              <path class="text-primary" d="M 290 210 L 320 210" stroke="currentColor" stroke-width="3"></path>
+              <path class="text-primary-fixed-dim" d="M 320 60 L 320 360" stroke="currentColor" stroke-width="4"></path>
+
+              <!-- ================= BRANCH 1: SEG-01 (HEALTHY BALANCED) ================= -->
+              <g class="cursor-pointer group" onclick="selectSegment('SEG-01')">
+                <path class="text-secondary group-hover:stroke-[3px] transition-all" d="M 320 70 L 400 70 L 520 70" stroke="currentColor" stroke-dasharray="6,3" stroke-width="2"></path>
+                <!-- Pole P1 -->
+                <rect class="fill-surface-container-high group-hover:fill-surface-container-highest" height="24" rx="2" width="28" x="385" y="58"></rect>
+                <text class="fill-on-surface text-[9px]" x="390" y="74">P-01</text>
+                <!-- Badge -->
+                <rect class="fill-surface-container-lowest stroke-secondary/40" height="15" rx="2" width="60" x="430" y="52"></rect>
+                <text class="fill-secondary text-[8px] font-bold" x="435" y="63">SEG-01 [0.4%]</text>
+                <!-- Consumers -->
+                <circle class="fill-secondary" cx="530" cy="70" r="5"></circle>
+                <text class="fill-on-surface text-[10px]" x="540" y="74">P-02 (C-01..C-06)</text>
+                <circle class="fill-secondary" cx="680" cy="65" r="3"></circle>
+                <circle class="fill-secondary" cx="700" cy="65" r="3"></circle>
+                <circle class="fill-secondary" cx="720" cy="65" r="3"></circle>
+                <text class="fill-on-surface-variant text-[9px]" x="735" y="68">6 Meters OK</text>
+              </g>
+
+              <!-- ================= BRANCH 2: SEG-04 (CRITICAL THEFT SELECTION) ================= -->
+              <g class="cursor-pointer group" id="svg-seg04-group" onclick="selectSegment('SEG-04')">
+                <path class="text-secondary" d="M 320 160 L 400 160" stroke="currentColor" stroke-width="2"></path>
+                <!-- Pole P5 -->
+                <rect class="fill-surface-container-high" height="28" rx="2" width="32" x="400" y="146"></rect>
+                <text class="fill-on-surface text-[10px] font-bold" x="406" y="164">P-05</text>
+                
+                <!-- Glow Line -->
+                <path id="svg-seg04-line" d="M 432 160 L 590 160" filter="url(#glow-red)" stroke="#ffb4ab" stroke-width="4"></path>
+                <line stroke="#93000a" stroke-dasharray="8,4" stroke-width="2" x1="432" x2="590" y1="160" y2="160"></line>
+                
+                <!-- Highlight Box -->
+                <rect id="svg-seg04-box" class="fill-error-container/20 stroke-error" height="66" rx="4" stroke-dasharray="4,2" stroke-width="1.5" width="140" x="440" y="125"></rect>
+                
+                <!-- Badge -->
+                <rect id="svg-seg04-badge-bg" class="fill-error" height="18" rx="2" width="125" x="450" y="132"></rect>
+                <text id="svg-seg04-badge-text" class="fill-on-error text-[10px] font-bold" x="456" y="145">SEG-04: THEFT DETECTED</text>
+                <text id="svg-seg04-mismatch" class="fill-error text-[9px] font-bold" x="450" y="164">+18.4% MISMATCH (14.8 kW)</text>
+                <text id="svg-seg04-conf" class="fill-on-surface text-[8px]" x="450" y="178">Ensemble Conf: 94.8%</text>
+                
+                <!-- Physical Tap Marker -->
+                <g id="svg-seg04-hook" transform="translate(510, 160)">
+                  <line stroke="#ffb4ab" stroke-dasharray="3,3" stroke-width="2" x1="0" x2="0" y1="0" y2="35"></line>
+                  <circle class="fill-error animate-ping" cx="0" cy="35" r="5"></circle>
+                  <circle class="fill-error" cx="0" cy="35" r="5"></circle>
+                  <text class="fill-error text-[9px] font-bold" x="10" y="38">ILLEGAL HOOK (14.8kW)</text>
+                </g>
+
+                <!-- Pole P6 -->
+                <rect class="fill-surface-container-high" height="28" rx="2" width="32" x="590" y="146"></rect>
+                <text class="fill-on-surface text-[10px] font-bold" x="596" y="164">P-06</text>
+                
+                <!-- Consumers -->
+                <path class="text-outline" d="M 622 160 L 670 145" stroke="currentColor" stroke-width="1.5"></path>
+                <circle class="fill-secondary" cx="675" cy="144" r="5"></circle>
+                <text class="fill-on-surface text-[9px]" x="686" y="148">C-07 (Smart Meter OK)</text>
+                
+                <path class="text-outline" d="M 622 160 L 670 160" stroke="currentColor" stroke-width="1.5"></path>
+                <circle class="fill-tertiary" cx="675" cy="160" r="5"></circle>
+                <text class="fill-tertiary text-[9px]" x="686" y="164">C-08 (V-Drop Anomaly)</text>
+
+                <path class="text-outline" d="M 622 160 L 670 176" stroke="currentColor" stroke-width="1.5"></path>
+                <circle class="fill-secondary" cx="675" cy="176" r="5"></circle>
+                <text class="fill-on-surface text-[9px]" x="686" y="180">C-09 (Smart Meter OK)</text>
+              </g>
+
+              <!-- ================= BRANCH 3: SEG-09 (METER BYPASS) ================= -->
+              <g class="cursor-pointer group" onclick="selectSegment('SEG-09')">
+                <path class="group-hover:stroke-[3px] transition-all" d="M 320 260 L 410 260 L 530 260" stroke="#ffb4ab" stroke-dasharray="4,2" stroke-width="2"></path>
+                <!-- Pole P9 -->
+                <rect class="fill-surface-container-high" height="24" rx="2" width="28" x="400" y="248"></rect>
+                <text class="fill-on-surface text-[9px]" x="405" y="264">P-09</text>
+                <!-- Badge -->
+                <rect class="fill-error-container" height="16" rx="2" width="70" x="440" y="242"></rect>
+                <text class="fill-on-error-container text-[8px] font-bold" x="445" y="254">SEG-09 [+11.2%]</text>
+                <!-- Pole P10 -->
+                <rect class="fill-surface-container-high" height="24" rx="2" width="28" x="530" y="248"></rect>
+                <text class="fill-on-surface text-[9px]" x="535" y="264">P-10</text>
+                <circle class="fill-error" cx="610" cy="260" r="5"></circle>
+                <text class="fill-error text-[9px] font-bold" x="622" y="264">C-14: Shunt Bypass Pattern (8.4 kW)</text>
+              </g>
+
+              <!-- ================= BRANCH 4: SEG-12 (MICRO-TAP / NOISE) ================= -->
+              <g class="cursor-pointer group" onclick="selectSegment('SEG-12')">
+                <path class="text-tertiary group-hover:stroke-[3px] transition-all" d="M 320 340 L 420 340 L 540 340" stroke="currentColor" stroke-dasharray="5,3" stroke-width="2"></path>
+                <!-- Pole P13 -->
+                <rect class="fill-surface-container-high" height="24" rx="2" width="28" x="410" y="328"></rect>
+                <text class="fill-on-surface text-[9px]" x="415" y="344">P-13</text>
+                <!-- Badge -->
+                <rect class="fill-tertiary-container" height="16" rx="2" width="70" x="450" y="322"></rect>
+                <text class="fill-on-tertiary-container text-[8px] font-bold" x="455" y="334">SEG-12 [+3.8%]</text>
+                <!-- Pole P14 -->
+                <rect class="fill-surface-container-high" height="24" rx="2" width="28" x="540" y="328"></rect>
+                <text class="fill-on-surface text-[9px]" x="545" y="344">P-14</text>
+                <circle class="fill-tertiary" cx="620" cy="340" r="5"></circle>
+                <text class="fill-on-surface-variant text-[9px]" x="632" y="344">C-21..C-24 (Investigating Tap 2.9 kW)</text>
+              </g>
+
+            </svg>
+
+            <!-- Status Footbar -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 bg-surface-container-low px-3 py-1.5 rounded text-xs border border-outline-variant/20">
+              <div class="flex items-center gap-4">
+                <span class="text-on-surface-variant font-semibold">STATUS:</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                  <span class="text-on-surface">Balanced (&le;2%)</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+                  <span class="text-on-surface">Suspicious (2-4%)</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+                  <span class="text-on-surface">Critical Theft (&gt;4%)</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5 text-primary">
+                <span class="material-symbols-outlined text-[16px]">touch_app</span>
+                <span>CLICK ANY SEGMENT OR POLE TO INSPECT</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PERSISTENT RIGHT-SIDE SEGMENT INSPECTOR (4 COLS ON 2XL) -->
+        <div class="2xl:col-span-4 flex flex-col bg-surface-container-low rounded shadow-md overflow-hidden border border-outline-variant/30">
+          
+          <!-- Inspector Header -->
+          <div class="p-4 bg-surface-container flex items-center justify-between border-b border-outline-variant/20">
+            <div class="flex items-center gap-2">
+              <span id="insp-icon" class="material-symbols-outlined text-error text-[20px]">radar</span>
+              <div class="flex flex-col">
+                <span id="insp-title" class="font-headline text-sm font-bold text-on-surface">Inspector: SEG-04</span>
+                <span id="insp-sub" class="text-[11px] text-on-surface-variant font-mono">Pole P5 → Pole P6 Line</span>
+              </div>
+            </div>
+            <span id="insp-badge" class="bg-error-container text-on-error-container px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider animate-pulse">
+              CRITICAL THEFT
+            </span>
+          </div>
+
+          <!-- Inspector Body -->
+          <div class="p-4 flex-1 flex flex-col justify-between space-y-4">
+            
+            <!-- Nodes Spec -->
+            <div class="bg-surface-container p-3 rounded space-y-1 text-xs">
+              <div class="flex justify-between items-center text-on-surface-variant">
+                <span>UPSTREAM NODE:</span>
+                <span id="insp-upstream" class="text-on-surface font-semibold">Pole P5 (SM-04a Sensing Hub)</span>
+              </div>
+              <div class="flex justify-between items-center text-on-surface-variant">
+                <span>DOWNSTREAM NODES:</span>
+                <span id="insp-downstream" class="text-on-surface font-semibold">Pole P6 (Consumers C-07, 08, 09)</span>
+              </div>
+              <div class="flex justify-between items-center text-on-surface-variant">
+                <span>CONDUCTOR SPECS:</span>
+                <span id="insp-conductor" class="text-primary font-mono font-semibold">AAC 50mm² @ 240m (0.138 &Omega;)</span>
+              </div>
+            </div>
+
+            <!-- Dynamic Telemetry Grid -->
+            <div class="grid grid-cols-2 gap-2">
+              <div class="bg-surface-container p-2.5 rounded">
+                <span class="text-[10px] text-on-surface-variant uppercase font-semibold">Sending Energy</span>
+                <div class="flex items-baseline gap-1 mt-0.5">
+                  <span id="insp-sending" class="text-lg font-bold font-mono text-on-surface">184.2</span>
+                  <span class="text-xs text-primary font-semibold">kWh</span>
+                </div>
+              </div>
+              <div class="bg-surface-container p-2.5 rounded">
+                <span class="text-[10px] text-on-surface-variant uppercase font-semibold">Billed / Downstream</span>
+                <div class="flex items-baseline gap-1 mt-0.5">
+                  <span id="insp-billed" class="text-lg font-bold font-mono text-secondary">142.6</span>
+                  <span class="text-xs text-secondary font-semibold">kWh</span>
+                </div>
+              </div>
+              <div class="bg-surface-container p-2.5 rounded">
+                <span class="text-[10px] text-on-surface-variant uppercase font-semibold">I²R Line Loss</span>
+                <div class="flex items-baseline gap-1 mt-0.5">
+                  <span id="insp-i2r" class="text-lg font-bold font-mono text-outline">3.4</span>
+                  <span class="text-xs text-outline font-semibold">kWh</span>
+                </div>
+              </div>
+              <div class="bg-surface-container p-2.5 rounded">
+                <span class="text-[10px] text-on-surface-variant uppercase font-semibold">Residual Energy</span>
+                <div class="flex items-baseline gap-1 mt-0.5">
+                  <span id="insp-residual" class="text-lg font-bold font-mono text-error">38.2</span>
+                  <span class="text-xs text-error font-semibold">kWh</span>
+                </div>
+              </div>
+
+              <!-- Full Width Tap Load Cell -->
+              <div class="col-span-2 bg-surface-container p-2.5 rounded flex items-center justify-between">
+                <div>
+                  <span class="text-[10px] text-on-surface-variant uppercase font-semibold">Est. Suspicious Tap Load</span>
+                  <div class="flex items-baseline gap-1 mt-0.5">
+                    <span id="insp-tap-load" class="text-lg font-bold font-mono text-error">14.8</span>
+                    <span class="text-xs text-error font-semibold">kW Direct Tap</span>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <span class="text-[10px] text-on-surface-variant uppercase font-semibold">ML Ensemble</span>
+                  <div id="insp-conf" class="text-lg font-bold font-mono text-secondary">94.8% CONF</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic SVG Waveform Deviation Spike -->
+            <div class="space-y-1">
+              <div class="flex justify-between items-center text-[10px] text-on-surface-variant">
+                <span>5-MIN RESIDUAL DEVIATION SPIKE</span>
+                <span id="insp-spike-label" class="text-error font-mono font-semibold">Divergence @ 14:15 UTC</span>
+              </div>
+              <div class="bg-surface-container p-1 rounded">
+                <svg id="insp-waveform-svg" class="w-full h-16 text-error" fill="none" preserveaspectratio="none" viewbox="0 0 300 80">
+                  <line stroke="currentColor" stroke-opacity="0.1" x1="0" x2="300" y1="20" y2="20"></line>
+                  <line stroke="currentColor" stroke-opacity="0.1" x1="0" x2="300" y1="50" y2="50"></line>
+                  <path d="M0,68 L40,66 L80,67 L120,68 L150,65 L180,68 L210,69 L240,68 L270,67 L300,68" stroke="#869397" stroke-dasharray="3,3" stroke-width="1.5"></path>
+                  <polygon fill="rgba(244, 63, 94, 0.2)" points="150,65 170,42 190,24 220,18 250,15 280,14 300,12 300,68 150,65"></polygon>
+                  <path d="M0,68 L40,66 L80,67 L120,68 L150,65 L170,42 L190,24 L220,18 L250,15 L280,14 L300,12" stroke="#ffb4ab" stroke-width="2.5"></path>
+                  <circle cx="150" cy="65" fill="#ffb4ab" r="4"></circle>
+                  <text class="text-[8px] font-bold" fill="#ffb4ab" x="135" y="60">14:15</text>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Interactive Quick Action Forensic Buttons -->
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <button onclick="openDispatchModal()" class="px-3 py-2 rounded bg-primary text-on-primary font-headline text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm hover:brightness-110 active:scale-[0.98] transition-all" type="button">
+                <span class="material-symbols-outlined text-[16px]">local_shipping</span>
+                <span>Dispatch Crew</span>
+              </button>
+              
+              <button onclick="openWaveformModal()" class="px-3 py-2 rounded bg-surface-container-high text-on-surface hover:text-primary font-headline text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors" type="button">
+                <span class="material-symbols-outlined text-[16px]">show_chart</span>
+                <span>Waveform Trace</span>
+              </button>
+
+              <button onclick="toggleIsolateSegment()" id="btn-isolate-seg" class="px-3 py-2 rounded bg-surface-container-high text-on-surface hover:text-error font-headline text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors" type="button">
+                <span class="material-symbols-outlined text-[16px]">power_off</span>
+                <span id="btn-isolate-text">Isolate Segment</span>
+              </button>
+
+              <button onclick="dismissSegmentAlert()" class="px-3 py-2 rounded bg-surface-container-high text-on-surface-variant hover:text-on-surface font-headline text-xs font-medium flex items-center justify-center gap-1.5 transition-colors" type="button">
+                <span class="material-symbols-outlined text-[16px]">cancel</span>
+                <span>Dismiss (FP)</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SECTION 3: RECENT THEFT ALERTS TABLE & ENERGY BALANCE CHART -->
+      <div id="section-alerts" class="grid grid-cols-1 2xl:grid-cols-12 gap-4">
+        
+        <!-- LEFT: LIVE THEFT ALERTS & FORENSIC REGISTRY (7 COLS ON 2XL) -->
+        <div class="2xl:col-span-7 bg-surface-container-low rounded shadow-md overflow-hidden flex flex-col justify-between border border-outline-variant/30">
+          <div>
+            <div class="p-3 bg-surface-container flex items-center justify-between border-b border-outline-variant/20">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[20px]">gavel</span>
+                <span class="font-headline text-sm font-bold text-on-surface">Live Theft Alerts &amp; Forensic Registry</span>
+              </div>
+              <span id="alerts-count-strip" class="text-xs text-on-surface-variant font-mono">TOTAL RECORDED TODAY: 14</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-surface-container-lowest text-[10px] text-on-surface-variant uppercase tracking-wider">
+                  <tr>
+                    <th class="py-2.5 px-3">Alert ID</th>
+                    <th class="py-2.5 px-3">Severity</th>
+                    <th class="py-2.5 px-3">Target Segment</th>
+                    <th class="py-2.5 px-3 text-right">Suspected Load</th>
+                    <th class="py-2.5 px-3 text-right">Loss Gap</th>
+                    <th class="py-2.5 px-3">Discovered</th>
+                    <th class="py-2.5 px-3">Status</th>
+                    <th class="py-2.5 px-3 text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="alerts-table-body" class="divide-y divide-outline-variant/10">
+                  
+                  <!-- Row 1: Seg-04 -->
+                  <tr class="bg-surface-container-low hover:bg-surface-container transition-colors group">
+                    <td class="py-2.5 px-3 font-mono text-primary font-semibold">ALT-9412</td>
+                    <td class="py-2.5 px-3">
+                      <span class="bg-error-container text-on-error-container px-2 py-0.5 rounded text-[10px] font-bold uppercase inline-block">CRITICAL</span>
+                    </td>
+                    <td class="py-2.5 px-3 font-mono text-on-surface">FDR-001 / SEG-04</td>
+                    <td class="py-2.5 px-3 text-right font-mono text-error font-semibold">14.8 kW</td>
+                    <td class="py-2.5 px-3 text-right font-mono text-error font-semibold">+18.4%</td>
+                    <td class="py-2.5 px-3 font-mono text-on-surface-variant">14:15:22</td>
+                    <td class="py-2.5 px-3">
+                      <span class="text-tertiary text-[10px] font-medium flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Investigating
+                      </span>
+                    </td>
+                    <td class="py-2.5 px-3 text-center">
+                      <button onclick="selectSegment('SEG-04')" class="px-2 py-1 bg-surface-container-high hover:bg-primary hover:text-on-primary rounded text-primary text-[10px] font-semibold transition-colors" type="button">Inspect</button>
+                    </td>
+                  </tr>
+
+                  <!-- Row 2: Seg-09 -->
+                  <tr class="bg-surface-container-low hover:bg-surface-container transition-colors group">
+                    <td class="py-2.5 px-3 font-mono text-primary font-semibold">ALT-9410</td>
+                    <td class="py-2.5 px-3">
+                      <span class="bg-error-container/60 text-error px-2 py-0.5 rounded text-[10px] font-bold uppercase inline-block">HIGH</span>
+                    </td>
+                    <td class="py-2.5 px-3 font-mono text-on-surface">FDR-001 / SEG-09</td>
+                    <td class="py-2.5 px-3 text-right font-mono text-error font-semibold">8.4 kW</td>
+                    <td class="py-2.5 px-3 text-right font-mono text-error font-semibold">+11.2%</td>
+                    <td class="py-2.5 px-3 font-mono text-on-surface-variant">13:58:04</td>
+                    <td class="py-2.5 px-3">
+                      <span class="text-primary text-[10px] font-medium flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Acknowledged
+                      </span>
+                    </td>
+                    <td class="py-2.5 px-3 text-center">
+                      <button onclick="selectSegment('SEG-09')" class="px-2 py-1 bg-surface-container-high hover:bg-primary hover:text-on-primary rounded text-primary text-[10px] font-semibold transition-colors" type="button">Inspect</button>
+                    </td>
+                  </tr>
+
+                  <!-- Row 3: Seg-12 -->
+                  <tr class="bg-surface-container-low hover:bg-surface-container transition-colors group">
+                    <td class="py-2.5 px-3 font-mono text-primary font-semibold">ALT-9398</td>
+                    <td class="py-2.5 px-3">
+                      <span class="bg-tertiary/20 text-tertiary px-2 py-0.5 rounded text-[10px] font-bold uppercase inline-block">MEDIUM</span>
+                    </td>
+                    <td class="py-2.5 px-3 font-mono text-on-surface">FDR-001 / SEG-12</td>
+                    <td class="py-2.5 px-3 text-right font-mono text-tertiary font-semibold">2.9 kW</td>
+                    <td class="py-2.5 px-3 text-right font-mono text-tertiary font-semibold">+3.8%</td>
+                    <td class="py-2.5 px-3 font-mono text-on-surface-variant">12:44:19</td>
+                    <td class="py-2.5 px-3">
+                      <span class="text-on-surface-variant text-[10px] font-medium flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Queued
+                      </span>
+                    </td>
+                    <td class="py-2.5 px-3 text-center">
+                      <button onclick="selectSegment('SEG-12')" class="px-2 py-1 bg-surface-container-high hover:bg-primary hover:text-on-primary rounded text-primary text-[10px] font-semibold transition-colors" type="button">Inspect</button>
+                    </td>
+                  </tr>
+
+                  <!-- Row 4: Past resolved event -->
+                  <tr class="bg-surface-container-low hover:bg-surface-container transition-colors opacity-75">
+                    <td class="py-2.5 px-3 font-mono text-on-surface-variant">ALT-9382</td>
+                    <td class="py-2.5 px-3">
+                      <span class="bg-secondary/10 text-secondary px-2 py-0.5 rounded text-[10px] font-semibold uppercase inline-block">RESOLVED</span>
+                    </td>
+                    <td class="py-2.5 px-3 font-mono text-on-surface-variant">FDR-001 / SEG-01</td>
+                    <td class="py-2.5 px-3 text-right font-mono text-on-surface-variant">0.4 kW</td>
+                    <td class="py-2.5 px-3 text-right font-mono text-secondary">+0.6%</td>
+                    <td class="py-2.5 px-3 font-mono text-on-surface-variant">10:12:45</td>
+                    <td class="py-2.5 px-3">
+                      <span class="text-secondary text-[10px] font-medium">Closed / Repaired</span>
+                    </td>
+                    <td class="py-2.5 px-3 text-center">
+                      <button onclick="selectSegment('SEG-01')" class="px-2 py-1 bg-surface-container-high hover:bg-surface-variant rounded text-outline text-[10px]" type="button">Logs</button>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="p-3 bg-surface-container flex items-center justify-between text-xs text-on-surface-variant border-t border-outline-variant/20">
+            <span>SHOWING ACTIVE CRITICAL INCIDENTS</span>
+            <button onclick="openScenarioModal()" class="text-primary hover:underline flex items-center gap-1 font-semibold" type="button">
+              <span>SIMULATE NEW ANOMALY</span>
+              <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- RIGHT: REAL-TIME ENERGY BALANCE & 3-LAYER ML DETECTION STATUS (5 COLS ON 2XL) -->
+        <div class="2xl:col-span-5 space-y-4 flex flex-col justify-between">
+          
+          <!-- Energy Balance Multi-Layer Area Chart -->
+          <div class="bg-surface-container-low rounded p-4 shadow-md border border-outline-variant/30">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[20px]">stacked_line_chart</span>
+                <span class="font-headline text-sm font-bold text-on-surface">Real-Time Energy Balance</span>
+              </div>
+              <div class="flex items-center gap-3 text-xs">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-0.5 bg-primary"></span>Sending</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-0.5 bg-secondary"></span>Accounted</span>
+                <span class="flex items-center gap-1"><span class="w-2 h-2 bg-error/40"></span>Diversion</span>
+              </div>
+            </div>
+            
+            <!-- SVG Multi-Line Loss Chart -->
+            <div class="bg-surface-container-lowest p-2 rounded">
+              <svg id="chart-balance-svg" class="w-full h-32 select-none" fill="none" preserveaspectratio="none" viewbox="0 0 400 120">
+                <line class="text-outline-variant/30" stroke="currentColor" x1="0" x2="400" y1="30" y2="30"></line>
+                <line class="text-outline-variant/30" stroke="currentColor" x1="0" x2="400" y1="70" y2="70"></line>
+                <line class="text-outline-variant/30" stroke="currentColor" x1="0" x2="400" y1="100" y2="100"></line>
+                <!-- Shaded Gap -->
+                <polygon id="svg-theft-polygon" fill="rgba(244, 63, 94, 0.25)" points="0,40 50,38 100,42 150,39 200,32 250,28 300,24 350,22 400,20 400,48 350,52 300,56 250,58 200,52 150,50 100,51 50,47 0,49"></polygon>
+                <!-- Sending Line -->
+                <path id="svg-sending-path" d="M0,40 L50,38 L100,42 L150,39 L200,32 L250,28 L300,24 L350,22 L400,20" stroke="#4cd7f6" stroke-width="2.5"></path>
+                <!-- Accounted Line -->
+                <path id="svg-accounted-path" d="M0,49 L50,47 L100,51 L150,50 L200,52 L250,58 L300,56 L350,52 L400,48" stroke="#4ae176" stroke-width="2"></path>
+                <!-- Thermal Baseline -->
+                <path d="M0,54 L50,52 L100,56 L150,55 L200,58 L250,64 L300,62 L350,58 L400,54" stroke="#869397" stroke-dasharray="2,2" stroke-width="1.5"></path>
+                <!-- Divergence Callout -->
+                <circle cx="350" cy="22" fill="#4cd7f6" r="3.5"></circle>
+                <circle cx="350" cy="52" fill="#4ae176" r="3.5"></circle>
+                <line stroke="#ffb4ab" stroke-width="1.5" x1="350" x2="350" y1="22" y2="52"></line>
+              </svg>
+              <div class="flex justify-between items-center text-[10px] text-on-surface-variant pt-1 px-1 font-mono">
+                <span>13:30 UTC</span>
+                <span>13:50 UTC</span>
+                <span>14:10 UTC</span>
+                <span id="chart-now-time" class="text-primary font-semibold">14:32:08 (CURRENT)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detection Engine Multi-Layer Stack Card -->
+          <div class="bg-surface-container-low rounded p-4 shadow-md space-y-3 border border-outline-variant/30">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[18px]">neurology</span>
+                <span class="font-headline text-xs uppercase tracking-wider text-on-surface font-bold">AI Theft Detection Engine Status</span>
+              </div>
+              <span id="ml-engine-badge" class="text-[10px] px-1.5 py-0.5 rounded bg-secondary/15 text-secondary font-bold">ALL 3 LAYERS CONVERGED</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center text-xs">
+              <div class="bg-surface-container p-2.5 rounded">
+                <span class="text-[10px] text-on-surface-variant font-medium">L1: Residual Filter</span>
+                <div id="ml-l1-val" class="text-base text-primary font-mono font-bold mt-0.5">99.4%</div>
+                <span class="text-[9px] text-secondary">Active Delta</span>
+              </div>
+              <div class="bg-surface-container p-2.5 rounded">
+                <span class="text-[10px] text-on-surface-variant font-medium">L2: Isolation Forest</span>
+                <div id="ml-l2-val" class="text-base text-tertiary font-mono font-bold mt-0.5">0.88</div>
+                <span class="text-[9px] text-tertiary">High Anomaly</span>
+              </div>
+              <div class="bg-surface-container p-2.5 rounded">
+                <span class="text-[10px] text-on-surface-variant font-medium">L3: XGBoost Classifier</span>
+                <div id="ml-l3-val" class="text-base text-error font-mono font-bold mt-0.5">94.8%</div>
+                <span class="text-[9px] text-error font-bold">Tap Confirmed</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER STRIP -->
+      <div class="p-3 bg-surface-container-low rounded flex flex-wrap items-center justify-between gap-2 text-xs text-on-surface-variant border border-outline-variant/20 shadow-sm">
+        <div class="flex items-center gap-2">
+          <span class="text-primary font-semibold">SCADA DISPATCH CONSOLE</span>
+          <span>•</span>
+          <span>SUBSTATION: MADURAI 110kV/11kV MAIN</span>
+          <span>•</span>
+          <span>FEEDER RUNTIME: 428d 14h WITHOUT OUTAGE</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span>SERVER LOAD: <span class="text-on-surface font-mono">18.4%</span></span>
+          <span>FIFO INGEST BUFFER: <span class="text-secondary font-mono">0.02ms</span></span>
+          <span>ENCRYPTION: <span class="text-on-surface font-mono">AES-256-GCM</span></span>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW CONTAINER 2: FEEDER DIGITAL TWIN EMBED                               -->
+    <!-- ========================================================================= -->
+    <section id="view-feeder" class="hidden w-full pt-16 h-[calc(100vh-4rem)]">
+      <iframe src="/stitch_import/feeder_localisation.html" class="w-full h-full border-none" title="Feeder Segment Localisation Digital Twin"></iframe>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW CONTAINER 3: VIRTUAL ESP32 SIMULATOR EMBED                           -->
+    <!-- ========================================================================= -->
+    <section id="view-esp32" class="hidden w-full pt-16 h-[calc(100vh-4rem)]">
+      <iframe src="/stitch_import/virtual_esp32.html" class="w-full h-full border-none" title="Virtual ESP32 Node Simulator"></iframe>
+    </section>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- FLOATING MINIMIZED SCREEN WIDGET: TELDS HARDWARE LAB & PROTOTYPE ENGINE   -->
+  <!-- ========================================================================= -->
+  
+  <!-- 1. PERSISTENT MINIMIZED FLOATING BADGE (BOTTOM RIGHT DOCK) -->
+  <aside id="pip-badge" class="fixed bottom-4 right-4 z-50 flex items-center shadow-2xl transition-all duration-300">
+    <div class="flex items-center gap-2.5 bg-[#0b1321] border border-cyan-500/50 hover:border-cyan-400 px-3.5 py-2.5 rounded-full shadow-[0_4px_20px_rgba(6,182,212,0.25)] backdrop-blur-xl group cursor-pointer" onclick="togglePip(true)">
+      <span class="relative flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+      </span>
+      <div class="flex flex-col leading-none">
+        <div class="flex items-center gap-1.5">
+          <span class="font-headline text-xs font-bold text-white group-hover:text-cyan-300 transition-colors">TELDS Hardware Prototype Lab</span>
+          <span class="text-[9px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.2 rounded font-mono font-semibold">Minimized</span>
+        </div>
+        <span class="text-[10px] text-slate-400 mt-0.5">ESP32 Dual-CT • 9 Tabs • Click to Expand</span>
+      </div>
+      <button class="ml-1 p-1 rounded-full bg-cyan-500/10 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-black transition-all" title="Expand Full Model">
+        <span class="material-symbols-outlined text-[16px]">open_in_full</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- 2. EXPANDED FLOATING PICTURE-IN-PICTURE MODAL (HTML PROTOTYPE PAGE) -->
+  <section id="pip-modal" class="pip-window pip-minimized fixed bottom-5 right-5 z-50 w-[92vw] max-w-[1240px] h-[82vh] bg-[#070b14]/98 border border-cyan-500/40 rounded-xl shadow-[0_12px_48px_rgba(0,0,0,0.85)] flex flex-col overflow-hidden backdrop-blur-2xl">
+    
+    <!-- Floating Window Header Bar with Controls -->
+    <header class="h-12 bg-[#0c1325] border-b border-cyan-500/30 px-4 flex items-center justify-between select-none">
+      
+      <!-- Left: Title & Status -->
+      <div class="flex items-center gap-3">
+        <div class="w-6 h-6 rounded bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center font-bold text-black text-xs">
+          ⚡
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-headline text-xs sm:text-sm font-bold text-white">TELDS Prototype Dashboard &amp; Hardware Lab</span>
+          <span class="hidden sm:inline-block text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-semibold border border-emerald-500/30">
+            /telds_dashboard.html
+          </span>
+        </div>
+      </div>
+
+      <!-- Right: Window Action Buttons (Minimize, Maximize, Open Tab, Close) -->
+      <div class="flex items-center gap-1.5">
+        
+        <!-- Open in New Tab -->
+        <a href="/telds_dashboard.html" target="_blank" class="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-white transition-colors" title="Open Full Screen in New Tab">
+          <span class="material-symbols-outlined text-[16px]">launch</span>
+        </a>
+
+        <!-- Maximize / Restore -->
+        <button onclick="togglePipMaximize()" id="btn-pip-max" class="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-white transition-colors" title="Maximize / Restore Size">
+          <span class="material-symbols-outlined text-[16px]">crop_square</span>
+        </button>
+
+        <!-- Minimize to Dock -->
+        <button onclick="togglePip(false)" class="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-white transition-colors" title="Minimize to Corner Pill">
+          <span class="material-symbols-outlined text-[16px]">minimize</span>
+        </button>
+
+        <!-- Close / Dismiss -->
+        <button onclick="togglePip(false)" class="p-1.5 rounded hover:bg-red-900/40 text-slate-400 hover:text-red-400 transition-colors ml-1" title="Close Window">
+          <span class="material-symbols-outlined text-[16px]">close</span>
+        </button>
+      </div>
+
+    </header>
+
+    <!-- Floating Window Content: Full Interactive IFrame of telds_dashboard.html -->
+    <div class="flex-1 w-full h-full bg-[#070b14] relative">
+      <iframe id="pip-iframe" src="/telds_dashboard.html" class="w-full h-full border-none" title="TELDS Legacy Dashboard Prototype"></iframe>
+    </div>
+
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- MODALS: SCENARIO INJECTOR, CREW DISPATCH, WAVEFORM TRACE                  -->
+  <!-- ========================================================================= -->
+
+  <!-- SCENARIO INJECTION MODAL -->
+  <div id="modal-scenario" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-surface-container-low border border-primary/40 rounded-lg max-w-xl w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-[24px]">science</span>
+          <h3 class="font-headline text-base font-bold text-on-surface">Inject SCADA Telemetry Scenario</h3>
+        </div>
+        <button onclick="closeModals()" class="text-outline hover:text-on-surface"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <p class="text-xs text-on-surface-variant">Select an anomaly pattern to emulate on the live digital twin feeder canvas and update all connected meters:</p>
+      
+      <div class="space-y-2">
+        <button onclick="applyScenario('NORMAL')" class="w-full text-left p-3 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 flex items-center justify-between group transition-all">
+          <div>
+            <div class="font-headline text-xs font-bold text-secondary">Scenario 1: Normal Balanced Baseline</div>
+            <div class="text-[11px] text-on-surface-variant">Loss ratio &le; 1.4%, 0 kW illicit load, DT-01 balanced across all 4 branches.</div>
+          </div>
+          <span class="text-xs text-secondary font-mono font-bold group-hover:translate-x-1 transition-transform">&rarr;</span>
+        </button>
+
+        <button onclick="applyScenario('SHUNT_HOOK')" class="w-full text-left p-3 rounded bg-surface-container hover:bg-surface-container-high border border-error/30 flex items-center justify-between group transition-all">
+          <div>
+            <div class="font-headline text-xs font-bold text-error">Scenario 2: Peak Shunt Tap Hook (SEG-04)</div>
+            <div class="text-[11px] text-on-surface-variant">Direct overhead tap at Pole P5-P6: 14.8 kW illicit load, +18.4% diversion gap.</div>
+          </div>
+          <span class="text-xs text-error font-mono font-bold group-hover:translate-x-1 transition-transform">&rarr;</span>
+        </button>
+
+        <button onclick="applyScenario('METER_BYPASS')" class="w-full text-left p-3 rounded bg-surface-container hover:bg-surface-container-high border border-error/30 flex items-center justify-between group transition-all">
+          <div>
+            <div class="font-headline text-xs font-bold text-error">Scenario 3: Smart Meter Shunt Bypass (SEG-09)</div>
+            <div class="text-[11px] text-on-surface-variant">Current transformer shorting at Consumer C-14: 8.4 kW, +11.2% diversion gap.</div>
+          </div>
+          <span class="text-xs text-error font-mono font-bold group-hover:translate-x-1 transition-transform">&rarr;</span>
+        </button>
+
+        <button onclick="applyScenario('MICRO_TAP')" class="w-full text-left p-3 rounded bg-surface-container hover:bg-surface-container-high border border-tertiary/30 flex items-center justify-between group transition-all">
+          <div>
+            <div class="font-headline text-xs font-bold text-tertiary">Scenario 4: Intermittent Lateral Micro-Tap (SEG-12)</div>
+            <div class="text-[11px] text-on-surface-variant">Subtle agricultural pump diversion: 2.9 kW load, +3.8% gap, periodic duty cycle.</div>
+          </div>
+          <span class="text-xs text-tertiary font-mono font-bold group-hover:translate-x-1 transition-transform">&rarr;</span>
+        </button>
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button onclick="closeModals()" class="px-4 py-1.5 rounded bg-surface-container-high text-xs text-on-surface hover:text-white">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREW DISPATCH MODAL -->
+  <div id="modal-dispatch" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-surface-container-low border border-primary/40 rounded-lg max-w-md w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-[24px]">local_shipping</span>
+          <h3 class="font-headline text-base font-bold text-on-surface">Dispatch Field Inspection Crew</h3>
+        </div>
+        <button onclick="closeModals()" class="text-outline hover:text-on-surface"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      
+      <div class="space-y-3 text-xs">
+        <div class="bg-surface-container p-3 rounded space-y-1.5">
+          <div class="flex justify-between">
+            <span class="text-on-surface-variant">Target Segment:</span>
+            <span id="disp-target-seg" class="font-bold text-primary">SEG-04 (Pole P5 → P6)</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-on-surface-variant">GPS Coordinates:</span>
+            <span class="font-mono text-on-surface">9.9252° N, 78.1198° E (Madurai Central)</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-on-surface-variant">Estimated Diversion:</span>
+            <span id="disp-target-load" class="font-bold text-error">14.8 kW Direct Tap</span>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[11px] text-on-surface-variant">Assigned Inspection Squad:</label>
+          <select id="disp-crew-select" class="w-full bg-surface-container border border-outline-variant/40 rounded px-3 py-1.5 text-xs text-on-surface">
+            <option value="CREW-01">Squad Alpha — Tech Lead: Rajesh K. (Van #TN-58-A-9012) [ETA 12m]</option>
+            <option value="CREW-02">Squad Bravo — Tech Lead: S. Murugan (Van #TN-58-B-3104) [ETA 24m]</option>
+            <option value="CREW-03">Rapid Response Unit — Tech: K. Vignesh [ETA 8m]</option>
+          </select>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[11px] text-on-surface-variant">Dispatch Priority & Safety Orders:</label>
+          <div class="p-2.5 bg-error-container/20 border border-error/30 rounded text-[11px] text-error flex items-center gap-2">
+            <span class="material-symbols-outlined text-[16px]">warning</span>
+            <span>Suspected illegal energized hook tap. Wear Class-0 1000V rated dielectric gloves.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end gap-2">
+        <button onclick="closeModals()" class="px-4 py-1.5 rounded bg-surface-container-high text-xs text-on-surface hover:text-white">Cancel</button>
+        <button onclick="confirmCrewDispatch()" class="px-4 py-1.5 rounded bg-primary text-on-primary text-xs font-bold hover:brightness-110 flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">send</span>
+          <span>Confirm Dispatch</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WAVEFORM TRACE MODAL -->
+  <div id="modal-waveform" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-surface-container-low border border-primary/40 rounded-lg max-w-2xl w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-[24px]">show_chart</span>
+          <h3 class="font-headline text-base font-bold text-on-surface">Forensic Waveform & Harmonic Distortion</h3>
+        </div>
+        <button onclick="closeModals()" class="text-outline hover:text-on-surface"><span class="material-symbols-outlined">close</span></button>
+      </div>
+
+      <div class="space-y-3">
+        <div class="flex justify-between items-center text-xs text-on-surface-variant">
+          <span>Fundamental 50Hz Current Wave vs Illicit Tap Harmonic Distortions (THD 18.2%)</span>
+          <span class="text-error font-mono font-bold">FFT Analysis Triggered</span>
+        </div>
+
+        <!-- Waveform Visualizer -->
+        <div class="bg-surface-container-lowest p-3 rounded border border-outline-variant/30">
+          <svg class="w-full h-40" fill="none" viewbox="0 0 600 160">
+            <!-- Grid Lines -->
+            <line stroke="#232a39" stroke-width="1" x1="0" x2="600" y1="80" y2="80"></line>
+            <line stroke="#232a39" stroke-dasharray="3,3" stroke-width="1" x1="0" x2="600" y1="30" y2="30"></line>
+            <line stroke="#232a39" stroke-dasharray="3,3" stroke-width="1" x1="0" x2="600" y1="130" y2="130"></line>
+            <!-- Normal 50Hz Sine -->
+            <path d="M0,80 Q75,10 150,80 T300,80 T450,80 T600,80" stroke="#4ae176" stroke-width="2" stroke-dasharray="4,2"></path>
+            <!-- Distorted Tapped Wave -->
+            <path d="M0,80 Q50,-10 90,60 Q120,40 150,80 Q200,170 240,100 Q270,120 300,80 Q350,-10 390,60 Q420,40 450,80 Q500,170 540,100 Q570,120 600,80" stroke="#ffb4ab" stroke-width="2.5"></path>
+          </svg>
+          <div class="flex justify-between text-[10px] text-on-surface-variant font-mono pt-1">
+            <span class="text-secondary">Green Dotted: Baseline Pure Sine Wave</span>
+            <span class="text-error font-bold">Red Solid: High Non-Linear Load Tap (Phase Asymmetry)</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 text-center text-xs">
+          <div class="bg-surface-container p-2 rounded">
+            <span class="text-on-surface-variant text-[10px]">THD (Total Harmonic)</span>
+            <div class="font-mono text-error font-bold text-sm">18.2% (Norm: &lt;5%)</div>
+          </div>
+          <div class="bg-surface-container p-2 rounded">
+            <span class="text-on-surface-variant text-[10px]">3rd Harmonic (150Hz)</span>
+            <div class="font-mono text-tertiary font-bold text-sm">11.4A Amplitude</div>
+          </div>
+          <div class="bg-surface-container p-2 rounded">
+            <span class="text-on-surface-variant text-[10px]">Phase Angle Lag</span>
+            <div class="font-mono text-primary font-bold text-sm">28.4° Inductive</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button onclick="closeModals()" class="px-4 py-1.5 rounded bg-primary text-on-primary text-xs font-bold hover:brightness-110">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed top-20 right-6 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT APPLICATION CORE ENGINE                                        -->
+  <!-- ========================================================================= -->
+  <script>
+    // Supabase Configuration
+    const SUPABASE_URL = "https://nuxmpdleqpqunkhbpqjj.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51eG1wZGxlcXBxdW5raGJwcWpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyNTQ5NzYsImV4cCI6MjA1NjgzMDk3Nn0.74V4E2H3gA1dF_4bW-0Qf4bC1aA3e0vJ";
+    let supabaseClient = null;
+
+    try {
+      if (window.supabase) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+    } catch (e) {
+      console.warn("Supabase client init:", e);
+    }
+
+    // Segment Forensic Database
+    const SEGMENTS = {
+      'SEG-04': {
+        name: 'SEG-04',
+        status: 'CRITICAL THEFT',
+        severity: 'CRITICAL',
+        sub: 'Pole P5 → Pole P6 Line',
+        upstream: 'Pole P5 (SM-04a Sensing Hub)',
+        downstream: 'Pole P6 (Consumers C-07, 08, 09)',
+        conductor: 'AAC 50mm² @ 240m (0.138 Ω)',
+        sending: '184.2',
+        billed: '142.6',
+        i2r: '3.4',
+        residual: '38.2',
+        tapLoad: '14.8',
+        conf: '94.8% CONF',
+        spikeText: 'Divergence triggered @ 14:15 UTC',
+        color: '#ffb4ab'
+      },
+      'SEG-09': {
+        name: 'SEG-09',
+        status: 'METER BYPASS',
+        severity: 'HIGH',
+        sub: 'Pole P9 → Pole P10 Lateral',
+        upstream: 'Pole P9 (CT Sensing Branch)',
+        downstream: 'Pole P10 (Consumer C-14 Shunt)',
+        conductor: 'ACSR 35mm² @ 180m (0.245 Ω)',
+        sending: '126.8',
+        billed: '109.4',
+        i2r: '2.1',
+        residual: '15.3',
+        tapLoad: '8.4',
+        conf: '91.2% CONF',
+        spikeText: 'CT Shunt Tamper detected @ 13:58 UTC',
+        color: '#ffb4ab'
+      },
+      'SEG-12': {
+        name: 'SEG-12',
+        status: 'SUSPICIOUS TAP',
+        severity: 'MEDIUM',
+        sub: 'Pole P13 → Pole P14 Micro-Lateral',
+        upstream: 'Pole P13 (Feeder Branch 4)',
+        downstream: 'Pole P14 (Agricultural Consumers)',
+        conductor: 'AAC 25mm² @ 310m (0.342 Ω)',
+        sending: '94.6',
+        billed: '87.9',
+        i2r: '1.8',
+        residual: '4.9',
+        tapLoad: '2.9',
+        conf: '86.4% CONF',
+        spikeText: 'Intermittent load variance @ 12:44 UTC',
+        color: '#ffb95f'
+      },
+      'SEG-01': {
+        name: 'SEG-01',
+        status: 'BALANCED NORMAL',
+        severity: 'NORMAL',
+        sub: 'Pole P1 → Pole P2 Backbone',
+        upstream: 'DT-01 Secondary Bus (415V)',
+        downstream: 'Pole P2 (Consumers C-01..C-06)',
+        conductor: 'AAC 70mm² @ 150m (0.098 Ω)',
+        sending: '210.5',
+        billed: '208.6',
+        i2r: '1.4',
+        residual: '0.5',
+        tapLoad: '0.0',
+        conf: '99.2% OK',
+        spikeText: 'Within technical I²R thermal limits',
+        color: '#4ae176'
+      },
+      'DT-01': {
+        name: 'DT-01',
+        status: 'DISTRIBUTION TRANSFORMER',
+        severity: 'NORMAL',
+        sub: '100kVA 11kV/415V Step-Down',
+        upstream: '11kV Madurai Substation Incoming',
+        downstream: '4 Low-Voltage Radial Feeders',
+        conductor: 'Delta-Wye Grounded Conductor',
+        sending: '1,248.6',
+        billed: '1,187.2',
+        i2r: '18.2',
+        residual: '43.2',
+        tapLoad: '23.2',
+        conf: '95.1% OVERVIEW',
+        spikeText: 'Overall feeder loss coefficient 4.92%',
+        color: '#4cd7f6'
+      },
+      'SUB-01': {
+        name: 'SUB-01',
+        status: 'MADURAI 110kV/11kV SUB',
+        severity: 'NORMAL',
+        sub: 'Grid Feeder Bay 001',
+        upstream: 'TANGEDCO Main Transmission Line',
+        downstream: 'DT-01 100kVA Distribution Tx',
+        conductor: 'Panther ACSR 200mm² (11kV)',
+        sending: '1,248.6',
+        billed: '1,187.2',
+        i2r: '18.2',
+        residual: '43.2',
+        tapLoad: '23.2',
+        conf: '100% HEALTHY',
+        spikeText: 'Substation telemetry synchronized',
+        color: '#4cd7f6'
+      }
+    };
+
+    let currentSelectedSegment = 'SEG-04';
+    let isSegmentIsolated = false;
+    let telemetryMode = 'LIVE';
+
+    // Select Segment on SVG Canvas & Update Inspector
+    function selectSegment(segId) {
+      const seg = SEGMENTS[segId] || SEGMENTS['SEG-04'];
+      currentSelectedSegment = segId;
+      isSegmentIsolated = false;
+      document.getElementById('btn-isolate-text').innerText = "Isolate Segment";
+
+      // Update Inspector Drawer
+      document.getElementById('insp-title').innerText = "Inspector: " + seg.name;
+      document.getElementById('insp-sub').innerText = seg.sub;
+      document.getElementById('insp-upstream').innerText = seg.upstream;
+      document.getElementById('insp-downstream').innerText = seg.downstream;
+      document.getElementById('insp-conductor').innerText = seg.conductor;
+      document.getElementById('insp-sending').innerText = seg.sending;
+      document.getElementById('insp-billed').innerText = seg.billed;
+      document.getElementById('insp-i2r').innerText = seg.i2r;
+      document.getElementById('insp-residual').innerText = seg.residual;
+      document.getElementById('insp-tap-load').innerText = seg.tapLoad;
+      document.getElementById('insp-conf').innerText = seg.conf;
+      document.getElementById('insp-spike-label').innerText = seg.spikeText;
+
+      const badge = document.getElementById('insp-badge');
+      const icon = document.getElementById('insp-icon');
+      badge.innerText = seg.status;
+
+      if (seg.severity === 'CRITICAL') {
+        badge.className = "bg-error-container text-on-error-container px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider animate-pulse";
+        icon.className = "material-symbols-outlined text-error text-[20px]";
+      } else if (seg.severity === 'HIGH') {
+        badge.className = "bg-error-container/60 text-error px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider";
+        icon.className = "material-symbols-outlined text-error text-[20px]";
+      } else if (seg.severity === 'MEDIUM') {
+        badge.className = "bg-tertiary/20 text-tertiary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider";
+        icon.className = "material-symbols-outlined text-tertiary text-[20px]";
+      } else {
+        badge.className = "bg-secondary/15 text-secondary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider";
+        icon.className = "material-symbols-outlined text-secondary text-[20px]";
+      }
+
+      showToast(`Selected ${seg.name} (${seg.status})`, 'info');
+    }
+
+    // Toggle Isolate Segment Action
+    function toggleIsolateSegment() {
+      isSegmentIsolated = !isSegmentIsolated;
+      const btnText = document.getElementById('btn-isolate-text');
+      const badge = document.getElementById('insp-badge');
+
+      if (isSegmentIsolated) {
+        btnText.innerText = "Reconnect Segment";
+        badge.innerText = "ISOLATED (OPEN)";
+        badge.className = "bg-outline text-white px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider";
+        showToast(`Segment ${currentSelectedSegment} circuit breaker TRIPPED / ISOLATED.`, 'warning');
+      } else {
+        btnText.innerText = "Isolate Segment";
+        selectSegment(currentSelectedSegment);
+        showToast(`Segment ${currentSelectedSegment} re-energized and balanced.`, 'success');
+      }
+    }
+
+    // Dismiss Segment Alert Action
+    function dismissSegmentAlert() {
+      showToast(`Alert for ${currentSelectedSegment} marked as FALSE POSITIVE / DISMISSED.`, 'info');
+      const badge = document.getElementById('insp-badge');
+      badge.innerText = "DISMISSED (FP)";
+      badge.className = "bg-surface-variant text-outline px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider";
+    }
+
+    // Telemetry Mode Switcher
+    function setTelemetryMode(mode) {
+      telemetryMode = mode;
+      const btnLive = document.getElementById('btn-mode-live');
+      const btnReplay = document.getElementById('btn-mode-replay');
+
+      if (mode === 'LIVE') {
+        btnLive.className = "px-3 py-1 rounded bg-primary text-on-primary font-semibold flex items-center gap-1 shadow-sm transition-all";
+        btnReplay.className = "px-3 py-1 rounded text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-1";
+        showToast('Switched to LIVE 1-sec SCADA stream mode.', 'success');
+      } else {
+        btnReplay.className = "px-3 py-1 rounded bg-tertiary text-black font-semibold flex items-center gap-1 shadow-sm transition-all";
+        btnLive.className = "px-3 py-1 rounded text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-1";
+        showToast('Switched to REPLAY forensic review mode.', 'info');
+      }
+    }
+
+    // Navigation Switcher between Stitch Screens
+    function switchView(viewName) {
+      document.getElementById('view-overview').classList.add('hidden');
+      document.getElementById('view-feeder').classList.add('hidden');
+      document.getElementById('view-esp32').classList.add('hidden');
+
+      const btnOverview = document.getElementById('nav-btn-overview');
+      const btnFeeder = document.getElementById('nav-btn-feeder');
+      const btnEsp32 = document.getElementById('nav-btn-esp32');
+
+      [btnOverview, btnFeeder, btnEsp32].forEach(b => {
+        b.className = "w-full text-left group flex items-center justify-between px-3 py-2 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors border-l-2 border-transparent";
+      });
+
+      if (viewName === 'overview') {
+        document.getElementById('view-overview').classList.remove('hidden');
+        btnOverview.className = "w-full text-left group flex items-center justify-between px-3 py-2 rounded transition-colors bg-surface-container-high text-primary border-l-2 border-primary font-medium";
+      } else if (viewName === 'feeder') {
+        document.getElementById('view-feeder').classList.remove('hidden');
+        btnFeeder.className = "w-full text-left group flex items-center justify-between px-3 py-2 rounded transition-colors bg-surface-container-high text-primary border-l-2 border-primary font-medium";
+      } else if (viewName === 'virtual_esp32') {
+        document.getElementById('view-esp32').classList.remove('hidden');
+        btnEsp32.className = "w-full text-left group flex items-center justify-between px-3 py-2 rounded transition-colors bg-surface-container-high text-primary border-l-2 border-primary font-medium";
+      }
+    }
+
+    // Floating Picture-in-Picture Controls for telds_dashboard.html
+    let isPipMaximized = false;
+
+    function togglePip(expand) {
+      const modal = document.getElementById('pip-modal');
+      const badge = document.getElementById('pip-badge');
+
+      if (expand) {
+        modal.classList.remove('pip-minimized');
+        modal.classList.add('pip-expanded');
+        badge.classList.add('opacity-0', 'pointer-events-none');
+      } else {
+        modal.classList.remove('pip-expanded');
+        modal.classList.add('pip-minimized');
+        badge.classList.remove('opacity-0', 'pointer-events-none');
+      }
+    }
+
+    function togglePipMaximize() {
+      const modal = document.getElementById('pip-modal');
+      const btnMax = document.getElementById('btn-pip-max');
+      isPipMaximized = !isPipMaximized;
+
+      if (isPipMaximized) {
+        modal.classList.add('pip-maximized');
+        btnMax.innerHTML = '<span class="material-symbols-outlined text-[16px]">fullscreen_exit</span>';
+      } else {
+        modal.classList.remove('pip-maximized');
+        btnMax.innerHTML = '<span class="material-symbols-outlined text-[16px]">crop_square</span>';
+      }
+    }
+
+    // Modal Handlers
+    function openScenarioModal() {
+      document.getElementById('modal-scenario').classList.remove('hidden');
+    }
+
+    function openDispatchModal() {
+      document.getElementById('disp-target-seg').innerText = currentSelectedSegment + ` (${SEGMENTS[currentSelectedSegment].sub})`;
+      document.getElementById('disp-target-load').innerText = SEGMENTS[currentSelectedSegment].tapLoad + " kW Illicit Tap";
+      document.getElementById('modal-dispatch').classList.remove('hidden');
+    }
+
+    function confirmCrewDispatch() {
+      const squad = document.getElementById('disp-crew-select').value;
+      closeModals();
+      showToast(`Crew ${squad} dispatched to ${currentSelectedSegment} (ETA logged to Supabase).`, 'success');
+      
+      // Attempt to post to Supabase if connected
+      if (supabaseClient) {
+        supabaseClient.from('dispatch_tickets').insert({
+          ticket_id: 'DSP-' + Math.floor(1000 + Math.random() * 9000),
+          segment_id: currentSelectedSegment,
+          crew_id: squad,
+          priority: 'URGENT',
+          status: 'EN_ROUTE'
+        }).then(() => console.log('Dispatch logged to Supabase')).catch(e => console.warn(e));
+      }
+    }
+
+    function openWaveformModal() {
+      document.getElementById('modal-waveform').classList.remove('hidden');
+    }
+
+    function closeModals() {
+      document.getElementById('modal-scenario').classList.add('hidden');
+      document.getElementById('modal-dispatch').classList.add('hidden');
+      document.getElementById('modal-waveform').classList.add('hidden');
+    }
+
+    function scrollToAlerts() {
+      const el = document.getElementById('section-alerts');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function filterAlerts(level) {
+      scrollToAlerts();
+      showToast(`Filtered registry by ${level} incidents`, 'info');
+    }
+
+    function openFeederSelector() {
+      showToast('Selected FDR-001 (Madurai 11kV/415V). Additional feeders: FDR-002 (Coimbatore), FDR-003 (Trichy)', 'info');
+    }
+
+    function openSupabaseDialog() {
+      showToast('Supabase PostgreSQL: Connected & Synced (Project: nuxmpdleqpqunkhbpqjj)', 'success');
+    }
+
+    // Scenario Injection Preset Logic
+    function applyScenario(type) {
+      closeModals();
+      if (type === 'NORMAL') {
+        document.getElementById('card-active-thefts').innerText = '0';
+        document.getElementById('card-unaccounted-val').innerText = '18.2';
+        document.getElementById('card-anomaly-val').innerText = '0.0 kWh Anomaly';
+        document.getElementById('card-gap-badge').innerText = '1.46% GAP';
+        document.getElementById('card-gap-badge').className = 'text-[10px] px-1.5 py-0.5 rounded bg-secondary/15 text-secondary font-bold';
+        document.getElementById('kpi-loss-coef').innerText = '1.46%';
+        document.getElementById('badge-critical-strip').innerText = '0 CRITICAL (ALL BALANCED)';
+        document.getElementById('badge-critical-strip').className = 'bg-secondary/20 text-secondary px-2 py-0.5 rounded font-bold text-[11px]';
+        document.getElementById('svg-seg04-hook').style.display = 'none';
+        selectSegment('SEG-01');
+        showToast('Injected Normal Balanced Baseline (No Thefts)', 'success');
+      } else if (type === 'SHUNT_HOOK') {
+        document.getElementById('card-active-thefts').innerText = '3';
+        document.getElementById('card-unaccounted-val').innerText = '61.4';
+        document.getElementById('card-anomaly-val').innerText = '43.2 kWh Anomaly';
+        document.getElementById('card-gap-badge').innerText = '4.92% GAP';
+        document.getElementById('card-gap-badge').className = 'text-[10px] px-1.5 py-0.5 rounded bg-error-container text-on-error-container font-bold';
+        document.getElementById('badge-critical-strip').innerText = '2 UNRESOLVED CRITICAL';
+        document.getElementById('badge-critical-strip').className = 'bg-error-container text-on-error-container px-2 py-0.5 rounded font-bold animate-pulse text-[11px]';
+        document.getElementById('svg-seg04-hook').style.display = 'block';
+        selectSegment('SEG-04');
+        showToast('Injected Peak Shunt Hook (SEG-04: 14.8 kW illicit tap)', 'warning');
+      } else if (type === 'METER_BYPASS') {
+        selectSegment('SEG-09');
+        showToast('Injected Meter Shunt Bypass (SEG-09: 8.4 kW at C-14)', 'warning');
+      } else if (type === 'MICRO_TAP') {
+        selectSegment('SEG-12');
+        showToast('Injected Agricultural Micro-Tap (SEG-12: 2.9 kW at C-21)', 'info');
+      }
+    }
+
+    // Map Layer Mode Switcher
+    function setMapLayer(layer) {
+      const bFlow = document.getElementById('btn-layer-flow');
+      const bRisk = document.getElementById('btn-layer-risk');
+      const bVolt = document.getElementById('btn-layer-volt');
+
+      [bFlow, bRisk, bVolt].forEach(b => {
+        b.className = "px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface transition-all";
+      });
+
+      if (layer === 'FLOW') {
+        bFlow.className = "px-2.5 py-1 rounded bg-primary text-on-primary font-bold transition-all";
+        showToast('Displaying Real-Time Power Flow Vectors', 'info');
+      } else if (layer === 'RISK') {
+        bRisk.className = "px-2.5 py-1 rounded bg-error text-black font-bold transition-all";
+        showToast('Displaying Non-Technical Theft Risk Heatmap', 'warning');
+      } else if (layer === 'VOLT') {
+        bVolt.className = "px-2.5 py-1 rounded bg-tertiary text-black font-bold transition-all";
+        showToast('Displaying Voltage Profile & Drop Gradients', 'info');
+      }
+    }
+
+    // Toast Notification System
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      let border = "border-primary/50 text-primary";
+      let icon = "info";
+      if (type === 'success') { border = "border-secondary/60 text-secondary"; icon = "check_circle"; }
+      if (type === 'warning') { border = "border-error/60 text-error"; icon = "warning"; }
+
+      toast.className = `flex items-center gap-2.5 px-4 py-2.5 bg-surface-container-low border ${border} rounded-md shadow-2xl backdrop-blur-md text-xs font-mono transition-all transform duration-300 opacity-0 translate-y-2`;
+      toast.innerHTML = `<span class="material-symbols-outlined text-[16px]">${icon}</span><span>${message}</span>`;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('opacity-0', 'translate-y-2');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Live Telemetry Tick Simulator
+    setInterval(() => {
+      if (telemetryMode !== 'LIVE') return;
+
+      const now = new Date();
+      const timeStr = now.toISOString().slice(11, 19) + " UTC";
+      document.getElementById('header-timestamp').innerText = timeStr;
+      document.getElementById('chart-now-time').innerText = timeStr + " (CURRENT)";
+
+      // Realistic Micro-Fluctuations
+      const jitter = (Math.random() - 0.5) * 1.2;
+      const baseInflow = 184.2 + jitter;
+      document.getElementById('card-inflow-rate').innerText = baseInflow.toFixed(1) + " kW";
+
+      const ping = Math.floor(12 + Math.random() * 5);
+      document.getElementById('sidebar-latency').innerText = ping + "ms";
+
+    }, 1000);
+
+    // Initial load selection
+    window.addEventListener('DOMContentLoaded', () => {
+      selectSegment('SEG-04');
+    });
+  </script>
+</body>
+</html>
